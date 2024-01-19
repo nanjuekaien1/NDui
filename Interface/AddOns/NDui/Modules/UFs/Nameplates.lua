@@ -25,9 +25,9 @@ local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFri
 -- Init
 function UF:UpdatePlateCVars()
 	if C.db["Nameplate"]["InsideView"] then
-		SetCVar("nameplateOtherTopInset", .05)
+		SetCVar("nameplateOtherTopInset", .15)
 		SetCVar("nameplateOtherBottomInset", .08)
-	elseif GetCVar("nameplateOtherTopInset") == "0.05" and GetCVar("nameplateOtherBottomInset") == "0.08" then
+	elseif GetCVar("nameplateOtherTopInset") == "0.15" and GetCVar("nameplateOtherBottomInset") == "0.08" then
 		SetCVar("nameplateOtherTopInset", -1)
 		SetCVar("nameplateOtherBottomInset", -1)
 	end
