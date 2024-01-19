@@ -2,7 +2,7 @@ local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local oUF = ns.oUF
 local A = B:RegisterModule("Auras")
-
+-- 229/319/324  -- 修改
 local _G = getfenv(0)
 local format, floor, strmatch, select, unpack, tonumber = format, floor, strmatch, select, unpack, tonumber
 local UnitAura, GetTime = UnitAura, GetTime
@@ -226,8 +226,10 @@ function A:UpdateHeader(header)
 			child:SetSize(cfg.size, cfg.size)
 		end
 
-		B.SetFontSize(child.count, fontSize)
-		B.SetFontSize(child.timer, fontSize)
+		--B.SetFontSize(child.count, fontSize)
+		--B.SetFontSize(child.timer, fontSize)
+		child.count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 15, DB.Font[3])
+		child.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 18, DB.Font[3]) --18
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 		if index > (cfg.maxWraps * cfg.wrapAfter) and child:IsShown() then
@@ -315,11 +317,13 @@ function A:CreateAuraIcon(button)
 
 	button.count = button:CreateFontString(nil, "ARTWORK")
 	button.count:SetPoint("TOPRIGHT", -1, -3)
-	B.SetFontSize(button.count, fontSize)
+	--B.SetFontSize(button.count, fontSize)
+	button.count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 15, DB.Font[3])
 
 	button.timer = button:CreateFontString(nil, "ARTWORK")
-	button.timer:SetPoint("TOP", button, "BOTTOM", 1, 2)
-	B.SetFontSize(button.timer, fontSize)
+	button.timer:SetPoint("TOP", button, "BOTTOM", 1, 4)
+	button.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 18, DB.Font[3])
+	--B.SetFontSize(button.timer, fontSize)
 
 	button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
 	button.highlight:SetColorTexture(1, 1, 1, .25)
