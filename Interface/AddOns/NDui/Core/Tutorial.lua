@@ -20,9 +20,11 @@ local function ForceDefaultSettings()
 	SetCVar("lockActionBars", 1)
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("overrideArchive", 0)
+	SetCVar("TargetNearestUseNew", 1) -- #*tab最近的目标
+	SetCVar("nameplateOccludedAlphaMult", 0.2) --障碍物后姓名板的透明度
 	SetCVar("floatingCombatTextFloatMode", 1)
-	SetCVar("floatingCombatTextCombatDamage", 1)
-	SetCVar("floatingCombatTextCombatHealing", 1)
+	SetCVar("floatingCombatTextCombatDamage", 0) --战斗浮动伤害
+	SetCVar("floatingCombatTextCombatHealing", 0) --战斗浮动治疗
 	SetCVar("floatingCombatTextCombatDamageDirectionalScale", 0)
 	SetCVar("floatingCombatTextCombatDamageDirectionalOffset", 10)
 	--SetActionBarToggles(1, 1, 1, 1)
@@ -174,10 +176,12 @@ local function ForceBigwigs()
 				["profiles"] = {
 					["Default"] = {
 						["outline"] = DB.Font[3],
-						["fontSize"] = 12,
-						["BigWigsAnchor_y"] = 336,
-						["BigWigsAnchor_x"] = 16,
-						["BigWigsAnchor_width"] = 175,
+						["fontSize"] = 18,
+						["fontSizeEmph"] = 22,
+						["BigWigsAnchor_y"] = 237,
+						["BigWigsAnchor_x"] = 30,
+						["BigWigsAnchor_width"] = 260, --
+						["BigWigsAnchor_height"] = 27,
 						["growup"] = true,
 						["interceptMouse"] = false,
 						["barStyle"] = "NDui",
@@ -186,11 +190,12 @@ local function ForceBigwigs()
 						},
 						["font"] = DB.Font[1],
 						["onlyInterceptOnKeypress"] = true,
-						["emphasizeMultiplier"] = 1,
-						["BigWigsEmphasizeAnchor_x"] = 810,
-						["BigWigsEmphasizeAnchor_y"] = 350,
-						["BigWigsEmphasizeAnchor_width"] = 220,
-						["emphasizeGrowup"] = true,
+						["emphasizeMultiplier"] = 1.1, --
+						["BigWigsEmphasizeAnchor_x"] = 590,
+						["BigWigsEmphasizeAnchor_y"] = 700,
+						["BigWigsEmphasizeAnchor_width"] = 320, --
+						["BigWigsEmphasizeAnchor_height"] = 34,
+						["emphasizeGrowup"] = false, --
 					},
 				},
 			},
@@ -205,12 +210,13 @@ local function ForceBigwigs()
 			["BigWigs_Plugins_Messages"] = {
 				["profiles"] = {
 					["Default"] = {
-						["fontSize"] = 18,
+						["fontSize"] = 26,
+						["emphFontSize"] = 48,
 						["font"] = DB.Font[1],
-						["BWEmphasizeCountdownMessageAnchor_x"] = 665,
-						["BWMessageAnchor_x"] = 616,
-						["BWEmphasizeCountdownMessageAnchor_y"] = 530,
-						["BWMessageAnchor_y"] = 305,
+						["BWEmphasizeCountdownMessageAnchor_x"] = -8,
+						["BWMessageAnchor_x"] = -4,
+						["BWEmphasizeCountdownMessageAnchor_y"] = 200,
+						["BWMessageAnchor_y"] = -240, --
 					},
 				},
 			},
@@ -219,21 +225,21 @@ local function ForceBigwigs()
 					["Default"] = {
 						["fontSize"] = 18,
 						["font"] = DB.Font[1],
-						["posy"] = 346,
+						["posy"] = 450,
 						["width"] = 140,
-						["posx"] = 1024,
-						["height"] = 120,
+						["posx"] = 1010,
+						["height"] = 139, --
 					},
 				},
 			},
 			["BigWigs_Plugins_Alt Power"] = {
 				["profiles"] = {
 					["Default"] = {
-						["posx"] = 1002,
-						["fontSize"] = 14,
+						["posx"] = 320, --
+						["fontSize"] = 16,
 						["font"] = DB.Font[1],
 						["fontOutline"] = DB.Font[3],
-						["posy"] = 490,
+						["posy"] = 90,
 					},
 				},
 			},
