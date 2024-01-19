@@ -6,5 +6,6 @@
 ## Author: Baudzilla, wolftankk, Siweia
 ## Version: NDui Mod
 ## SavedVariables: BaudErrorFrameConfig
+## IconTexture: Interface\AddOns\NDui\Media\Hutu\logo
 
 BaudErrorFrame.xml
