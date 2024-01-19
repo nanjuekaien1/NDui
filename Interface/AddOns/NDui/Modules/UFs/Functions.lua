@@ -1,6 +1,6 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
-
+--1172;1177;1191 -6) --位置  --642行修改:0, 5) --修改:团队标记
 local oUF = ns.oUF
 local UF = B:RegisterModule("UnitFrames")
 local AURA = B:GetModule("Auras")
@@ -639,7 +639,7 @@ function UF:CreateRaidMark(self)
 	local mystyle = self.mystyle
 	local ri = self:CreateTexture(nil, "OVERLAY")
 	if mystyle == "raid" then
-		ri:SetPoint("TOP", self, 0, 10)
+		ri:SetPoint("TOP", self, 0, 5) --修改:团队标记
 	elseif mystyle == "nameplate" then
 		ri:SetPoint("BOTTOMRIGHT", self, "TOPLEFT", 0, 3)
 	else
@@ -1166,12 +1166,12 @@ function UF:CreateAuras(self)
 	if mystyle == "player" then
 		bu.initialAnchor = "TOPRIGHT"
 		bu["growth-x"] = "LEFT"
-		bu:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -10)
+		bu:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -6) --位置
 		bu.__value = "Player"
 		UF:ConfigureAuras(bu)
 		bu.FilterAura = UF.UnitCustomFilter
 	elseif mystyle == "target" then
-		bu:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -10)
+		bu:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -6) --位置
 		bu.__value = "Target"
 		UF:ConfigureAuras(bu)
 		bu.FilterAura = UF.UnitCustomFilter
@@ -1188,7 +1188,7 @@ function UF:CreateAuras(self)
 		UF:ConfigureAuras(bu)
 		bu.FilterAura = UF.UnitCustomFilter
 	elseif mystyle == "focus" then
-		bu:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -10)
+		bu:SetPoint("TOPLEFT", self, "BOTTOMLEFT", 0, -6) --位置
 		bu.numTotal = 23
 		bu.iconsPerRow = 8
 		bu.__value = "Focus"
