@@ -5,4 +5,5 @@
 ## Notes: Empty toc for Curseforge
 ## Version: 7.16.1
 ## X-Support: DF
+## IconTexture: Interface\AddOns\NDui\Media\Hutu\logo
 ## X-Website: https://github.com/siweia/NDui
