@@ -1,4 +1,4 @@
-local _, ns = ...
+--[[local _, ns = ...
 local B, C, L, DB = unpack(ns)
 
 local pairs, GetCVarBool = pairs, GetCVarBool
@@ -55,3 +55,4 @@ tinsert(C.defaultThemes, function()
 	end)
 	bubbleHook:Hide()
 end)
+]]--
