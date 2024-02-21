@@ -29,7 +29,7 @@ local function updateChatAnchor(self, _, _, _, x, y)
 	if not C.db["Chat"]["Lock"] then return end
 	if not (x == 0 and y == 30) then
 		self:ClearAllPoints()
-		self:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 6, 30)  --
+		self:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 6, 30)  --修改位置
 		self:SetWidth(C.db["Chat"]["ChatWidth"])
 		self:SetHeight(C.db["Chat"]["ChatHeight"])
 	end
@@ -48,7 +48,7 @@ function module:UpdateChatSize()
 		ChatFrame1.FontStringContainer:SetOutside(ChatFrame1)
 	end
 	ChatFrame1:ClearAllPoints()
-	ChatFrame1:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 6, 30)  --
+	ChatFrame1:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", 6, 30)  --修改位置
 	ChatFrame1:SetWidth(C.db["Chat"]["ChatWidth"])
 	ChatFrame1:SetHeight(C.db["Chat"]["ChatHeight"])
 
