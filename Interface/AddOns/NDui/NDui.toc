@@ -6,3 +6,4 @@
 ## Version: 7.22.1
 ## X-Support: TWW
 ## X-Website: https://github.com/siweia/NDui
+## IconTexture: Interface\AddOns\NDui\Media\Hutu\logo
