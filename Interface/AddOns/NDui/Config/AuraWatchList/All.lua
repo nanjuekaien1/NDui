@@ -57,6 +57,10 @@ local list = {
 		{AuraID = 371024, UnitID = "player"},	-- 元素强能药水
 		{AuraID = 371028, UnitID = "player"},	-- 究极元素强能药水
 		-- 10.0 饰品
+		{AuraID = 426647, UnitID = "player", Flash = true, Text = "精通"},	-- 艾尔雯最好的朋友
+		{AuraID = 426672, UnitID = "player", Flash = true, Text = "全能"},	-- 艾尔雯最好的朋友
+		{AuraID = 426676, UnitID = "player", Flash = true, Text = "暴击"},	-- 艾尔雯最好的朋友
+		{AuraID = 390357, UnitID = "player", Flash = true, Text = "急速"},	-- 吹拂之祈
 		{AuraID = 381476, UnitID = "player"},	-- 爆发烈焰
 		{AuraID = 383941, UnitID = "player"},	-- 崩坏之力
 		{AuraID = 383781, UnitID = "player"},	-- 谜题盒
