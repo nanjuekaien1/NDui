@@ -75,10 +75,6 @@ local list = {
 		{AuraID = 428364, UnitID = "player", Duration = 10, Text = "怒焰", Flash = true, Value = true},  -- 怒焰
 		{AuraID = 425571, UnitID = "player", Flash = true, Value = true},	-- 忌恨之壁
 		{AuraID = 391171, UnitID = "player", Flash = true},	-- 钙化尖刺
-		{AuraID = 426647, UnitID = "player", Flash = true, Text = "精通"},	-- 艾尔雯最好的朋友
-		{AuraID = 426672, UnitID = "player", Flash = true, Text = "全能"},	-- 艾尔雯最好的朋友
-		{AuraID = 426676, UnitID = "player", Flash = true, Text = "暴击"},	-- 艾尔雯最好的朋友
-		{AuraID = 390357, UnitID = "player", Flash = true, Text = "急速"},	-- 吹拂之祈
 		{AuraID = 343312, UnitID = "player"},	-- 狂怒凝视
 		{AuraID = 203981, UnitID = "player", Combat = true},	-- 灵魂残片
 	},
