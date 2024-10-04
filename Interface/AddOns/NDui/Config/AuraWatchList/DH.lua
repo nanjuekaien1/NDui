@@ -44,7 +44,7 @@ local list = {
 		{AuraID = 188499, UnitID = "player"},	-- 刃舞
 		{AuraID = 210152, UnitID = "player"},	-- 刃舞
 		{AuraID = 207693, UnitID = "player"},	-- 灵魂盛宴
-		{AuraID = 203819, UnitID = "player"},	-- 恶魔尖刺
+		--{AuraID = 203819, UnitID = "player"},	-- 恶魔尖刺
 		{AuraID = 212988, UnitID = "player"},	-- 痛苦使者
 		{AuraID = 208579, UnitID = "player"},	-- 涅墨西斯
 		{AuraID = 208605, UnitID = "player"},	-- 涅墨西斯
@@ -62,6 +62,19 @@ local list = {
 		{AuraID = 263648, UnitID = "player", Value = true},	-- 灵魂壁障
 		{AuraID = 218561, UnitID = "player", Value = true},	-- 虹吸能量
 		{AuraID = 258920, UnitID = "player"},	-- 献祭光环
+		{AuraID = 427912, UnitID = "player"},   -- 献祭光环
+		{AuraID = 427913, UnitID = "player"},   -- 献祭光环
+		{AuraID = 427914, UnitID = "player"},   -- 献祭光环
+		{AuraID = 427915, UnitID = "player"},   -- 献祭光环
+		{AuraID = 427916, UnitID = "player"},   -- 献祭光环
+		{AuraID = 427917, UnitID = "player"},   -- 献祭光环
+		{AuraID = 390192, UnitID = "player", Duration = 10, Text = "怒焰", Flash = true, Value = true},  -- 怒焰
+		{AuraID = 428361, UnitID = "player", Duration = 10, Text = "怒焰", Flash = true, Value = true},  -- 怒焰
+		{AuraID = 428362, UnitID = "player", Duration = 10, Text = "怒焰", Flash = true, Value = true},  -- 怒焰
+		{AuraID = 428363, UnitID = "player", Duration = 10, Text = "怒焰", Flash = true, Value = true},  -- 怒焰
+		{AuraID = 428364, UnitID = "player", Duration = 10, Text = "怒焰", Flash = true, Value = true},  -- 怒焰
+		{AuraID = 425571, UnitID = "player", Flash = true, Value = true},	-- 忌恨之壁
+		--{AuraID = 391171, UnitID = "player", Flash = true},	-- 钙化尖刺
 		{AuraID = 343312, UnitID = "player"},	-- 狂怒凝视
 		{AuraID = 203981, UnitID = "player", Combat = true},	-- 灵魂残片
 	},
