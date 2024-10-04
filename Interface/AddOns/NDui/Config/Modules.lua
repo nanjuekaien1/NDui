@@ -14,30 +14,30 @@ C.Auras = {
 	TotemsPos		= {"BOTTOMRIGHT", UIParent, "BOTTOM", -450, 20},	-- 图腾助手默认位置
 
 	-- 技能监控各组初始位置
-	PlayerAuraPos	= {"BOTTOMRIGHT", UIParent, "BOTTOM", -200, 309},	-- 玩家光环分组
-	TargetAuraPos 	= {"BOTTOMLEFT", UIParent, "BOTTOM", 200, 309},		-- 目标光环分组
-	SpecialPos		= {"BOTTOMRIGHT", UIParent, "BOTTOM", -200, 336},	-- 玩家重要光环分组
-	FocusPos		= {"BOTTOMLEFT", UIParent, "LEFT", 5, -130},		-- 焦点光环分组
-	CDPos			= {"BOTTOMRIGHT", UIParent, "BOTTOM", -425, 125},	-- 冷却计时分组
-	EnchantPos		= {"BOTTOMRIGHT", UIParent, "BOTTOM", -200, 377},	-- 附魔及饰品分组
-	RaidBuffPos		= {"CENTER", UIParent, "CENTER", -220, 200},		-- 团队增益分组
-	RaidDebuffPos	= {"CENTER", UIParent, "CENTER", 220, 200},			-- 团队减益分组
-	WarningPos		= {"BOTTOMLEFT", UIParent, "BOTTOM", 200, 370},		-- 目标重要光环分组
-	InternalPos		= {"BOTTOMRIGHT", UIParent, "BOTTOM", -425, 500},	-- 法术内置冷却分组
+	PlayerAuraPos	= {"BOTTOM", UIParent, "BOTTOM", -149, 341},	    -- 玩家光环分组
+	TargetAuraPos 	= {"BOTTOM", UIParent, "BOTTOM", 151, 342},		    -- 目标光环分组
+	SpecialPos		= {"BOTTOM", UIParent, "BOTTOM", -155, 374},	    -- 玩家重要光环分组
+	FocusPos		= {"TOP", UIParent, "TOP", 147, -271},		        -- 焦点光环分组
+	CDPos			= {"TOP", UIParent, "TOP", -282, -450},	            -- 冷却计时分组
+	EnchantPos		= {"BOTTOM", UIParent, "BOTTOM", -155, 421},	    -- 附魔及饰品分组
+	RaidBuffPos		= {"TOP", UIParent, "TOP", -138, -480},		        -- 团队增益分组
+	RaidDebuffPos	= {"TOP", UIParent, "TOP", 155, -470},			    -- 团队减益分组
+	WarningPos		= {"BOTTOM", UIParent, "BOTTOM", 152, 358},		    -- 目标重要光环分组
+	InternalPos		= {"TOP", UIParent, "TOP", -282, -312},	            -- 法术内置冷却分组 --
 }
 
 -- 头像相关
 C.UFs = {
-	Playercb		= {"BOTTOM", UIParent, "BOTTOM", 0, 175},			-- 玩家施法条默认位置
-	Targetcb		= {"BOTTOM", UIParent, "BOTTOM", 0, 335},			-- 目标施法条默认位置
-	Focuscb			= {"CENTER", UIParent, "CENTER", 0, 200},			-- 焦点施法条默认位置
+	Playercb		= {"BOTTOM", UIParent, "BOTTOM", 0, 220},			-- 玩家施法条默认位置
+	Targetcb		= {"BOTTOM", UIParent, "BOTTOM", 0, 300},			-- 目标施法条默认位置
+	Focuscb			= {"TOPLEFT", UIParent, "TOPLEFT", 358, -264},		-- 焦点施法条默认位置
 
-	PlayerPos		= {"TOPRIGHT", UIParent, "BOTTOM", -200, 300},		-- 玩家框体默认位置
-	TargetPos		= {"TOPLEFT", UIParent, "BOTTOM", 200, 300},		-- 目标框体默认位置
-	ToTPos			= {"BOTTOM", UIParent, "BOTTOM", 136, 250},			-- 目标的目标框体默认位置
-	PetPos			= {"BOTTOM", UIParent, "BOTTOM", -136, 250},		-- 宠物框体默认位置
-	FocusPos		= {"LEFT", UIParent, "LEFT", 5, -150},				-- 焦点框体默认位置
-	PlayerPlate		= {"BOTTOM", UIParent, "BOTTOM", 0, 400},			-- 玩家姓名板默认位置
+	PlayerPos		= {"BOTTOM", UIParent, "BOTTOM", -247, 284},		-- 玩家框体默认位置
+	TargetPos		= {"BOTTOM", UIParent, "BOTTOM", 247, 284},		    -- 目标框体默认位置
+	ToTPos			= {"BOTTOM", UIParent, "BOTTOM", 67, 269},			-- 目标的目标框体默认位置
+	PetPos			= {"BOTTOM", UIParent, "BOTTOM", -67, 269},		    -- 宠物框体默认位置
+	FocusPos		= {"TOPLEFT", UIParent, "TOPLEFT", 336, -292},		-- 焦点框体默认位置
+	PlayerPlate		= {"BOTTOM", UIParent, "BOTTOM", 0, 358},			-- 玩家姓名板默认位置 --
 }
 
 -- 小地图
