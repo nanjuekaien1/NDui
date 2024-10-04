@@ -1,6 +1,6 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
-
+--638行修改:0, 5) --修改:团队标记
 local oUF = ns.oUF
 local UF = B:RegisterModule("UnitFrames")
 local AURA = B:GetModule("Auras")
@@ -635,7 +635,7 @@ function UF:CreateRaidMark(self)
 	local mystyle = self.mystyle
 	local ri = self:CreateTexture(nil, "OVERLAY")
 	if mystyle == "raid" then
-		ri:SetPoint("TOP", self, 0, 10)
+		ri:SetPoint("TOP", self, 0, 5) --修改:团队标记
 	elseif mystyle == "nameplate" then
 		ri:SetPoint("BOTTOMRIGHT", self, "TOPLEFT", 0, 3)
 	else
