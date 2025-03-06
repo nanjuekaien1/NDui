@@ -278,6 +278,28 @@ local list = {
 		{AuraID = 325027, UnitID = "player", Flash = true},	-- 仙林，荆棘爆发
 		-- Raids
 		{AuraID = 464748, UnitID = "player", Flash = true},	-- 束缚之网，流丝
+		{AuraID = 459669, UnitID = "player", Flash = true, Text = "喷油"},	-- 喷油，维克茜和磨轮
+		{AuraID = 459678, UnitID = "player", Flash = true, Text = "喷油"},	-- 喷油，维克茜和磨轮
+		{AuraID = 468216, UnitID = "player", Flash = true, Text = "爆燃"},	-- 爆燃纵火，维克茜和磨轮
+		{AuraID = 468486, UnitID = "player", Flash = true, Text = "爆燃"},	-- 爆燃纵火，维克茜和磨轮
+		{AuraID = 472242, UnitID = "player", Flash = true, Text = "焰炮"},	-- 轰焚啸焰炮，血腥大熔炉
+		{AuraID = 1214009, UnitID = "player", Flash = true, Text = "镜像"},	-- 流电镜像，血腥大熔炉
+		{AuraID = 467044, UnitID = "player", Flash = true, Text = "震击"},	-- 故障震击，里克·混响
+		{AuraID = 467108, UnitID = "player", Flash = true, Text = "震击"},	-- 故障震击，里克·混响
+		{AuraID = 469380, UnitID = "player", Flash = true, Text = "锁定"},	-- 音波大炮，里克·混响
+		{AuraID = 472893, UnitID = "player", Flash = true, Text = "焚化"},	-- 焚化，斯提克斯·堆渣
+		{AuraID = 1216911, UnitID = "player", Flash = true, Text = "正极"},	-- 正极化，链齿狂人洛肯斯多
+		{AuraID = 1216934, UnitID = "player", Flash = true, Text = "负极"},	-- 负极化，链齿狂人洛肯斯多
+		{AuraID = 471927, UnitID = "player", Flash = true, Text = "靠边"},	-- 凋零烈焰，独臂盗匪
+		{AuraID = 466476, UnitID = "player", Flash = true, Text = "冰靴"},	-- 霜裂冰靴，穆格·兹伊，安保头子
+		{AuraID = 464748, UnitID = "player", Flash = true, Text = "单吃"},	-- 风暴手指枪，穆格·兹伊，安保头子
+		{AuraID = 466545, UnitID = "player", Flash = true, Text = "乱射"},	-- 祈祷与乱射，穆格·兹伊，安保头子
+		{AuraID = 472631, UnitID = "player", Flash = true, Text = "牢笼"},	-- 震地牢狱，穆格·兹伊，安保头子
+		{AuraID = 1215760, UnitID = "player", Flash = true, Text = "牢笼"},	-- 震地牢狱，穆格·兹伊，安保头子
+		{AuraID = 472354, UnitID = "player", Flash = true, Text = "锁定"},	-- 地雷锁定，穆格·兹伊，安保头子
+		{AuraID = 467380, UnitID = "player", Flash = true, Text = "火箭"},	-- 地精制导火箭，穆格·兹伊，安保头子
+		{AuraID = 466341, UnitID = "player", Flash = true, Text = "引线"},	-- 引线弹药筒，铬武大王加里维克斯
+		{AuraID = 466158, UnitID = "player", Flash = true, Text = "靠边"},	-- 工兵的背包，铬武大王加里维克斯
 	},
 	["Warning"] = { -- 目标重要光环组
 		{AuraID = 268756, UnitID = "target", Caster = "player"},	-- 望远镜饰品
