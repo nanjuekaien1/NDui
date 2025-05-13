@@ -3,12 +3,13 @@ local B, C, L, DB = unpack(ns)
 local UF = B:GetModule("UnitFrames")
 
 local wipe, gmatch, strmatch = table.wipe, string.gmatch, string.match
-local GetSpecialization = GetSpecialization
+local GetSpecialization, GetSpecializationInfo = GetSpecialization, GetSpecializationInfo
 local GetSpellTexture = C_Spell.GetSpellTexture
 local EMPTY_TEXTURE = "Interface\\Icons\\INV_Misc_QuestionMark"
 local myFullName = DB.MyFullName
 
 UF.defaultStrings = {
+	[0] = "", -- None
 	-- HUNTER
 	[253] = "1ZplayerZcdZ34026N2ZplayerZcdZ217200N3ZpetZbuffZ272790N4ZplayerZbuffZ268877N5ZplayerZcdZ19574N6ZplayerZcdZ359844", -- Beast Mastery
 	[254] = "1ZplayerZcdZ19434N2ZplayerZcdZ257044N3ZplayerZbuffZ257622N4ZplayerZbuffZ474293N5ZplayerZbuffZ389020N6ZplayerZcdZ288613", -- Marksmanship
@@ -118,6 +119,9 @@ function UF:Avada_RefreshIcons()
 		if button then
 			local spellID = auraData[i] and auraData[i].spellID
 			local texture = spellID and GetSpellTexture(replacedTexture[spellID] or spellID) or EMPTY_TEXTURE
+			if auraData[i] and auraData[i].type == "item" then
+				texture = spellID and GetItemIcon(spellID) or EMPTY_TEXTURE
+			end
 			button.Icon:SetTexture(texture)
 			button.Icon:SetDesaturated(true)
 			button.Count:SetText("")
@@ -189,6 +193,26 @@ function UF:Avada_UpdateCD(button, spellID)
 	button.CD:SetReverse(false)
 end
 
+function UF:Avada_UpdateItem(button, itemID)
+	local count = C_Item.GetItemCount(itemID)
+	if count and count > 1 then
+		button.Count:SetText(count)
+	else
+		button.Count:SetText("")
+	end
+
+	local start, duration = C_Item.GetItemCooldown(itemID)
+	if start and duration > 3 then
+		button.CD:SetCooldown(start, duration)
+		button.CD:Show()
+		button.Icon:SetDesaturated(true)
+	else
+		button.CD:Hide()
+		button.Icon:SetDesaturated(false)
+	end
+	button.CD:SetReverse(false)
+end
+
 function UF:Avada_OnEvent(event, unit)
 	if event == "PLAYER_TARGET_CHANGED" then
 		if not watchTypes["buff"] and not watchTypes["debuff"] then return end
@@ -209,6 +233,15 @@ function UF:Avada_OnEvent(event, unit)
 				UF:Avada_UpdateCD(avadaButtons[data.index], data.spellID)
 			end
 		end
+	elseif event == "BAG_UPDATE_COOLDOWN" then
+		if not watchTypes["item"] then return end
+
+		for i = 1, maxButtons do
+			local data = auraData[i]
+			if data and data.type == "item" then
+				UF:Avada_UpdateItem(avadaButtons[data.index], data.spellID)
+			end
+		end
 	end
 end
 
@@ -227,9 +260,32 @@ function UF:Avada_OnAura(unit)
 	end
 end
 
-function UF:AvadaKedavra(self)
-	if not C.db["Avada"]["Enable"] then return end
+function UF:Avada_Toggle(frame)
+	frame = frame or oUF_PlayerPlate
+	if not frame then return end
 
+	if C.db["Avada"]["Enable"] then
+		for i = 1, 6 do frame.Avada[i]:Show() end
+		B:RegisterEvent("UNIT_AURA", UF.Avada_OnAura)
+		frame:RegisterEvent("PLAYER_TARGET_CHANGED", UF.Avada_OnEvent, true)
+		frame:RegisterEvent("SPELL_UPDATE_COOLDOWN", UF.Avada_OnEvent, true)
+		frame:RegisterEvent("SPELL_UPDATE_CHARGES", UF.Avada_OnEvent, true)
+		frame:RegisterEvent("BAG_UPDATE_COOLDOWN", UF.Avada_OnEvent, true)
+
+		UF.Avada_RefreshAll(frame)
+		frame:RegisterEvent("PLAYER_TALENT_UPDATE", UF.Avada_RefreshAll, true)
+	else
+		for i = 1, 6 do frame.Avada[i]:Hide() end
+		B:UnregisterEvent("UNIT_AURA", UF.Avada_OnAura)
+		frame:UnregisterEvent("PLAYER_TARGET_CHANGED", UF.Avada_OnEvent)
+		frame:UnregisterEvent("SPELL_UPDATE_COOLDOWN", UF.Avada_OnEvent)
+		frame:UnregisterEvent("SPELL_UPDATE_CHARGES", UF.Avada_OnEvent)
+		frame:UnregisterEvent("BAG_UPDATE_COOLDOWN", UF.Avada_OnEvent)
+		frame:UnregisterEvent("PLAYER_TALENT_UPDATE", UF.Avada_RefreshAll, true)
+	end
+end
+
+function UF:AvadaKedavra(self)
 	local iconSize = (C.db["Nameplate"]["PPWidth"]+2*C.mult - C.margin*(maxButtons-1))/maxButtons
 
 	self.Avada = {}
@@ -254,11 +310,5 @@ function UF:AvadaKedavra(self)
 	avadaButtons = self.Avada
 	UF.avadaData = auraData
 
-	B:RegisterEvent("UNIT_AURA", UF.Avada_OnAura)
-	self:RegisterEvent("PLAYER_TARGET_CHANGED", UF.Avada_OnEvent, true)
-	self:RegisterEvent("SPELL_UPDATE_COOLDOWN", UF.Avada_OnEvent, true)
-	self:RegisterEvent("SPELL_UPDATE_CHARGES", UF.Avada_OnEvent, true)
-
-	UF.Avada_RefreshAll(self)
-	self:RegisterEvent("PLAYER_TALENT_UPDATE", UF.Avada_RefreshAll, true)
+	UF:Avada_Toggle(self)
 end
