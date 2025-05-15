@@ -1,7 +1,7 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local G = B:GetModule("GUI")
---2366
+--2366/尾-资源条技能
 local _G = _G
 local unpack, pairs, ipairs, tinsert = unpack, pairs, ipairs, tinsert
 local min, max, strmatch, strfind, tonumber = min, max, strmatch, strfind, tonumber
