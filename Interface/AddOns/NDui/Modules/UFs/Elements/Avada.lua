@@ -77,7 +77,7 @@ UF.AvadaGemini = { -- 自动转换的法术
 }
 
 local avadaButtons, auraData, avadaValue = {}, {}
-local maxButtons = 6
+local maxButtons = 8             -- 改6为8
 for i = 1, maxButtons do
 	auraData[i] = {}
 end
@@ -286,7 +286,7 @@ function UF:Avada_Toggle(frame)
 	if not frame then return end
 
 	if C.db["Avada"]["Enable"] then
-		for i = 1, 6 do frame.Avada[i]:Show() end
+		for i = 1, maxButtons do frame.Avada[i]:Show() end             -- 改6为maxButtons
 		B:RegisterEvent("UNIT_AURA", UF.Avada_OnAura)
 		frame:RegisterEvent("PLAYER_TARGET_CHANGED", UF.Avada_OnEvent, true)
 		frame:RegisterEvent("SPELL_UPDATE_COOLDOWN", UF.Avada_OnEvent, true)
@@ -296,7 +296,7 @@ function UF:Avada_Toggle(frame)
 		UF.Avada_RefreshAll(frame)
 		frame:RegisterEvent("TRAIT_CONFIG_UPDATED", UF.Avada_RefreshAll, true)
 	else
-		for i = 1, 6 do frame.Avada[i]:Hide() end
+		for i = 1, maxButtons do frame.Avada[i]:Hide() end             -- 改6为maxButtons
 		B:UnregisterEvent("UNIT_AURA", UF.Avada_OnAura)
 		frame:UnregisterEvent("PLAYER_TARGET_CHANGED", UF.Avada_OnEvent)
 		frame:UnregisterEvent("SPELL_UPDATE_COOLDOWN", UF.Avada_OnEvent)
