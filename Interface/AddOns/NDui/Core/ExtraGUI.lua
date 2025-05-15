@@ -2422,7 +2422,7 @@ function G:SetupAvada()
 
 		local str
 		if index == 1 then
-			str = UF.defaultStrings[currentSpecID]
+			str = UF.DefaultAvada[currentSpecID]
 		else
 			str = NDuiADB["AvadaProfile"][currentSpecID] and NDuiADB["AvadaProfile"][currentSpecID][index] or ""
 		end
@@ -2565,7 +2565,7 @@ function G:SetupAvada()
 		OnShow = function(self)
 			local text
 			if currentID == 1 then
-				text = UF.defaultStrings[currentSpecID]
+				text = UF.DefaultAvada[currentSpecID]
 			else
 				text = NDuiADB["AvadaProfile"][currentSpecID] and NDuiADB["AvadaProfile"][currentSpecID][currentID] or ""
 			end
@@ -2701,6 +2701,8 @@ function G:SetupAvada()
 			local itemID = GetCursorID()
 			if itemID then
 				ClearCursor()
+				button.spellID = itemID
+				button.spellType = "item"
 				button.Icon:SetTexture(GetItemIcon(itemID) or EMPTY_ICON)
 				button.options[1].Text:SetText("player")
 				button.options[2].Text:SetText("item")
@@ -2710,6 +2712,8 @@ function G:SetupAvada()
 			local spellID = GetCursorID()
 			if spellID then
 				ClearCursor()
+				button.spellID = spellID
+				button.spellType = "cd"
 				button.Icon:SetTexture(GetSpellTexture(spellID) or EMPTY_ICON)
 				button.options[1].Text:SetText("player")
 				button.options[2].Text:SetText("cd")
