@@ -28,7 +28,7 @@ UF.DefaultAvada = {
 	[70] = "1ZplayerZcdZ20271N2ZplayerZcdZ184575N3ZplayerZcdZ255937N4ZplayerZcdZ343721N5ZplayerZcdZ375576N6ZplayerZcdZ642N7ZplayerZcdZ198034N8ZplayerZcdZ184662N", -- Retribution
 	-- PRIEST
 	[256] = "1ZplayerZcdZ47540N2ZplayerZcdZ8092N3ZplayerZcdZ17N4ZplayerZcdZ194509N5ZplayerZcdZ472433N6ZplayerZcdZ421453N7ZplayerZcdZ33206N8ZplayerZcdZ62618N", -- Discipline
-	[257] = "1ZplayerZcdZ34861N2ZplayerZcdZ2050N3ZplayerZcdZ14914N4ZplayerZcdZ10060N5ZplayerZcdZ47788N6ZplayerZcdZ64843N7ZplayerZcdZ64901N8ZplayerZcdZ47788N", -- Holy
+	[257] = "1ZplayerZcdZ34861N2ZplayerZcdZ2050N3ZplayerZcdZ33076N4ZplayerZcdZ120517N5ZplayerZcdZ200183N6ZplayerZcdZ64843N7ZplayerZcdZ64901N8ZplayerZcdZ47788N", -- Holy
 	[258] = "1ZtargetZdebuffZ589N2ZtargetZdebuffZ34914N3ZplayerZcdZ228260N4ZplayerZcdZ8092N5ZplayerZcdZ263165N6ZplayerZcdZ10060N7ZplayerZcdZ228260N8ZplayerZcdZ47585N", -- Shadow
 	-- ROGUE
 	[259] = "1ZplayerZcdZ5938N2ZplayerZcdZ703N3ZplayerZcdZ36554N4ZplayerZcdZ57934N5ZplayerZcdZ385627N6ZplayerZcdZ31224N7ZplayerZcdZ5277N8ZplayerZcdZ1856N", -- Assassination
