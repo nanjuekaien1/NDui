@@ -15,53 +15,53 @@ UF.DefaultAvada = {
 	[254] = "1ZplayerZcdZ19434N2ZplayerZcdZ257044N3ZplayerZbuffZ257622N4ZplayerZbuffZ474293N5ZplayerZbuffZ389020N6ZplayerZcdZ288613", -- Marksmanship
 	[255] = "1ZplayerZcdZ259489N2ZplayerZcdZ259495N3ZplayerZcdZ212431N4ZplayerZcdZ212436N5ZplayerZcdZ203415N6ZplayerZcdZ360952", -- Survival
 	-- DK
-	[250] = "1ZplayerZbuffZ195181N2ZplayerZbuffZ77535N3ZplayerZcdZ50842N4ZplayerZcdZ43265N5ZplayerZcdZ48707N6ZplayerZcdZ55233N", -- Blood
-	[251] = "1ZplayerZbuffZ51124N2ZplayerZcdZ196770N3ZplayerZcdZ43265N4ZplayerZcdZ343294N5ZplayerZcdZ51271N6ZplayerZcdZ279302N", -- Frost
-	[252] = "1ZplayerZcdZ85948N2ZplayerZcdZ43265N3ZplayerZcdZ343294N4ZplayerZcdZ63560N5ZplayerZcdZ275699N6ZplayerZcdZ42650N", -- Unholy
+	[250] = "1ZplayerZbuffZ195181N2ZplayerZbuffZ77535N3ZplayerZcdZ50842N4ZplayerZcdZ43265N5ZplayerZcdZ48707N6ZplayerZcdZ55233N7ZplayerZcdZ219809N8ZplayerZcdZ383269N", -- Blood
+	[251] = "1ZplayerZbuffZ51124N2ZplayerZcdZ196770N3ZplayerZcdZ43265N4ZplayerZcdZ48707N5ZplayerZcdZ51271N6ZplayerZcdZ383269N7ZplayerZcdZ51052N8ZplayerZcdZ279302N", -- Frost
+	[252] = "1ZplayerZcdZ85948N2ZplayerZcdZ43265N3ZplayerZcdZ63560N4ZplayerZcdZ207289N5ZplayerZcdZ48707N6ZplayerZcdZ51052N7ZplayerZcdZ212552N8ZplayerZcdZ383269N", -- Unholy
 	-- MAGE
-	[62] = "1ZplayerZbuffZ263725N2ZplayerZcdZ153626N3ZplayerZcdZ321507N4ZplayerZcdZ382440N5ZplayerZcdZ365350N6ZplayerZcdZ110959N", -- Arcane
-	[63] = "1ZplayerZbuffZ48107N2ZplayerZcdZ108853N3ZplayerZcdZ257541N4ZplayerZcdZ382440N5ZplayerZcdZ190319N6ZplayerZcdZ110959N", -- Fire
-	[64] = "1ZplayerZcdZ44614N2ZplayerZcdZ157997N3ZplayerZcdZ153595N4ZplayerZcdZ84714N5ZplayerZcdZ382440N6ZplayerZcdZ12472N", -- Frost
+	[62] = "1ZplayerZbuffZ263725N2ZplayerZcdZ153626N3ZplayerZcdZ321507N4ZplayerZcdZ235450N5ZplayerZcdZ382440N6ZplayerZcdZ55342N7ZplayerZcdZ414660N8ZplayerZcdZ110959N", -- Arcane
+	[63] = "1ZplayerZbuffZ48107N2ZplayerZcdZ108853N3ZplayerZcdZ257541N4ZplayerZcdZ235313N5ZplayerZcdZ414660N6ZplayerZcdZ382440N7ZplayerZcdZ110959N8ZplayerZcdZ190319N", -- Fire
+	[64] = "1ZplayerZcdZ44614N2ZplayerZcdZ157997N3ZplayerZcdZ153595N4ZplayerZcdZ84714N5ZplayerZcdZ382440N6ZplayerZcdZ12472N7ZplayerZcdZ414660N8ZplayerZcdZ110959N", -- Frost
 	-- PALADIN
-	[65] = "1ZplayerZcdZ20473N2ZplayerZcdZ35395N3ZplayerZcdZ275773N4ZplayerZcdZ114165N5ZplayerZcdZ31821N6ZplayerZcdZ642N", -- Holy
-	[66] = "1ZplayerZcdZ204019N2ZplayerZcdZ275779N3ZplayerZcdZ31935N4ZplayerZcdZ387174N5ZplayerZcdZ31850N6ZplayerZcdZ86659N", -- Protection
-	[70] = "1ZplayerZcdZ20271N2ZplayerZcdZ184575N3ZplayerZcdZ255937N4ZplayerZcdZ343721N5ZplayerZcdZ375576N6ZplayerZcdZ642N", -- Retribution
+	[65] = "1ZplayerZcdZ20473N2ZplayerZcdZ35395N3ZplayerZcdZ275773N4ZplayerZcdZ114165N5ZplayerZcdZ1044N6ZplayerZcdZ1022N7ZplayerZcdZ31821N8ZplayerZcdZ642N", -- Holy
+	[66] = "1ZplayerZcdZ204019N2ZplayerZcdZ275779N3ZplayerZcdZ31935N4ZplayerZcdZ387174N5ZplayerZcdZ1044N6ZplayerZcdZ1022N7ZplayerZcdZ31850N8ZplayerZcdZ86659N", -- Protection
+	[70] = "1ZplayerZcdZ20271N2ZplayerZcdZ184575N3ZplayerZcdZ255937N4ZplayerZcdZ343721N5ZplayerZcdZ375576N6ZplayerZcdZ642N7ZplayerZcdZ198034N8ZplayerZcdZ184662N", -- Retribution
 	-- PRIEST
-	[256] = "1ZplayerZcdZ47540N2ZplayerZbuffZ390787N3ZplayerZcdZ194509N4ZplayerZcdZ62618N5ZplayerZcdZ33206N6ZplayerZcdZ421453N", -- Discipline
-	[257] = "1ZplayerZcdZ34861N2ZplayerZcdZ2050N3ZplayerZcdZ64843N4ZplayerZcdZ64901N5ZplayerZcdZ47788N6ZplayerZcdZ10060N", -- Holy
-	[258] = "1ZtargetZdebuffZ589N2ZtargetZdebuffZ34914N3ZtargetZdebuffZ335467N4ZplayerZcdZ8092N5ZplayerZcdZ228260N6ZplayerZcdZ10060N", -- Shadow
+	[256] = "1ZplayerZcdZ47540N2ZplayerZbuffZ390787N3ZplayerZcdZ194509N4ZplayerZcdZ62618N5ZplayerZcdZ472433N6ZplayerZcdZ421453N7ZplayerZcdZ10060N8ZplayerZcdZ33206N", -- Discipline
+	[257] = "1ZplayerZcdZ34861N2ZplayerZcdZ2050N3ZplayerZcdZ14914N4ZplayerZcdZ10060N5ZplayerZcdZ47788N6ZplayerZcdZ64843N7ZplayerZcdZ64901N8ZplayerZcdZ47788N", -- Holy
+	[258] = "1ZtargetZdebuffZ589N2ZtargetZdebuffZ34914N3ZplayerZcdZ228260N4ZplayerZcdZ8092N5ZplayerZcdZ263165N6ZplayerZcdZ10060N7ZplayerZcdZ228260N8ZplayerZcdZ47585N", -- Shadow
 	-- ROGUE
-	[259] = "1ZplayerZcdZ5938N2ZplayerZcdZ31224N3ZplayerZcdZ381623N4ZplayerZcdZ385627N5ZplayerZcdZ360194N6ZplayerZcdZ1856N", -- Assassination
-	[260] = "1ZplayerZcdZ13877N2ZplayerZcdZ315508N3ZplayerZcdZ13750N4ZplayerZcdZ196937N5ZplayerZcdZ31224N6ZplayerZcdZ1856N", -- Outlaw
-	[261] = "1ZplayerZcdZ212283N2ZplayerZcdZ121471N3ZplayerZcdZ384631N4ZplayerZcdZ185313N5ZplayerZcdZ31224N6ZplayerZcdZ1856N", -- Subtlety
+	[259] = "1ZplayerZcdZ5938N2ZplayerZcdZ703N3ZplayerZcdZ36554N4ZplayerZcdZ57934N5ZplayerZcdZ385627N6ZplayerZcdZ31224N7ZplayerZcdZ5277N8ZplayerZcdZ1856N", -- Assassination
+	[260] = "1ZplayerZcdZ13877N2ZplayerZcdZ315508N3ZplayerZcdZ13750N4ZplayerZcdZ57934N5ZplayerZcdZ51690N6ZplayerZcdZ196937N7ZplayerZcdZ31224N8ZplayerZcdZ1856N", -- Outlaw
+	[261] = "1ZplayerZcdZ212283N2ZplayerZcdZ280719N3ZplayerZcdZ57934N4ZplayerZcdZ121471N5ZplayerZcdZ384631N6ZplayerZcdZ185313N7ZplayerZcdZ31224N8ZplayerZcdZ1856N", -- Subtlety
 	-- SHAMAN
-	[262] = "1ZplayerZcdZ470411N2ZplayerZcdZ51505N3ZplayerZbuffZ191877N4ZplayerZcdZ192249N5ZplayerZcdZ114050N6ZplayerZcdZ108271N", -- Elemental
-	[263] = "1ZplayerZcdZ17364N2ZplayerZcdZ60103N3ZplayerZcdZ470411N4ZplayerZcdZ51533N5ZplayerZcdZ384352N6ZplayerZcdZ108271N", -- Enhancement
-	[264] = "1ZplayerZcdZ61295N2ZplayerZcdZ5394N3ZplayerZcdZ73920N4ZplayerZcdZ73685N5ZplayerZcdZ108280N6ZplayerZcdZ114052N", -- Restoration
+	[262] = "1ZplayerZcdZ470411N2ZplayerZcdZ51505N3ZplayerZbuffZ191877N4ZplayerZcdZ51490N5ZplayerZcdZ191634N6ZplayerZcdZ108271N7ZplayerZcdZ192249N8ZplayerZcdZ114050N", -- Elemental
+	[263] = "1ZplayerZcdZ17364N2ZplayerZcdZ60103N3ZplayerZcdZ470411N4ZplayerZcdZ187874N5ZplayerZcdZ51490N6ZplayerZcdZ384352N7ZplayerZcdZ192058N8ZplayerZcdZ114051N", -- Enhancement
+	[264] = "1ZplayerZcdZ61295N2ZplayerZcdZ5394N3ZplayerZcdZ73920N4ZplayerZcdZ79206N5ZplayerZcdZ108280N6ZplayerZcdZ98008N7ZplayerZcdZ108280N8ZplayerZcdZ114052N", -- Restoration
 	-- DH
-	[577] = "1ZplayerZcdZ258920N2ZplayerZcdZ232893N3ZplayerZcdZ188499N4ZplayerZcdZ198013N5ZplayerZcdZ204596N6ZplayerZcdZ191427N", -- Havoc
-	[581] = "1ZplayerZcdZ263642N2ZplayerZcdZ212084N3ZplayerZcdZ203720N4ZplayerZcdZ204021N5ZplayerZcdZ204596N6ZplayerZcdZ187827N", -- Vengeance
+	[577] = "1ZplayerZcdZ258920N2ZplayerZcdZ188499N3ZplayerZcdZ198013N4ZplayerZcdZ204596N5ZplayerZbuffZ162264N6ZplayerZcdZ370965N7ZplayerZcdZ198793N8ZplayerZcdZ179057N", -- Havoc
+	[581] = "1ZplayerZcdZ263642N2ZplayerZcdZ212084N3ZplayerZcdZ203720N4ZplayerZcdZ204021N5ZplayerZcdZ204596N6ZplayerZcdZ202137N7ZplayerZcdZ202138N8ZplayerZcdZ187827N", -- Vengeance
 	-- DRUID
-	[102] = "1ZplayerZbuffZ394050N2ZplayerZcdZ22812N3ZplayerZcdZ78675N4ZplayerZcdZ194223N5ZplayerZcdZ391528N6ZplayerZcdZ29166N", -- Balance
-	[103] = "1ZtargetZdebuffZ1079N2ZplayerZcdZ22812N3ZplayerZcdZ391888N4ZplayerZcdZ61336N5ZplayerZcdZ391528N6ZplayerZcdZ106951N", -- Feral
-	[104] = "1ZplayerZcdZ204066N2ZplayerZcdZ200851N3ZplayerZcdZ22812N4ZplayerZcdZ102558N5ZplayerZcdZ319454N6ZplayerZcdZ61336N", -- Guardian
-	[105] = "1ZplayerZbuffZ33763N2ZplayerZbuffZ428737N3ZplayerZcdZ102342N4ZplayerZcdZ197721N5ZplayerZcdZ740N6ZplayerZcdZ391528N", -- Restoration
+	[102] = "1ZplayerZbuffZ394050N2ZplayerZcdZ22812N3ZplayerZcdZ78675N4ZplayerZcdZ194223N5ZplayerZcdZ124974N6ZplayerZcdZ391528N7ZplayerZcdZ29166N8ZplayerZcdZ22812N", -- Balance
+	[103] = "1ZtargetZdebuffZ1079N2ZplayerZcdZ274837N3ZplayerZcdZ391888N4ZplayerZcdZ5217N5ZplayerZcdZ22812N6ZplayerZcdZ106951N7ZplayerZcdZ61336N8ZplayerZcdZ391528N", -- Feral
+	[104] = "1ZplayerZcdZ204066N2ZplayerZcdZ77758N3ZplayerZcdZ33917N4ZplayerZcdZ200851N5ZplayerZcdZ22812N6ZplayerZcdZ102558N7ZplayerZcdZ61336N8ZplayerZcdZ319454N", -- Guardian
+	[105] = "1ZplayerZbuffZ33763N2ZplayerZbuffZ428737N3ZplayerZcdZ18562N4ZplayerZcdZ197721N5ZplayerZcdZ124974N6ZplayerZcdZ391528N7ZplayerZcdZ102342N8ZplayerZcdZ740N", -- Restoration
 	-- WARLOCK
-	[265] = "1ZtargetZdebuffZ316099N2ZtargetZdebuffZ980N3ZplayerZbuffZ264571N4ZplayerZcdZ48181N5ZplayerZcdZ205179N6ZplayerZcdZ386997N", -- Affliction
-	[266] = "1ZplayerZbuffZ264173N2ZplayerZcdZ104316N3ZplayerZcdZ111898N4ZplayerZcdZ455465N5ZplayerZcdZ265187N6ZplayerZcdZ333889N", -- Demonology
-	[267] = "1ZtargetZdebuffZ157736N2ZplayerZcdZ17962N3ZplayerZcdZ17877N4ZplayerZcdZ80240N5ZplayerZcdZ6353N6ZplayerZcdZ152108N", -- Destruction
+	[265] = "1ZtargetZdebuffZ316099N2ZtargetZdebuffZ980N3ZplayerZbuffZ264571N4ZplayerZcdZ48181N5ZplayerZcdZ205179N6ZplayerZcdZ386997N7ZplayerZcdZ333889N8ZplayerZcdZ104773N", -- Affliction
+	[266] = "1ZplayerZbuffZ264173N2ZplayerZcdZ104316N3ZplayerZcdZ111898N4ZplayerZcdZ455465N5ZplayerZcdZ265187N6ZplayerZcdZ264130N7ZplayerZcdZ48018N8ZplayerZcdZ333889N", -- Demonology
+	[267] = "1ZtargetZdebuffZ157736N2ZplayerZcdZ17962N3ZplayerZcdZ17877N4ZplayerZcdZ196447N5ZplayerZcdZ111771N6ZplayerZcdZ152108N7ZplayerZcdZ1122N8ZplayerZcdZ333889N", -- Destruction
 	-- WARRIOR
-	[71] = "1ZplayerZcdZ12294N2ZplayerZcdZ260708N3ZplayerZcdZ167105N4ZplayerZcdZ227847N5ZplayerZcdZ118038N6ZplayerZcdZ107574N", -- Arms
-	[72] = "1ZplayerZcdZ23881N2ZplayerZcdZ85288N3ZplayerZcdZ227847N4ZplayerZcdZ384318N5ZplayerZcdZ184364N6ZplayerZcdZ107574N", -- Fury
-	[73] = "1ZplayerZcdZ2565N2ZplayerZbuffZ190456N3ZplayerZcdZ228920N4ZplayerZcdZ871N5ZplayerZcdZ12975N6ZplayerZcdZ107574N", -- Protection
+	[71] = "1ZplayerZcdZ7384N2ZplayerZcdZ12294N3ZplayerZcdZ384318N4ZplayerZcdZ262161N5ZplayerZcdZ228920N6ZplayerZcdZ436358N7ZplayerZcdZ118038N8ZplayerZcdZ107574N", -- Arms
+	[72] = "1ZplayerZcdZ23881N2ZplayerZcdZ23920N3ZplayerZcdZ6343N4ZplayerZcdZ384318N5ZplayerZcdZ1719N6ZplayerZcdZ228920N7ZplayerZcdZ184364N8ZplayerZcdZ107574N", -- Fury
+	[73] = "1ZplayerZcdZ2565N2ZplayerZbuffZ190456N3ZplayerZcdZ46968N4ZplayerZcdZ23920N5ZplayerZcdZ228920N6ZplayerZcdZ871N7ZplayerZcdZ12975N8ZplayerZcdZ107574N", -- Protection
 	-- EVOKER
-	[1467] = "1ZplayerZcdZ356995N2ZplayerZcdZ382266N3ZplayerZcdZ382411N4ZplayerZcdZ370452N5ZplayerZcdZ374348N6ZplayerZcdZ375087N", -- Devastation
-	[1468] = "1ZplayerZcdZ366155N2ZplayerZcdZ373861N3ZplayerZcdZ367226N4ZplayerZcdZ355936N5ZplayerZcdZ357208N6ZplayerZcdZ370553N", -- Preservation
-	[1473] = "1ZplayerZcdZ409311N2ZplayerZcdZ396286N3ZplayerZcdZ357208N4ZplayerZcdZ360827N5ZplayerZcdZ363916N6ZplayerZcdZ370553N", -- Augmentation
+	[1467] = "1ZplayerZcdZ356995N2ZplayerZcdZ382266N3ZplayerZcdZ382411N4ZplayerZcdZ370452N5ZplayerZcdZ374348N6ZplayerZcdZ363916N7ZplayerZcdZ374348N8ZplayerZcdZ375087N", -- Devastation
+	[1468] = "1ZplayerZcdZ366155N2ZplayerZcdZ373861N3ZplayerZcdZ382731N4ZplayerZcdZ382614N5ZplayerZcdZ370537N6ZplayerZcdZ357170N7ZplayerZcdZ363534N8ZplayerZcdZ370553N", -- Preservation
+	[1473] = "1ZplayerZcdZ409311N2ZplayerZcdZ396286N3ZplayerZcdZ357208N4ZplayerZcdZ360827N5ZplayerZcdZ395152N6ZplayerZcdZ404977N7ZplayerZcdZ363916N8ZplayerZcdZ370553N", -- Augmentation
 	-- MONK
-	[268] = "1ZplayerZbuffZ325092N2ZplayerZcdZ322101N3ZplayerZbuffZ215479N4ZplayerZbuffZ322507N5ZplayerZcdZ122278N6ZplayerZcdZ115203N", -- Brewmaster
-	[269] = "1ZplayerZcdZ107428N2ZplayerZcdZ113656N3ZplayerZcdZ137639N4ZplayerZcdZ123904N5ZplayerZcdZ115203N6ZplayerZcdZ122783N", -- Windwalker
-	[270] = "1ZplayerZbuffZ119611N2ZplayerZcdZ107428N3ZplayerZcdZ322101N4ZplayerZcdZ388193N5ZplayerZcdZ115203N6ZplayerZcdZ325197N", -- Mistweaver
+	[268] = "1ZplayerZbuffZ325092N2ZplayerZcdZ322101N3ZplayerZbuffZ215479N4ZplayerZbuffZ322507N5ZplayerZcdZ115181N6ZplayerZcdZ115203N7ZplayerZcdZ122278N8ZplayerZcdZ115399N", -- Brewmaster
+	[269] = "1ZplayerZcdZ107428N2ZplayerZcdZ113656N3ZplayerZcdZ137639N4ZplayerZcdZ123904N5ZplayerZcdZ152175N6ZplayerZcdZ122470N7ZplayerZcdZ115203N8ZplayerZcdZ122783N", -- Windwalker
+	[270] = "1ZplayerZbuffZ119611N2ZplayerZcdZ107428N3ZplayerZcdZ322101N4ZplayerZcdZ388193N5ZplayerZcdZ115203N6ZplayerZcdZ116849N7ZplayerZcdZ325197N8ZplayerZcdZ115310N", -- Mistweaver
 }
 
 local replacedTexture = {
