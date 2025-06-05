@@ -2,7 +2,7 @@ local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local oUF = ns.oUF
 local A = B:RegisterModule("Auras")
-
+-- 232/324/330 -- 修改
 local _G = getfenv(0)
 local format, floor, strmatch, select, unpack, tonumber = format, floor, strmatch, select, unpack, tonumber
 local GetTime = GetTime
@@ -229,8 +229,10 @@ function A:UpdateHeader(header)
 			child:SetSize(cfg.size, cfg.size)
 		end
 
-		B.SetFontSize(child.count, fontSize)
-		B.SetFontSize(child.timer, fontSize)
+		--B.SetFontSize(child.count, fontSize)
+		--B.SetFontSize(child.timer, fontSize)
+	        child.count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 15, DB.Font[3]) -- 叠层：字体路径,数字是大小，后面是阴影
+	        child.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 18, DB.Font[3]) -- 时间：字体路径,数字是大小，后面是阴影
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 		if index > (cfg.maxWraps * cfg.wrapAfter) and child:IsShown() then
