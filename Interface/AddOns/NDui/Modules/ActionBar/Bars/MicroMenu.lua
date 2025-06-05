@@ -1,7 +1,7 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local Bar = B:GetModule("Actionbar")
-
+--12行改颜色代码
 -- Texture credit: 胡里胡涂
 local _G = getfenv(0)
 local tinsert, pairs, type = table.insert, pairs, type
@@ -9,7 +9,7 @@ local buttonList, menubar = {}
 
 function Bar:MicroButton_SetupTexture(icon, texture)
 	local r, g, b = DB.r, DB.g, DB.b
-	if not C.db["Skins"]["ClassLine"] then r, g, b = 0, 0, 0 end
+	if not C.db["Skins"]["ClassLine"] then r, g, b = 255, 255, 255 end
 
 	icon:SetOutside(nil, 3, 3)
 	icon:SetTexture(DB.MicroTex..texture)
