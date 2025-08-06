@@ -63,11 +63,12 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1232760) -- 水晶裂伤
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1250600) -- 虚空闪电
 
 BOSS = 2690 -- 节点之王萨哈达尔
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224737) -- 誓言约束
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224767) -- 侍王之奴
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224795) -- 征服
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224816) -- 主宰
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224767) -- 侍王之奴
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 1227549) -- 放逐
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224864) -- 处斩
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224864) -- 处斩（私有）
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228114) -- 虚空击碎者
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1231097) -- 寰宇裂伤
 
 BOSS = 2691 -- 诸界吞噬者迪门修斯
