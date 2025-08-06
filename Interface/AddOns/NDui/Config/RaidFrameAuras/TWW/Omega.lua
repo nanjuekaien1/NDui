@@ -70,5 +70,5 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224816) -- 主宰
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224864) -- 处斩（私有）
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228114) -- 虚空击碎者
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1231097) -- 寰宇裂伤
-
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1234529) -- 宇宙之喉
 BOSS = 2691 -- 诸界吞噬者迪门修斯
