@@ -365,13 +365,31 @@ function module:CreateAccountBankDeposit()
 			local isOn = GetCVarBool("bankAutoDepositReagents")
 			SetCVar("bankAutoDepositReagents", isOn and 0 or 1)
 			updateAccountBankDeposit(bu)
-		else
+		end
+	end)
+	bu:SetScript("OnDoubleClick", function(_, btn)
+		if btn == "LeftButton" then
 			C_Bank.AutoDepositItemsIntoBank(ACCOUNT_BANK_TYPE)
 		end
 	end)
 	bu.title = ACCOUNT_BANK_DEPOSIT_BUTTON_LABEL
-	B.AddTooltip(bu, "ANCHOR_TOP", DB.InfoColor..L["DepositTradeGoodsTip"])
+	B.AddTooltip(bu, "ANCHOR_TOP", DB.InfoColor..L["AccountDepositTip"])
 	updateAccountBankDeposit(bu)
+
+	return bu
+end
+
+function module:CreateBankDeposit()
+	local bu = B.CreateButton(self, 22, 22, true, "Atlas:GreenCross")
+	bu.Icon:SetOutside()
+	bu:RegisterForClicks("AnyUp")
+	bu:SetScript("OnDoubleClick", function(_, btn)
+		if btn == "LeftButton" then
+			C_Bank.AutoDepositItemsIntoBank(CHAR_BANK_TYPE)
+		end
+	end)
+	bu.title = CHARACTER_BANK_DEPOSIT_BUTTON_LABEL
+	B.AddTooltip(bu, "ANCHOR_TOP", DB.InfoColor..L["BankDepositTip"])
 
 	return bu
 end
@@ -939,18 +957,14 @@ function module:OnLogin()
 	local initBagType
 	function Backpack:OnBankOpened()
 		BankFrame:Show()
-		self:GetContainer("Bank"):Show()
 
 		if not initBagType then
-			--module:UpdateAllBags() -- Initialize bagType
 			module:UpdateBagSize()
 			initBagType = true
 		end
 	end
 
 	function Backpack:OnBankClosed()
-		BankFrame.selectedTab = 1
-		BankFrame.activeTabIndex = 1
 		self:GetContainer("Bank"):Hide()
 		self:GetContainer("Account"):Hide()
 	end
@@ -1278,7 +1292,8 @@ function module:OnLogin()
 		elseif name == "Bank" then
 			module.CreateBagTab(self, settings, 6)
 			buttons[3] = module.CreateBagToggle(self)
-			buttons[4] = module.CreateAccountBankButton(self, f)
+			buttons[4] = module.CreateBankDeposit(self)
+			buttons[5] = module.CreateAccountBankButton(self, f)
 		elseif name == "Account" then
 			module.CreateBagTab(self, settings, 5, "account")
 			buttons[3] = module.CreateBagToggle(self)
@@ -1412,6 +1427,7 @@ function module:OnLogin()
 	hooksecurefunc(BankFrame.BankPanel, "SetBankType", function(self, bankType)
 		module.Bags:GetContainer("Bank"):SetShown(bankType == CHAR_BANK_TYPE)
 		module.Bags:GetContainer("Account"):SetShown(bankType == ACCOUNT_BANK_TYPE)
+		module:UpdateAllBags()
 		if _G["NDui_BankPurchaseButton"] then
 			_G["NDui_BankPurchaseButton"]:SetShown(bankType == ACCOUNT_BANK_TYPE and C_Bank.CanPurchaseBankTab(ACCOUNT_BANK_TYPE))
 		end
