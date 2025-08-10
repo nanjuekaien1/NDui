@@ -623,7 +623,7 @@ StaticPopupDialogs["NDUI_RENAMECUSTOMGROUP"] = {
 	button2 = CANCEL,
 	OnAccept = function(self)
 		local index = module.selectGroupIndex
-		local text = self.editBox:GetText()
+		local text = self.EditBox:GetText()
 		C.db["Bags"]["CustomNames"][index] = text ~= "" and text or nil
 
 		module.CustomMenu[index+2].text = GetCustomGroupTitle(index)
@@ -957,6 +957,7 @@ function module:OnLogin()
 	local initBagType
 	function Backpack:OnBankOpened()
 		BankFrame:Show()
+		BankFrame.BankPanel:Show()
 
 		if not initBagType then
 			module:UpdateBagSize()
@@ -965,6 +966,7 @@ function module:OnLogin()
 	end
 
 	function Backpack:OnBankClosed()
+		BankFrame.BankPanel:Hide()
 		self:GetContainer("Bank"):Hide()
 		self:GetContainer("Account"):Hide()
 	end
@@ -1407,9 +1409,6 @@ function module:OnLogin()
 	end
 
 	-- Fixes
-	BankFrame.GetRight = function() return f.bank:GetRight() end
-	BankFrameItemButton_Update = B.Dummy
-
 	local passedSystems = {
 		["TutorialReagentBag"] = true,
 	}
