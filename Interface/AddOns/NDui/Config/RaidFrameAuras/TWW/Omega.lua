@@ -30,6 +30,7 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1237607) -- 秘法鞭笞
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1250008) -- 碎裂脉冲
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1226827) -- 碎魂法球
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1227051) -- 虚空剑士奇袭
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1248979) -- 虚空剑士奇袭
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1227276) -- 笞魂歼灭
 
 BOSS = 2687 -- 熔炉编织者阿拉兹
@@ -44,7 +45,7 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1221490) -- 邪能灼痕
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1222232) -- 吞噬者之怒
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1222307) -- 吞噬
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1222310) -- 无餍之饥
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 1223642) -- 锁链咒符
+--module:RegisterDebuff(TIER, INSTANCE, BOSS, 1223642) -- 锁链咒符
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1225130) -- 邪能之刃
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1226493) -- 破碎之魂
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1241946) -- 脆弱
@@ -54,6 +55,7 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1242284) -- 灵魂重碾
 
 BOSS = 2747 -- 弗兰克提鲁斯
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224414) -- 结晶震荡波
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1233411) -- 结晶震荡波
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1231871) -- 震波猛击
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1241137) -- 折射熵变
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1227373) -- 碎壳
@@ -71,4 +73,14 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224864) -- 处斩（私有）
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228114) -- 虚空击碎者
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1231097) -- 寰宇裂伤
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1234529) -- 宇宙之喉
+
 BOSS = 2691 -- 诸界吞噬者迪门修斯
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228206) -- 过量物质
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1230168) -- 凡躯的脆弱
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1231002) -- 黑暗能量
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1235303) -- 先驱的拥抱
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1237696) -- 碎片地带
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1239270) -- 虚空守护
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1243699) -- 空间碎片
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1246145) -- 湮灭之触
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1246542) -- 虚无缠缚
