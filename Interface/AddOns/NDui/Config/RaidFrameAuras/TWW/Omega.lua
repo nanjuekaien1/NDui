@@ -84,3 +84,4 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1239270) -- 虚空守护
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1243699) -- 空间碎片
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1246145) -- 湮灭之触
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1246542) -- 虚无缠缚
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1246930) -- 星辰之核
