@@ -78,6 +78,8 @@ BOSS = 2691 -- 诸界吞噬者迪门修斯
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228206) -- 过量物质
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1230168) -- 凡躯的脆弱
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1231002) -- 黑暗能量
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1234243) -- 倾压引力（M）
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1234244) -- 引力倒转（M）
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1235303) -- 先驱的拥抱
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1237696) -- 碎片地带
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1239270) -- 虚空守护
