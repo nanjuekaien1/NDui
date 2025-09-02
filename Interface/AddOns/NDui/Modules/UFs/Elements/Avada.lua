@@ -286,7 +286,7 @@ function UF:Avada_Toggle(frame)
 	if not frame then return end
 
 	if C.db["Avada"]["Enable"] then
-		for i = 1, for i = 1, maxButtons do frame.Avada[i]:Show() end             -- 改6为maxButtons
+		for i = 1, maxButtons do frame.Avada[i]:Show() end             -- 改6为maxButtons
 		B:RegisterEvent("UNIT_AURA", UF.Avada_OnAura)
 		frame:RegisterEvent("PLAYER_TARGET_CHANGED", UF.Avada_OnEvent, true)
 		frame:RegisterEvent("SPELL_UPDATE_COOLDOWN", UF.Avada_OnEvent, true)
