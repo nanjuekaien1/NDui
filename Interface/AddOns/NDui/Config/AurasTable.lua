@@ -11,7 +11,7 @@ local AuraWatchList = {}
 local groups = {
 	-- groups name = direction, interval, mode, iconsize, position, barwidth
 	-- Direction "CENTER" for ICONS only, which sort by midpoint.
-	["Player Aura"] = {"LEFT", 5, "ICON", 22, C.Auras.PlayerAuraPos},
+	["Player Aura"] = {"LEFT", 5, "ICON", 28, C.Auras.PlayerAuraPos},
 	["Target Aura"] = {"RIGHT", 5, "ICON", 36, C.Auras.TargetAuraPos},
 	["Special Aura"] = {"LEFT", 5, "ICON", 36, C.Auras.SpecialPos},
 	["Focus Aura"] = {"RIGHT", 5, "ICON", 35, C.Auras.FocusPos},
