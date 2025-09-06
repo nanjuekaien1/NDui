@@ -74,7 +74,6 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1235045) -- 湮灭逼近
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1241908) -- 破裂
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1241946) -- 脆弱
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1242284) -- 灵魂重碾
--- module:RegisterDebuff(TIER, INSTANCE, BOSS, 1245384) -- 邪能地狱
 
 BOSS = 2747 -- 弗兰克提鲁斯
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224414) -- 结晶震荡波
@@ -91,8 +90,10 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224737) -- 誓言约束
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224767) -- 侍王之奴
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224795) -- 征服
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224816) -- 主宰
--- module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224864) -- 处斩（私有）
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1224864) -- 处斩（私有）
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1225316) -- 星河重碾（私有）
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1225444) -- 灰飞烟灭
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1226018) -- 歼星斩（私有）
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1226042) -- 歼星新星
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1226362) -- 暮光创痕
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1226413) -- 身星俱碎
@@ -100,11 +101,12 @@ module:RegisterDebuff(TIER, INSTANCE, BOSS, 1227470) -- 围攻
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1227549) -- 放逐
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228056) -- 收割
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228081) -- 节点光束
-module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228114) -- 虚空击碎者
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228114) -- 虚空击碎者（私有）
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1228196) -- 次元吐息
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1231097) -- 寰宇裂伤
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1234529) -- 宇宙之喉
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1234539) -- 维度眩光
+module:RegisterDebuff(TIER, INSTANCE, BOSS, 1237108) -- 暮光屠戮
 module:RegisterDebuff(TIER, INSTANCE, BOSS, 1252803) -- 自毁
 
 BOSS = 2691 -- 诸界吞噬者迪门修斯
