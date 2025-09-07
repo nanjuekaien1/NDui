@@ -47,6 +47,8 @@ local list = {
 	["Enchant Aura"] = {	-- 附魔及饰品组
 		{AuraID = 341260, UnitID = "player", Flash = true},	-- 学识爆发，传家宝套装
 		{AuraID = 354808, UnitID = "player"},	-- 棱彩之光，1万币的小宠物
+		{AuraID = 203819, UnitID = "player", Text = "尖刺"},	-- 恶魔尖刺
+		{AuraID = 391171, UnitID = "player", Flash = true, Text = "尖刺"},	-- 钙化尖刺		
 		-- 种族天赋
 		{AuraID = 26297, UnitID = "player"},	-- 狂暴 巨魔
 		{AuraID = 20572, UnitID = "player"},	-- 血性狂怒 兽人
