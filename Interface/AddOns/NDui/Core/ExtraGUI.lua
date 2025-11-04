@@ -1,7 +1,7 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local G = B:GetModule("GUI")
-
+--2379/尾-资源条技能
 local _G = _G
 local unpack, pairs, ipairs, tinsert = unpack, pairs, ipairs, tinsert
 local min, max, strmatch, strfind, tonumber = min, max, strmatch, strfind, tonumber
@@ -2375,14 +2375,14 @@ function G:SetupAvada()
 	if extraGUIs[guiName] then return end
 
 	local panel = CreateFrame("Frame", guiName, UIParent, "BackdropTemplate")
-	panel:SetSize(620, 295)
+	panel:SetSize(820, 295)            -- 620, 295改820, 295
 	panel:SetPoint("CENTER")
 	B.SetBD(panel)
 	B.CreateMF(panel)
 	extraGUIs[guiName] = panel
 
 	local frame = CreateFrame("Frame", nil, panel, "BackdropTemplate")
-	frame:SetSize(610, 250)
+	frame:SetSize(810, 250)            -- 610, 250改810, 250
 	frame:SetPoint("BOTTOM", 0, 5)
 	B.CreateBDFrame(frame, .25)
 
@@ -2441,7 +2441,7 @@ function G:SetupAvada()
 	end
 
 	local function updateOptionGroup()
-		for i = 1, 6 do
+		for i = 1, 8 do             -- 6改8
 			local bu = frame.buttons[i]
 			if bu then
 				bu.spellID = spellData[i] and spellData[i].spellID
@@ -2469,7 +2469,7 @@ function G:SetupAvada()
 
 		local toolipText = ""
 		if next(spellData) then
-			for i = 1, 6 do
+			for i = 1, 8 do             -- 6改8
 				local spellID = spellData[i] and spellData[i].spellID
 				if spellID then
 					local texture = GetSpellTexture(spellID)
@@ -2535,7 +2535,7 @@ function G:SetupAvada()
 			return
 		end
 		local str = ""
-		for i = 1, 6 do
+		for i = 1, 8 do             -- 6改8
 			local unitStr = frame.buttons[i].options[1].Text:GetText()
 			local typeStr = frame.buttons[i].options[2].Text:GetText()
 			local spellID = frame.buttons[i].options[3]:GetText()
@@ -2557,7 +2557,7 @@ function G:SetupAvada()
 			UIErrorsFrame:AddMessage(DB.InfoColor..L["Profile1Warning"])
 			return
 		end
-		for i = 1, 6 do
+		for i = 1, 8 do             -- 6改8
 			frame.buttons[i].Icon:SetTexture(EMPTY_ICON)
 			frame.buttons[i].options[1].Text:SetText()
 			frame.buttons[i].options[2].Text:SetText()
@@ -2728,7 +2728,7 @@ function G:SetupAvada()
 		end
 	end
 
-	for i = 1, 6 do
+	for i = 1, 8 do             -- 6改8
 		local bu = B.CreateButton(frame, 50, 50, true, EMPTY_ICON)
 		bu:SetPoint("TOPLEFT", 30 + (i-1)*100, -10)
 		bu:SetScript("OnEnter", showTooltip)
