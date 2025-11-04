@@ -1,7 +1,7 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local UF = B:GetModule("UnitFrames")
-
+--1125/1126 资源条技能
 local _G = getfenv(0)
 local floor, strmatch, tonumber, pairs, unpack, rad = floor, string.match, tonumber, pairs, unpack, math.rad
 local UnitThreatSituation, UnitIsTapDenied, UnitPlayerControlled, UnitIsUnit = UnitThreatSituation, UnitIsTapDenied, UnitPlayerControlled, UnitIsUnit
@@ -1122,8 +1122,8 @@ function UF:ResizePlayerPlate()
 			plate.Stagger:SetSize(barWidth, barHeight)
 		end
 		if plate.Avada then
-			local iconSize = (barWidth+2*C.mult - C.margin*5)/6
-			for i = 1, 6 do
+			local iconSize = (barWidth+2*C.mult - C.margin*7)/8     -- 5)/6改7)/8
+			for i = 1, 8 do     -- 6改8
 				plate.Avada[i]:SetSize(iconSize, iconSize)
 			end
 		end
