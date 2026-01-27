@@ -239,9 +239,12 @@ function A:UpdateHeader(header)
 			child:SetSize(cfg.size, cfg.size)
 		end
 
-		B.SetFontSize(child.count, fontSize)
-		B.SetFontSize(child.timer, fontSize)
-		B.SetFontSize(child.CooldownText, fontSize)
+		--B.SetFontSize(child.count, fontSize)
+		--B.SetFontSize(child.timer, fontSize)
+		--B.SetFontSize(child.CooldownText, fontSize)
+		child.count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 15, DB.Font[3]) -- 叠层：字体路径,数字是大小，后面是阴影
+	    child.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 18, DB.Font[3]) -- 时间：字体路径,数字是大小，后面是阴影
+		child.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 18, DB.Font[3]) -- 时间：字体路径,数字是大小，后面是阴影
 
 		--Blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 		if index > (cfg.maxWraps * cfg.wrapAfter) and child:IsShown() then
@@ -330,11 +333,13 @@ function A:CreateAuraIcon(button)
 
 	button.count = button:CreateFontString(nil, "ARTWORK")
 	button.count:SetPoint("TOPRIGHT", -1, -3)
-	B.SetFontSize(button.count, fontSize)
+	button.count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 15, DB.Font[3]) -- 叠层：字体路径,数字是大小，后面是阴影
+	--B.SetFontSize(button.count, fontSize)
 
 	button.timer = button:CreateFontString(nil, "ARTWORK")
 	button.timer:SetPoint("TOP", button, "BOTTOM", 1, 2)
-	B.SetFontSize(button.timer, fontSize)
+	button.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 18, DB.Font[3]) -- 时间：字体路径,数字是大小，后面是阴影
+	--B.SetFontSize(button.timer, fontSize)
 
 	button.highlight = button:CreateTexture(nil, "HIGHLIGHT")
 	button.highlight:SetColorTexture(1, 1, 1, .25)
@@ -348,7 +353,8 @@ function A:CreateAuraIcon(button)
 	button.Cooldown = cd
 
 	local text = cd:GetRegions()
-	B.SetFontSize(text, fontSize)
+	text:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 18, DB.Font[3]) -- 时间：字体路径,数字是大小，后面是阴影
+	--B.SetFontSize(text, fontSize)
 	text:ClearAllPoints()
 	text:SetPoint("TOP", button, "BOTTOM", 1, 2)
 	button.CooldownText = text
