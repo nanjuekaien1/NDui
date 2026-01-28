@@ -20,7 +20,7 @@ local GetRaidTargetIndex, UnitGroupRolesAssigned, GetGuildInfo, IsInGuild = GetR
 local C_PetBattles_GetNumAuras, C_PetBattles_GetAuraInfo = C_PetBattles.GetNumAuras, C_PetBattles.GetAuraInfo
 local C_ChallengeMode_GetDungeonScoreRarityColor = C_ChallengeMode.GetDungeonScoreRarityColor
 local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
-local GameTooltip_ClearMoney, GameTooltip_ClearStatusBars, GameTooltip_ClearProgressBars, GameTooltip_ClearWidgetSet = GameTooltip_ClearMoney, GameTooltip_ClearStatusBars, GameTooltip_ClearProgressBars, GameTooltip_ClearWidgetSet
+local GameTooltip_ClearMoney, GameTooltip_ClearStatusBars, GameTooltip_ClearProgressBars = GameTooltip_ClearMoney, GameTooltip_ClearStatusBars, GameTooltip_ClearProgressBars
 local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
@@ -112,7 +112,6 @@ function TT:OnTooltipCleared()
 	GameTooltip_ClearMoney(self)
 	GameTooltip_ClearStatusBars(self)
 	GameTooltip_ClearProgressBars(self)
-	GameTooltip_ClearWidgetSet(self)
 
 	if self.StatusBar then
 		self.StatusBar:ClearWatch()
@@ -229,8 +228,7 @@ function TT:OnTooltipSetUnit()
 	local text = GameTooltipTextLeft1:GetText()
 	if text then
 		local ricon = GetRaidTargetIndex(unit)
-		if ricon and B:NotSecretValue(ricon) then
-			if ricon > 8 then ricon = nil end
+		if ricon and B:NotSecretValue(ricon) and ricon <= 8 then
 			ricon = ICON_LIST[ricon].."18|t "
 		end
 		GameTooltipTextLeft1:SetFormattedText(("%s%s%s"), ricon or "", hexColor, text)
@@ -272,10 +270,11 @@ function TT:OnTooltipSetUnit()
 	end
 
 	if TT:UnitExists(unit.."target") then
-		local tarRicon = GetRaidTargetIndex(unit.."target")
-		if tarRicon and tarRicon > 8 then tarRicon = nil end
-		local tar = format("%s%s", (tarRicon and ICON_LIST[tarRicon].."10|t") or "", TT:GetTarget(unit.."target"))
-		self:AddLine(TARGET..": "..tar)
+		local targetIcon = GetRaidTargetIndex(unit.."target")
+		if targetIcon and B:NotSecretValue(targetIcon) and targetIcon <= 8 then
+			targetIcon = ICON_LIST[targetIcon].."10|t"
+		end
+		self:AddLine(TARGET..": "..format("%s%s", targetIcon or "", TT:GetTarget(unit.."target")))
 	end
 
 	if not isPlayer and isShiftKeyDown then

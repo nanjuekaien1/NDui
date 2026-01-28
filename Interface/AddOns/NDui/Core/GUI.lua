@@ -612,6 +612,7 @@ G.AccountSettings = {
 	AvadaProfile = {},
 	AddOnProfiler = false,
 	SmoothBars = true,
+	MilitaryTime = true,
 }
 
 -- Initial settings
@@ -1105,6 +1106,10 @@ local function toggleSmooth()
 	end
 end
 
+local function updateTimeMode()
+	SetCVar("timeMgrUseMilitaryTime", NDuiADB["MilitaryTime"] and "1" or "0")
+end
+
 StaticPopupDialogs["RESET_DETAILS"] = {
 	text = L["Reset Details check"],
 	button1 = YES,
@@ -1128,7 +1133,7 @@ end
 -- Config
 local HeaderTag = "|cff00cc4c"
 local IsNew = "ISNEW"
-G.HealthValues = {DISABLE, L["ShowHealthDefault"], L["ShowHealthCurMax"], L["ShowHealthCurrent"], L["ShowHealthPercent"], L["ShowHealthLoss"], L["ShowHealthLossPercent"]}
+G.HealthValues = {DISABLE, L["ShowHealthDefault"], L["ShowHealthCurMax"], L["ShowHealthCurrent"], L["ShowHealthPercent"], L["ShowHealthLoss"], --[=[L["ShowHealthLossPercent"]]=]}
 
 local function AddNewTag(parent, anchor)
 	local tag = CreateFrame("Frame", nil, parent, "NewFeatureLabelTemplate")
@@ -1239,7 +1244,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "UFs", "AutoRes", HeaderTag..L["UFs AutoRes"], true},
 		{},--blank
 		{4, "UFs", "RaidHealthColor", L["HealthColor"].."*", nil, {L["Default Dark"], L["ClassColorHP"], L["GradientHP"], L["ClearHealth"], L["ClearClass"]}, updateRaidTextScale},
-		{4, "UFs", "RaidHPMode", L["HealthValueType"].."*", true, {DISABLE, L["ShowHealthPercent"], L["ShowHealthCurrent"], L["ShowHealthLoss"], L["ShowHealthLossPercent"], L["ShowHealthAbsorb"]}, updateRaidTextScale, L["100PercentTip"]},
+		{4, "UFs", "RaidHPMode", L["HealthValueType"].."*", true, {DISABLE, L["ShowHealthPercent"], L["ShowHealthCurrent"], L["ShowHealthLoss"], --[=[L["ShowHealthLossPercent"], L["ShowHealthAbsorb"]]=]}, updateRaidTextScale, L["100PercentTip"]},
 		{4, "UFs", "ShowRoleMode", L["ShowRoleMode"], nil, {ALL, DISABLE, L["HideDPSRole"]}},
 		{3, "UFs", "RaidTextScale", L["UFTextScale"].."*", true, {.8, 1.5, .05}, updateRaidTextScale},
 		{1, "UFs", "ShowSolo", L["ShowSolo"].."*", nil, nil, updateAllHeaders, L["ShowSoloTip"]},
@@ -1493,6 +1498,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{3, "ACCOUNT", "UIScale", L["Setup UIScale"], true, {.4, 1.15, .01}},
 		{},--blank
 		{1, "ACCOUNT", "DisableInfobars", "|cffff0000"..L["DisableInfobars"]},
+		{1, "ACCOUNT", "MilitaryTime", IsNew..TIMEMANAGER_24HOURMODE, true, nil, updateTimeMode},
 		{3, "Misc", "MaxAddOns", L["SysMaxAddOns"].."*", nil,  {1, 50, 1}, nil, L["SysMaxAddOnsTip"]},
 		{3, "Misc", "InfoSize", L["InfobarFontSize"].."*", true,  {10, 50, 1}, updateInfobarSize},
 		{2, "Misc", "InfoStrLeft", L["LeftInfobar"].."*", nil, nil, updateInfobarAnchor, L["InfobarStrTip"]},
