@@ -113,9 +113,6 @@ function TT:OnTooltipCleared()
 	GameTooltip_ClearStatusBars(self)
 	GameTooltip_ClearProgressBars(self)
 
-	if self.StatusBar then
-		self.StatusBar:ClearWatch()
-	end
 	if self.bg then B.SetBorderColor(self.bg) end
 end
 
@@ -233,6 +230,7 @@ function TT:OnTooltipSetUnit()
 		end
 		GameTooltipTextLeft1:SetFormattedText(("%s%s%s"), ricon or "", hexColor, text)
 	end
+	self.StatusBar:SetStatusBarColor(r, g, b)
 
 	local alive = not UnitIsDeadOrGhost(unit)
 	local level
@@ -302,17 +300,11 @@ function TT:RefreshStatusBar(value)
 	if not self.text then
 		self.text = B.CreateFS(self, 12, "")
 	end
-	local unit = self.guid and UnitTokenFromGUID(self.guid)
-	local unitHealthMax = unit and UnitHealthMax(unit)
-	if unitHealthMax and unitHealthMax ~= 0 then
-		if not DB.isNewPatch then -- secret value
-			self.text:SetText(B.Numb(value*unitHealthMax).." | "..B.Numb(unitHealthMax))
-		end
-		self:SetStatusBarColor(B.UnitColor(unit))
+	local unit = TT.GetUnit(self:GetParent())
+	if unit and UnitIsPlayer(unit) then
+		self.text:SetFormattedText("%d", UnitHealthPercent(unit, true, CurveConstants.ScaleTo100))
 	else
-		if not DB.isNewPatch then -- secret value
-			self.text:SetFormattedText("%d%%", value*100)
-		end
+		self.text:SetText("")
 	end
 end
 
@@ -369,7 +361,7 @@ local anchorIndex = {
 local mover
 function TT:GameTooltip_SetDefaultAnchor(parent)
 	if self:IsForbidden() then return end
-	if not parent then return end
+	if not parent or parent:IsForbidden() then return end
 
 	local mode = C.db["Tooltip"]["CursorMode"]
 	self:SetOwner(parent, cursorIndex[mode])
