@@ -21,9 +21,13 @@ local function ForceDefaultSettings()
 	SetCVar("lockActionBars", 1)
 	SetCVar("autoQuestWatch", 1)
 	SetCVar("overrideArchive", 0)
+	SetCVar("cameraIndirectVisibility", 0) --减少镜头碰撞
+	SetCVar("cameraIndirectOffset", 10) -- 镜头最远
+	SetCVar("TargetNearestUseNew", 1) -- #*tab最近的目标
+	SetCVar("nameplateOccludedAlphaMult", 0.04) --障碍物后姓名板的透明度
 	SetCVar("floatingCombatTextFloatMode", 1)
 	SetCVar("floatingCombatTextCombatDamage", 1)
-	SetCVar("floatingCombatTextCombatHealing", 1)
+	SetCVar("floatingCombatTextCombatHealing", 0) --战斗浮动治疗
 	SetCVar("floatingCombatTextCombatDamageDirectionalScale", 0)
 	SetCVar("floatingCombatTextCombatDamageDirectionalOffset", 10)
 	--SetActionBarToggles(1, 1, 1, 1)
