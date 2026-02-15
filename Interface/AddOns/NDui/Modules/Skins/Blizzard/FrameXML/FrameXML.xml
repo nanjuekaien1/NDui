@@ -3,7 +3,7 @@
 	<Script file="AlertFrames.lua"/>
 	<Script file="Bags.lua"/>
 	<Script file="CharacterFrame.lua"/>
-	<Script file="ChatBubbles.lua"/>
+	<!--<Script file="ChatBubbles.lua"/>-->
 	<Script file="ChatConfigFrame.lua"/>
 	<Script file="ChatFrame.lua"/>
 	<Script file="ColorPickerFrame.lua"/>
