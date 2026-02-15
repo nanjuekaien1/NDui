@@ -2,7 +2,7 @@ local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local Bar = B:RegisterModule("Actionbar")
 local LAB = LibStub("LibActionButton-1.0-NDui")
-
+-- 354行 修改指定字体路径
 local _G = _G
 local tinsert, next = tinsert, next
 local GetActionTexture = GetActionTexture
@@ -351,7 +351,7 @@ end
 function Bar:UpdateCooldownText(button)
 	for _, button in pairs(Bar.buttons) do
 		if button.cooldownText then
-			button.cooldownText:SetFont(DB.Font[1], C.db["Actionbar"]["CDFontSize"], DB.Font[3])
+			button.cooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", C.db["Actionbar"]["CDFontSize"], DB.Font[3])  -- 修改指定字体路径
 		end
 	end
 end
