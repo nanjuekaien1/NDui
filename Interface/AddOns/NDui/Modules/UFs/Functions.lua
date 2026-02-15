@@ -1,6 +1,6 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
-
+-- 873 改增益时间字体等
 local oUF = ns.oUF
 local UF = B:RegisterModule("UnitFrames")
 local AURA = B:GetModule("Auras")
@@ -870,7 +870,7 @@ function UF.PostCreateButton(element, button)
 	button.Count = B.CreateFS(parentFrame, fontSize, "", false, "BOTTOMRIGHT", 6, -3)
 	button.Cooldown:SetReverse(true)
 	button.CooldownText = button.Cooldown:GetRegions()
-	button.CooldownText:SetFont(DB.Font[1], fontSize, DB.Font[3])
+	button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 16, DB.Font[3])  -- 时间：字体路径,数字是大小，后面是轮廓
 
 	local isRaid = element.__owner.mystyle == "raid"
 	button.Cooldown:SetHideCountdownNumbers(isRaid)
