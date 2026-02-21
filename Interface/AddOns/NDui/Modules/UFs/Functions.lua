@@ -1,6 +1,6 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
--- 873 改增益时间字体等
+-- 877-908/1021-1047 字体路径
 local oUF = ns.oUF
 local UF = B:RegisterModule("UnitFrames")
 local AURA = B:GetModule("Auras")
@@ -869,12 +869,15 @@ function UF.PostCreateButton(element, button)
 	button.Count = B.CreateFS(parentFrame, fontSize, "", false, "BOTTOMRIGHT", 6, -3)
 	button.Cooldown:SetReverse(true)
 	button.CooldownText = button.Cooldown:GetRegions()
-	button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 16, DB.Font[3])  -- 时间：字体路径,数字是大小，后面是轮廓
 
 	local isRaid = element.__owner.mystyle == "raid"
 	button.Cooldown:SetHideCountdownNumbers(isRaid and not C.db["UFs"]["RaidCDText"])
 	button.iconbg = B.ReskinIcon(button.Icon, not isRaid)
 
+	-- 设置光环计时器字体为指定路径
+	if button.CooldownText then
+		button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+	end
 	button.HL = button:CreateTexture(nil, "HIGHLIGHT")
 	button.HL:SetColorTexture(1, 1, 1, .25)
 	button.HL:SetAllPoints()
@@ -891,10 +894,18 @@ function UF.PostCreateButton(element, button)
 		button.timer = B.CreateFS(button, fontSize, "")
 		button.timer:ClearAllPoints()
 		button.timer:SetPoint("LEFT", button, "TOPLEFT", -2, 0)
+		-- 设置姓名板光环计时器字体
+		if button.timer then
+			button.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+		end
 		button.Count:ClearAllPoints()
 		button.Count:SetPoint("RIGHT", button, "BOTTOMRIGHT", 5, 0)
+		-- 设置计数文本字体
+		if button.Count then
+			button.Count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+		end
 	end
-end
+end	
 
 local filteredStyle = {
 	["target"] = true,
@@ -1019,9 +1030,17 @@ function UF:UpdateAuraContainer(parent, element, maxAuras)
 	for i = 1, #element do
 		local button = element[i]
 		if button then
-			if button.timer then B.SetFontSize(button.timer, fontSize) end
-			if button.Count then B.SetFontSize(button.Count, fontSize) end
-			button.CooldownText:SetFont(DB.Font[1], fontSize, DB.Font[3])
+			if button.timer then 
+				B.SetFontSize(button.timer, fontSize)
+				button.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+			end
+			if button.Count then 
+				B.SetFontSize(button.Count, fontSize)
+				button.Count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+			end
+			if button.CooldownText then
+				button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+			end
 			button.Cooldown:SetHideCountdownNumbers(cooldownNumber)
 		end
 	end
