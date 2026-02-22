@@ -38,7 +38,7 @@ end
 
 function UF:SetupCVars()
 	UF:UpdatePlateCVars()
-	SetCVar("nameplateOverlapH", .8)
+	--SetCVar("nameplateOverlapH", .8)
 	SetCVar("nameplateSelectedAlpha", 1)
 	SetCVar("showQuestTrackingTooltips", 1)
 
