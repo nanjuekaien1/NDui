@@ -342,6 +342,7 @@ G.DefaultSettings = {
 		CDText = true,
 	},
 	Chat = {
+		Disable = false,
 		Sticky = false,
 		Lock = true,
 		Invite = true,
@@ -498,8 +499,6 @@ G.DefaultSettings = {
 		QuestTracker = true,
 		CooldownMgr = true,
 		DamageMeter = true,
-		CentralBuffView = false,
-		CentralUtilView = false,
 	},
 	Tooltip = {
 		HideInCombat = 1,
@@ -558,7 +557,6 @@ G.DefaultSettings = {
 		RaidTool = true,
 		RMRune = false,
 		DBMCount = "10",
-		EasyMarkKey = 1,
 		ShowMarkerBar = 4,
 		MarkerSize = 28,
 		BlockInvite = false,
@@ -580,6 +578,8 @@ G.DefaultSettings = {
 		W2Point = 1,
 		W3Target = 1,
 		W3Point = 1,
+		CentralBuffView = false,
+		CentralUtilView = false,
 	},
 	Tutorial = {
 		Complete = false,
@@ -667,7 +667,7 @@ local function InitialSettings(source, target, fullClean)
 	for i, j in pairs(target) do
 		if source[i] == nil then target[i] = nil end
 		if fullClean and type(j) == "table" and not ignoredTable[i] then
-			for k, v in pairs(j) do
+			for k in pairs(j) do
 				if source[i] and source[i][k] == nil then
 					target[i][k] = nil
 				end
@@ -1344,7 +1344,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{5, "Nameplate", "SecureColor", L["Secure Color"].."*"},
 		{5, "Nameplate", "TransColor", L["Trans Color"].."*", 1},
 		{5, "Nameplate", "InsecureColor", L["Insecure Color"].."*", 2},
-		{5, "Nameplate", "OffTankColor", L["OffTank Color"].."*", 3},
+		--{5, "Nameplate", "OffTankColor", L["OffTank Color"].."*", 3},
 		{},--blank
 		{1, "Nameplate", "CVarOnlyNames", L["CVarOnlyNames"], nil, nil, updatePlateCVars, L["CVarOnlyNamesTip"]},
 		{1, "Nameplate", "CVarShowNPCs", L["CVarShowNPCs"].."*", true, nil, updatePlateCVars, L["CVarShowNPCsTip"]},
@@ -1389,10 +1389,9 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 	[8] = {
 		{1, "Misc", "RaidTool", HeaderTag..L["Raid Manger"]},
 		{1, "Misc", "RMRune", L["Runes Check"].."*", true},
-		{4, "Misc", "EasyMarkKey", L["EasyMark"].."*", nil, {"CTRL", "ALT", "SHIFT", DISABLE}, nil, L["EasyMarkTip"]},
-		{2, "Misc", "DBMCount", L["DBMCount"].."*", true, nil, nil, L["DBMCountTip"]},
 		{4, "Misc", "ShowMarkerBar", L["ShowMarkerBar"].."*", nil, {L["Grids"], L["Horizontal"], L["Vertical"], DISABLE}, updateMarkerGrid, L["ShowMarkerBarTip"]},
-		{3, "Misc", "MarkerSize", L["MarkerSize"].."*", true, {20, 50, 1}, updateMarkerGrid},
+		{2, "Misc", "DBMCount", L["DBMCount"].."*", true, nil, nil, L["DBMCountTip"]},
+		{3, "Misc", "MarkerSize", L["MarkerSize"].."*", nil, {20, 50, 1}, updateMarkerGrid},
 		{},--blank
 		{1, "Misc", "QuestNotification", HeaderTag..L["QuestNotification"].."*", nil, nil, updateQuestNotification},
 		{1, "Misc", "QuestProgress", L["QuestProgress"].."*"},
@@ -1415,7 +1414,8 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{2, "ACCOUNT", "IgnoredRares", IsNew..L["IgnoredRares"].."*", true, nil, updateIgnoredRares, L["IgnoredRaresTip"]},
 	},
 	[9] = {
-		{1, "Chat", "Lock", HeaderTag..L["Lock Chat"]},
+		{1, "Chat", "Disable", "|cffff0000"..L["Disable Chat"]},
+		{1, "Chat", "Lock", HeaderTag..L["Lock Chat"], true},
 		{3, "Chat", "ChatWidth", L["LockChatWidth"].."*", nil, {200, 600, 1}, updateChatSize},
 		{3, "Chat", "ChatHeight", L["LockChatHeight"].."*", true, {100, 500, 1}, updateChatSize},
 		{},--blank
