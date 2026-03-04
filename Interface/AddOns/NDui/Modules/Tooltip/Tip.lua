@@ -78,7 +78,7 @@ function TT:UpdateFactionLine(lineData)
 		end
 	elseif unitClass and strfind(linetext, unitClass) then
 		lineData.leftText = gsub(linetext, "(.-)%S+$", replaceSpecInfo)
-	elseif unitCreature and linetext == unitCreature then
+	elseif unitCreature and B:NotSecretValue(unitCreature) and linetext == unitCreature then
 		return true
 	end
 end
@@ -199,7 +199,7 @@ function TT:OnTooltipSetUnit()
 		unitFullName = name.."-"..(realm or DB.MyRealm)
 		local pvpName = UnitPVPName(unit)
 		local relationship = UnitRealmRelationship(unit)
-		if not C.db["Tooltip"]["HideTitle"] and pvpName and pvpName ~= "" then
+		if not C.db["Tooltip"]["HideTitle"] and B:NotSecretValue(pvpName) and pvpName and pvpName ~= "" then
 			name = pvpName
 		end
 		if realm and realm ~= "" then
