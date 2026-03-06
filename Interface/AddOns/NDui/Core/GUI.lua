@@ -320,8 +320,8 @@ G.DefaultSettings = {
 		RaidCDSize = 12,
 		RaidNumBuff = 6,
 		RaidNumDebuff = 6,
-		RaidBuffType = 2,
-		RaidDebuffType = 2,
+		RaidBuffType = 1,
+		RaidDebuffType = 4,
 		RaidBuffPerRow = 7,
 		RaidDebuffPerRow = 7,
 
@@ -722,6 +722,8 @@ loader:SetScript("OnEvent", function(self, _, addon)
 		C.db["UFs"]["Portrait"] = false
 		C.db["UFs"]["MBPerRow"] = 13
 		C.db["UFs"]["GatherEmpty"] = true
+		C.db["UFs"]["RaidBuffType"] = 1
+		C.db["UFs"]["RaidDebuffType"] = 4
 		C.db["Reset4"] = true
 	end
 
