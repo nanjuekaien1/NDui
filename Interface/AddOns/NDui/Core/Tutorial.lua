@@ -25,11 +25,11 @@ local function ForceDefaultSettings()
 	SetCVar("cameraIndirectOffset", 10) -- 镜头最远
 	SetCVar("TargetNearestUseNew", 1) -- #*tab最近的目标
 	SetCVar("nameplateOccludedAlphaMult", 0.04) --障碍物后姓名板的透明度
-	SetCVar("floatingCombatTextFloatMode", 1)
-	SetCVar("floatingCombatTextCombatDamage", 1)
-	SetCVar("floatingCombatTextCombatHealing", 0) --战斗浮动治疗
-	SetCVar("floatingCombatTextCombatDamageDirectionalScale", 0)
-	SetCVar("floatingCombatTextCombatDamageDirectionalOffset", 10)
+	SetCVar("floatingCombatTextFloatMode_v2", 1)
+	SetCVar("floatingCombatTextCombatDamage_v2", 1)
+	SetCVar("floatingCombatTextCombatHealing_v2", 0) --战斗浮动治疗
+	SetCVar("floatingCombatTextCombatDamageDirectionalScale_v2", 0)
+	SetCVar("floatingCombatTextCombatDamageDirectionalOffset_v2", 10)
 	--SetActionBarToggles(1, 1, 1, 1)
 	if not InCombatLockdown() then
 		SetCVar("nameplateMotion", 1)
