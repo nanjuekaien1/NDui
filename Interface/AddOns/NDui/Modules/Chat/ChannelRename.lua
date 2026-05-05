@@ -123,27 +123,27 @@ end
 
 -- Kill colon before message
 local channels = {
-	SAY = not isCN,
-	YELL = not isCN,
-	WHISPER = not isCN,
-	GUILD = not isCN,
-	OFFICER = not isCN,
-	CHANNEL = not isCN,
-	PARTY = true,
-	RAID = true,
-	INSTANCE_CHAT = not isCN,
+	SAY = false,
+	YELL = false,
+	WHISPER = false,
+	GUILD = false,
+	OFFICER = false,
+	CHANNEL = false,
+	PARTY = false,
+	RAID = false,
+	INSTANCE_CHAT = false,
 }
 
 local cnColonChannels = {
-	SAY = true,
-	YELL = true,
-	WHISPER = true,
-	GUILD = true,
-	OFFICER = true,
-	CHANNEL = true,
-	PARTY = true,
-	RAID = true,
-	INSTANCE_CHAT = true,
+	SAY = false,
+	YELL = false,
+	WHISPER = false,
+	GUILD = false,
+	OFFICER = false,
+	CHANNEL = false,
+	PARTY = false,
+	RAID = false,
+	INSTANCE_CHAT = false,
 }
 
 local cnPattern = "(|Hplayer[^]]*:([^:]+):[^]]*%].-)"..colon.."%s"
