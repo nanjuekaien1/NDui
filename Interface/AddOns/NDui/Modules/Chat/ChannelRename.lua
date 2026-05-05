@@ -2,7 +2,8 @@
 local B, C, L, DB = unpack(ns)
 local module = B:GetModule("Chat")
 
-local gsub, strfind, strmatch, format, strsub, strlen = string.gsub, string.find, string.match, string.format, string.sub, string.len
+local gsub, strfind, strmatch, format, strsub, strlen, strupper = string.gsub, string.find, string.match, string.format, string.sub, string.len, string.upper
+local tostring = tostring
 local BetterDate, time, date, GetCVarBool = BetterDate, time, date, GetCVarBool
 local RemoveExtraSpaces = RemoveExtraSpaces
 local INTERFACE_ACTION_BLOCKED = INTERFACE_ACTION_BLOCKED
@@ -169,20 +170,83 @@ local function highlightURL(_, url)
 	return " "..convertLink("["..url.."]", url).." "
 end
 
--- Filter: intercept chat events, build formatted msg, apply modifications, call AddMessage securely
-local function ChatMsgFilter(self, event,
-	msg, sender, language, channelString, target, flags, zoneChannelID, channelIndex, channelBaseName, languageID,
-	lineID, senderGUID, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, suppressRaidIcons)
-
-	if not msg or B:IsSecretValue(msg) then
-		return
+-- FCFManager_GetChatTarget clone (safeguard)
+local function GetChatTarget(chatGroup, playerTarget, channelTarget)
+	if chatGroup == "CHANNEL" then
+		return tostring(channelTarget)
+	elseif chatGroup == "WHISPER" or chatGroup == "BN_WHISPER" then
+		return playerTarget and strsub(playerTarget, 1, 2) ~= "|K" and strupper(playerTarget) or playerTarget
 	end
+end
+
+-- Dedup cache: prevent double-processing when addons like WhisperPop
+-- re-invoke event filters manually after WoW already processed them,
+-- which would cause self:AddMessage to be called twice -> duplicate messages.
+local processedLines = {}
+local processedCount = 0
+local PROCESSED_LINES_MAX = 200
+
+-- Chat event filter: format message, respect window settings, use correct colors
+local function ChatMsgFilter(self, event, msg, sender, language, channelString, target, flags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, senderGUID, bnSenderID, isMobile, isSubtitle, hideSenderInLetterbox, suppressRaidIcons)
+	if B:IsSecretValue(msg) then return end
 
 	if strfind(msg, INTERFACE_ACTION_BLOCKED) and not DB.isDeveloper then
 		return true
 	end
 
-	-- URL highlighting (inline, avoid separate filter pass)
+	-- Dedup: skip if this message was already processed for this chat frame
+	if lineID and lineID > 0 then
+		local key = self:GetName() .. "_" .. lineID
+		if processedLines[key] then
+			return true
+		end
+		processedLines[key] = true
+		processedCount = processedCount + 1
+		if processedCount > PROCESSED_LINES_MAX then
+			wipe(processedLines)
+			processedCount = 0
+		end
+	end
+
+	-- Per-window visibility check
+	local chatType = strsub(event, 10)
+	local chatGroup = ChatFrameUtil.GetChatCategory(chatType)
+	local channelLength = strlen(channelString)
+
+	-- For CHANNEL type: check self.channelList (mirrors Blizzard's logic in MessageEventHandler)
+	-- For non-CHANNEL types: use FCFManager_ShouldSuppressMessage
+	if chatType == "CHANNEL" then
+		if channelLength > 0 then
+			local found = false
+			for index, value in pairs(self.channelList) do
+				if channelLength > strlen(value) then
+					if ((zoneChannelID > 0) and (self.zoneChannelList and self.zoneChannelList[index] == zoneChannelID)) or (strupper(value) == strupper(channelBaseName or "")) then
+						found = true
+						break
+					end
+				end
+			end
+			if not found then
+				return true
+			end
+		end
+	else
+		local chatTarget = GetChatTarget(chatGroup, sender, channelIndex)
+		if FCFManager_ShouldSuppressMessage(self, chatGroup, chatTarget) then
+			return true
+		end
+	end
+
+	-- Get correct color
+	local info
+	if chatType == "CHANNEL" and channelIndex and channelIndex > 0 then
+		info = ChatTypeInfo["CHANNEL"..channelIndex] or ChatTypeInfo[chatType]
+	else
+		info = ChatTypeInfo[chatType]
+	end
+	info = info or ChatTypeInfo["SYSTEM"]
+
+	-- URL highlighting
 	msg = gsub(msg, "(%s?)(%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?:%d%d?%d?%d?%d?)(%s?)", highlightURL)
 	msg = gsub(msg, "(%s?)(%d%d?%d?%.%d%d?%d?%.%d%d?%d?%.%d%d?%d?)(%s?)", highlightURL)
 	msg = gsub(msg, "(%s?)([%w_-]+%.?[%w_-]+%.[%w_-]+:%d%d%d?%d?%d?)(%s?)", highlightURL)
@@ -190,38 +254,27 @@ local function ChatMsgFilter(self, event,
 	msg = gsub(msg, "(%s?)(www%.[%w_/%.%?%%=~&-'%-]+)(%s?)", highlightURL)
 	msg = gsub(msg, "(%s?)([_%w-%.~-]+@[_%w-]+%.[_%w-%.]+)(%s?)", highlightURL)
 
-	-- 1. Get format key (e.g. CHAT_SAY_GET = "%s:\32")
-	local chatType = strsub(event, 10)
+	-- Build formatted message
 	local formatKey = _G["CHAT_"..chatType.."_GET"]
 	if not formatKey then return end
 
-	-- 2. Get colored name (with class colors etc.)
 	local coloredName = ChatFrameUtil.GetDecoratedSenderName(event, msg, sender, language, channelString, target, flags, zoneChannelID, channelIndex, channelBaseName, languageID, lineID, senderGUID, bnSenderID, isMobile)
-
-	-- 3. Get player flags (AFK/DND/GM icons)
 	local pflag = ChatFrameUtil.GetPFlag(flags, zoneChannelID, channelIndex)
 
-	-- 4. Build player link
 	local playerLink
 	if chatType == "BN_WHISPER" or chatType == "BN_WHISPER_INFORM" then
-		playerLink = GetBNPlayerLink(sender, "["..coloredName.."]", bnSenderID, lineID, ChatFrameUtil.GetChatCategory(chatType), 0)
+		playerLink = GetBNPlayerLink(sender, "["..coloredName.."]", bnSenderID, lineID, chatGroup, 0)
 	else
-		playerLink = GetPlayerLink(sender, "["..coloredName.."]", lineID, ChatFrameUtil.GetChatCategory(chatType), 0)
+		playerLink = GetPlayerLink(sender, "["..coloredName.."]", lineID, chatGroup, 0)
 	end
 
-	-- 5. Build the base message (same as Blizzard's MessageFormatter)
-	local msgText = msg
-	-- Escape % signs
-	msgText = gsub(msgText, "%%", "%%%%")
-	-- Replace icon/group expressions
-	msgText = C_ChatInfo.ReplaceIconAndGroupExpressions(msgText, suppressRaidIcons)
-	-- Remove extra spaces
-	msgText = RemoveExtraSpaces(msgText)
+	msg = gsub(msg, "%%", "%%%%")
+	msg = C_ChatInfo.ReplaceIconAndGroupExpressions(msg, suppressRaidIcons)
+	msg = RemoveExtraSpaces(msg)
 
-	local outMsg = format(formatKey..msgText, pflag..playerLink)
+	local outMsg = format(formatKey..msg, pflag..playerLink)
 
-	-- 6. Add channel prefix for custom channels (channelString non-empty)
-	local channelLength = strlen(channelString)
+	-- Add channel prefix for custom channels
 	if channelLength > 0 then
 		local channelName = ChatFrameUtil.ResolvePrefixedChannelName(channelString)
 		if channelName then
@@ -229,26 +282,18 @@ local function ChatMsgFilter(self, event,
 		end
 	end
 
-	-- 7. Apply modifications on the formatted text
-	-- Timestamp (prefix)
+	-- Apply NDui modifications
 	if NDuiADB["TimestampFormat"] > 1 then
 		local locTime, realmTime = GetCurrentTime()
 		local timeStamp = BetterDate(DB.GreyColor..timestampFormat[NDuiADB["TimestampFormat"]].."|r", realmTime or locTime)
 		outMsg = timeStamp..outMsg
 	end
 
-	-- Author Logo
 	outMsg = gsub(outMsg, "(|Hplayer:([^|:]+))", AddAuthorLogo)
-	-- Kill colon
-	if isCN then
-		outMsg = gsub(outMsg, cnPattern, KillCNColon)
-	end
+	if isCN then outMsg = gsub(outMsg, cnPattern, KillCNColon) end
 	outMsg = gsub(outMsg, enPattern, KillColon)
-	-- Channel abbreviation
 	outMsg = gsub(outMsg, matchPattern, AbbrChannelName)
 
-	-- 8. Get color info and display
-	local info = ChatTypeInfo[chatType] or ChatTypeInfo["SYSTEM"]
 	self:AddMessage(outMsg, info.r, info.g, info.b, info.id)
 
 	return true
@@ -263,7 +308,7 @@ function module:ChannelRename()
 		"CHAT_MSG_INSTANCE_CHAT", "CHAT_MSG_INSTANCE_CHAT_LEADER",
 		"CHAT_MSG_WHISPER", "CHAT_MSG_WHISPER_INFORM",
 		"CHAT_MSG_BN_WHISPER", "CHAT_MSG_BN_WHISPER_INFORM",
-		"CHAT_MSG_CHANNEL",
+		"CHAT_MSG_CHANNEL", "CHAT_MSG_MONSTER_SAY"
 	}
 	for _, event in ipairs(events) do
 		ChatFrame_AddMessageEventFilter(event, ChatMsgFilter)
