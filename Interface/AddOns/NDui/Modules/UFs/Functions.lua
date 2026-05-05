@@ -3,7 +3,7 @@ local B, C, L, DB = unpack(ns)
 
 local oUF = ns.oUF
 local UF = B:RegisterModule("UnitFrames")
-
+-- 877-908/1021-1047 字体路径
 local pairs, next, unpack = pairs, next, unpack
 local UnitFrame_OnEnter, UnitFrame_OnLeave = UnitFrame_OnEnter, UnitFrame_OnLeave
 local x1, x2, y1, y2 = unpack(DB.TexCoord)
@@ -871,6 +871,10 @@ function UF.PostCreateButton(element, button)
 	button.Cooldown:SetHideCountdownNumbers(isRaid and not C.db["UFs"]["RaidCDText"])
 	button.iconbg = B.ReskinIcon(button.Icon, not isRaid)
 
+	-- 设置光环计时器字体为指定路径
+	if button.CooldownText then
+		button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+	end
 	button.HL = button:CreateTexture(nil, "HIGHLIGHT")
 	button.HL:SetColorTexture(1, 1, 1, .25)
 	button.HL:SetAllPoints()
@@ -884,8 +888,16 @@ function UF.PostCreateButton(element, button)
 		button.timer = B.CreateFS(button, fontSize, "")
 		button.timer:ClearAllPoints()
 		button.timer:SetPoint("LEFT", button, "TOPLEFT", -2, 0)
+		-- 设置姓名板光环计时器字体
+		if button.timer then
+			button.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+		end
 		button.Count:ClearAllPoints()
 		button.Count:SetPoint("RIGHT", button, "BOTTOMRIGHT", 5, 0)
+		-- 设置计数文本字体
+		if button.Count then
+			button.Count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
+		end
 	end
 end
 
@@ -1025,9 +1037,17 @@ function UF:UpdateAuraContainer(parent, element, maxAuras)
 	for i = 1, #element do
 		local button = element[i]
 		if button then
-			if button.timer then B.SetFontSize(button.timer, fontSize) end
-			if button.Count then B.SetFontSize(button.Count, fontSize) end
-			button.CooldownText:SetFont(DB.Font[1], fontSize, DB.Font[3])
+			if button.timer then 
+				B.SetFontSize(button.timer, fontSize)
+				button.timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3]) -- 指定字体
+			end
+			if button.Count then 
+				B.SetFontSize(button.Count, fontSize)
+				button.Count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3]) -- 指定字体
+			end
+			if button.CooldownText then
+				button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3]) -- 指定字体
+			end
 			button.Cooldown:SetHideCountdownNumbers(cooldownNumber)
 		end
 	end
@@ -1409,7 +1429,7 @@ function UF:CreateClassPower(self)
 
 	if isDH then
 		local text = B.CreateFS(bars[1], 13)
-		text:SetPoint("CENTER", bars[1], "TOP")
+		text:SetPoint("CENTER", bars[1], "CENTER")  -- 位置
 		self:Tag(text, "[SoulFragments]")
 		bars.fragmentsText = text
 	end
