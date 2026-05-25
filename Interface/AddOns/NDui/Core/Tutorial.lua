@@ -32,7 +32,7 @@ local function ForceDefaultSettings()
 	SetCVar("floatingCombatTextCombatDamageDirectionalOffset_v2", 10)
 	--SetActionBarToggles(1, 1, 1, 1)
 	if not InCombatLockdown() then
-		SetCVar("nameplateMotion", 1)
+		SetCVar("nameplateMotion", 0)   -- 血条锁定不动，不会随目标移动而上下浮动。
 		SetCVar("nameplateShowAll", 1)
 		SetCVar("nameplateShowEnemies", 1)
 		SetCVar("alwaysShowActionBars", 1)
