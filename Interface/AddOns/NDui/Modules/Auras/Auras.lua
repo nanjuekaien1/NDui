@@ -23,6 +23,10 @@ local ITEM_ENCHANTMENT_SLOTS = {
 	INVSLOT_RANGED,
 }
 
+-- 字体路径配置
+local AURA_FONT_PATH = "Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF"
+local AURA_FONT_FLAGS = "OUTLINE"
+
 local COUNT_FORMATTER = C_StringUtil.CreateNumericRuleFormatter()
 COUNT_FORMATTER:SetBreakpoints({
 	{threshold = 0, format = ""},
@@ -140,18 +144,29 @@ local function GetAnchorOptions(cfg)
 	return "TOPRIGHT", -1
 end
 
+-- 设置字体路径的辅助函数
+local function SetFontPath(fontString)
+	if fontString and AURA_FONT_PATH then
+		local _, currentHeight = fontString:GetFont()
+		fontString:SetFont(AURA_FONT_PATH, currentHeight or 12, AURA_FONT_FLAGS or "OUTLINE")
+	end
+end
+
 local function UpdateButtonAppearance(button, cfg)
 	button:SetSize(cfg.size, cfg.size)
 
-	local fontSize = floor(cfg.size / 30 * 12 + .5)
+	local fontSize = floor(cfg.size / 30 * 14 + .5)
 	if button.Count then
 		B.SetFontSize(button.Count, fontSize)
+		SetFontPath(button.Count) -- 设置字体路径
 	end
 	if button.Time then
 		B.SetFontSize(button.Time, fontSize)
+		SetFontPath(button.Time) -- 设置字体路径
 	end
 	if button.CooldownText then
 		B.SetFontSize(button.CooldownText, fontSize)
+		SetFontPath(button.CooldownText) -- 设置字体路径
 	end
 	if button.Cooldown then
 		button.Cooldown:SetDrawSwipe(C.db["Auras"]["CDAnimation"])
@@ -217,16 +232,19 @@ local function StyleAuraButton(element, button, showDebuffTypeBorder)
 	if button.Count then
 		button.Count:ClearAllPoints()
 		button.Count:SetPoint("TOPRIGHT", button, -1, -3)
+		SetFontPath(button.Count) -- 设置字体路径
 	end
 
 	if button.Time then
 		button.Time:ClearAllPoints()
-		button.Time:SetPoint("TOP", button, "BOTTOM", 1, 2)
+		button.Time:SetPoint("TOP", button, "BOTTOM", 1, 5)
+		SetFontPath(button.Time)  -- 设置字体路径
 	end
 
 	if button.CooldownText then
 		button.CooldownText:ClearAllPoints()
-		button.CooldownText:SetPoint("TOP", button, "BOTTOM", 1, 2)
+		button.CooldownText:SetPoint("TOP", button, "BOTTOM", 1, 5)
+		SetFontPath(button.CooldownText)  -- 设置字体路径
 	end
 
 	local highlight = button:CreateTexture(nil, "HIGHLIGHT")
