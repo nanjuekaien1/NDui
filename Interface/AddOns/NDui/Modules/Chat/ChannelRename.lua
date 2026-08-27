@@ -1,7 +1,7 @@
 ﻿local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local module = B:GetModule("Chat")
-
+-- 127-147 改
 local gsub, strfind, strmatch, format, strsub, strlen, strupper = string.gsub, string.find, string.match, string.format, string.sub, string.len, string.upper
 local tostring = tostring
 local BetterDate, time, date, GetCVarBool = BetterDate, time, date, GetCVarBool
@@ -124,27 +124,27 @@ end
 
 -- Kill colon before message
 local channels = {
-	SAY = not isCN,
-	YELL = not isCN,
-	WHISPER = not isCN,
-	GUILD = not isCN,
-	OFFICER = not isCN,
-	CHANNEL = not isCN,
-	PARTY = true,
-	RAID = true,
-	INSTANCE_CHAT = not isCN,
+	SAY = false,
+	YELL = false,
+	WHISPER = false,
+	GUILD = false,
+	OFFICER = false,
+	CHANNEL = false,
+	PARTY = false,
+	RAID = false,
+	INSTANCE_CHAT = false,
 }
 
 local cnColonChannels = {
-	SAY = true,
-	YELL = true,
-	WHISPER = true,
-	GUILD = true,
-	OFFICER = true,
-	CHANNEL = true,
-	PARTY = true,
-	RAID = true,
-	INSTANCE_CHAT = true,
+	SAY = false,
+	YELL = false,
+	WHISPER = false,
+	GUILD = false,
+	OFFICER = false,
+	CHANNEL = false,
+	PARTY = false,
+	RAID = false,
+	INSTANCE_CHAT = false,
 }
 
 local cnPattern = "(|Hplayer[^]]*:([^:]+):[^]]*%]|h.-)"..colon.."%s"
