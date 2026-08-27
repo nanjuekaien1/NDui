@@ -1,6 +1,6 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
-
+--959、965、1970改
 local oUF = ns.oUF
 local UF = B:RegisterModule("UnitFrames")
 local Cooldown = B:GetModule("Cooldown")
@@ -956,14 +956,14 @@ function UF.PostCreateButton(element, button, options)
 	local size = options.size or element.size
 	local fontSize = options.fontSize or element.fontSize or size*.4
 	if button.Count then
-		button.Count:SetFont(DB.Font[1], fontSize, DB.Font[3])
+		button.Count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3]) -- 指定字体
 		button.Count:SetPoint("BOTTOMRIGHT", 2, 0)
 	end
 	if button.Cooldown then
 		button.Cooldown:SetReverse(true)
 		button.CooldownText = button.Cooldown:GetRegions()
 		if button.CooldownText then
-			button.CooldownText:SetFont(DB.Font[1], fontSize, DB.Font[3])
+			button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3]) -- 指定字体
 		end
 		Cooldown:IgnoreCooldown(button.Cooldown)
 		button.Cooldown:SetCountdownFormatter(UpdateAuraDurationFormatter(element, element.hideDuration))
@@ -1967,7 +1967,7 @@ function UF:CreateClassPower(self)
 
 	if isDH then
 		local text = B.CreateFS(bars[1], 13)
-		text:SetPoint("CENTER", bars[1], "TOP")
+		text:SetPoint("CENTER", bars[1], "CENTER") -- 位置
 		self:Tag(text, "[SoulFragments]")
 		bars.fragmentsText = text
 	end
