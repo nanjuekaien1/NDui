@@ -2,7 +2,7 @@ local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local Bar = B:RegisterModule("Actionbar")
 local LAB = LibStub("LibActionButton-1.0-NDui")
-
+-- 388字体路径
 local _G = _G
 local tinsert, next = tinsert, next
 local margin, padding = C.Bars.margin, C.Bars.padding
@@ -385,7 +385,7 @@ function Bar:UpdateCooldownText(name)
 
 	for _, button in pairs(buttons) do
 		if button.cooldownText then
-			button.cooldownText:SetFont(DB.Font[1], fontSize, DB.Font[3])
+			button.cooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3]) -- 修改指定字体路径
 		end
 	end
 
