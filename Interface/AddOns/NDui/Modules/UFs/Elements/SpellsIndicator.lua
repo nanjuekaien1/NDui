@@ -2,7 +2,7 @@ local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local UF = B:GetModule("UnitFrames")
 local Cooldown = B:GetModule("Cooldown")
-
+-89、94改
 local sort, tinsert = table.sort, table.insert
 
 local COUNT_FORMATTER = C_StringUtil.CreateNumericRuleFormatter()
@@ -86,12 +86,12 @@ local function CreateIndicatorButton(element, options, button)
 	button:SetPoint(anchor, element.__owner.Health, anchor, x, y)
 
 	local count = button:CreateFontString(nil, "OVERLAY", "NumberFontNormal")
-	count:SetFont(DB.Font[1], 12, DB.Font[3])
+	count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 12, DB.Font[3]) -- 指定字体
 	button.Count = count
 
 	if indicatorType == 3 then
 		local timer = button:CreateFontString(nil, "OVERLAY", "NumberFontNormal")
-		timer:SetFont(DB.Font[1], 12, DB.Font[3])
+		timer:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", 12, DB.Font[3]) -- 指定字体
 		timer:SetPoint("CENTER", -counterOffsets[anchor][2][3], 0)
 		timer:SetTextColor(r, g, b)
 		button.Time = timer
