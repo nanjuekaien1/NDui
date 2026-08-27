@@ -1,7 +1,7 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local module = B:GetModule("Chat")
-
+-- 86行 4, -15) --社交通知标记
 local _G = getfenv(0)
 local gsub, format, tconcat, tostring = string.gsub, string.format, table.concat, tostring
 local FCF_SetChatWindowFontSize = FCF_SetChatWindowFontSize
@@ -83,7 +83,7 @@ function module:ChatCopy_CreateMenu()
 	_G.QuickJoinToastButton:SetParent(menu)
 
 	_G.ChatAlertFrame:ClearAllPoints()
-	_G.ChatAlertFrame:SetPoint("BOTTOMLEFT", _G.ChatFrame1Tab, "TOPLEFT", 5, 25)
+	_G.ChatAlertFrame:SetPoint("BOTTOMLEFT", _G.ChatFrame1Tab, "TOPLEFT", 4, -15) --社交通知标记
 	ResetChatAlertJustify(_G.ChatAlertFrame)
 	hooksecurefunc(_G.ChatAlertFrame, "SetChatButtonSide", ResetChatAlertJustify)
 end
