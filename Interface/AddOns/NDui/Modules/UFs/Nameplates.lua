@@ -75,10 +75,6 @@ function UF:SetupCVars()
 	hooksecurefunc(NamePlateDriverFrame, "UpdateNamePlateSize", UF.UpdatePlateSize)
 	-- fix blizz friendly plate visibility
 	SetCVar("nameplatePlayerMaxDistance", 60)
-	-- hide realm name in blizz nameonly
-	if NamePlateFriendlyFrameOptions then
-		PurgeKey(NamePlateFriendlyFrameOptions, "updateNameUsesGetUnitName")
-	end
 end
 
 -- Elements
@@ -646,13 +642,11 @@ function UF:UpdateNameplateAuras()
 
 	local element = self.Auras
 	element:SetPoint("BOTTOMLEFT", self.nameText, "TOPLEFT", 0, yOffset)
-	UF:ConfigureNameplateAuras(element)
 	UF:UpdateAuraContainer(self, element)
 	element:ForceUpdate()
 
 	element = self.Buffs
 	element:SetPoint("BOTTOMRIGHT", self.nameText, "TOPRIGHT", 0, yOffset)
-	UF:ConfigureNameplateAuras(element)
 	UF:UpdateAuraContainer(self, element)
 	element:ForceUpdate()
 end
@@ -1199,27 +1193,6 @@ function UF:ToggleGCDTicker()
 	if not ticker then return end
 
 	ticker:SetShown(C.db["Nameplate"]["PPGCDTicker"])
-end
-
-UF.MajorSpells = {}
-function UF:RefreshMajorSpells()
-	wipe(UF.MajorSpells)
-
-	for spellID in pairs(C.MajorSpells) do
-		local name = GetSpellName(spellID)
-		if name then
-			local modValue = NDuiADB["MajorSpells"][spellID]
-			if modValue == nil then
-				UF.MajorSpells[spellID] = true
-			end
-		end
-	end
-
-	for spellID, value in pairs(NDuiADB["MajorSpells"]) do
-		if value then
-			UF.MajorSpells[spellID] = true
-		end
-	end
 end
 
 UF.NameplateWhite = {}

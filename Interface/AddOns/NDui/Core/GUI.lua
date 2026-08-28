@@ -14,13 +14,7 @@ G.DefaultSettings = {
 	Reset5 = false,
 	Reset6 = false,
 	Mover = {},
-	InternalCD = {},
-	AuraWatchMover = {},
 	TempAnchor = {},
-	AuraWatchList = {
-		Switcher = {},
-		IgnoreSpells = {},
-	},
 	Actionbar = {
 		Enable = true,
 		Hotkeys = true,
@@ -161,13 +155,6 @@ G.DefaultSettings = {
 		DebuffsPerRow = 16,
 		CDAnimation = false,
 	},
-	AuraWatch = {
-		Enable = true,
-		ClickThrough = false,
-		IconScale = 1,
-		DeprecatedAuras = false,
-		MinCD = 3,
-	},
 	Avada = {
 		Enable = false,
 	},
@@ -191,9 +178,6 @@ G.DefaultSettings = {
 		SMRGroupBy = 1,
 		SMRGroups = 6,
 		SMRDirec = 1,
-		InstanceAuras = true,
-		DispellType = 1,
-		RaidDebuffScale = 1,
 		SpecRaidPos = false,
 		RaidHealthColor = 1,
 		ShowSolo = false,
@@ -201,7 +185,6 @@ G.DefaultSettings = {
 		RaidHeight = 32,
 		RaidPowerHeight = 2,
 		RaidHPMode = 1,
-		AuraClickThru = false,
 		RaidClickSets = false,
 		TeamIndex = false,
 		ClassPower = true,
@@ -231,14 +214,7 @@ G.DefaultSettings = {
 		UFTextScale = 1,
 		PartyAltPower = true,
 		RaidTextScale = 1,
-		ShowRaidBuff = false,
-		RaidBuffSize = 12,
-		BuffClickThru = true,
-		ShowRaidDebuff = true,
-		RaidDebuffSize = 12,
-		DebuffClickThru = true,
 		SmartRaid = false,
-		Desaturate = true,
 		DebuffColor = false,
 		CCName = true,
 		RCCName = true,
@@ -246,7 +222,6 @@ G.DefaultSettings = {
 		SortByRole = true,
 		SortAscending = false,
 		PlayerAbsorb = false,
-		AutoBuffs = false,
 		ShowRoleMode = 1,
 		CDFontSize = 12, -- Legacy source for the Reset6 per-frame aura font migration.
 
@@ -443,7 +418,6 @@ G.DefaultSettings = {
 		TargetPower = false,
 		MinScale = 1,
 		MinAlpha = 1,
-		Desaturate = true,
 		DebuffColor = false,
 		QuestIndicator = true,
 		NameOnlyMode = false,
@@ -635,7 +609,6 @@ G.AccountSettings = {
 	ChatFilterList = "%*",
 	ChatFilterWhiteList = "",
 	TimestampFormat = 4,
-	RaidDebuffs = {},
 	Changelog = {},
 	totalGold = {},
 	ShowSlots = false,
@@ -663,11 +636,8 @@ G.AccountSettings = {
 	Help = {},
 	CornerSpells = {},
 	CustomTex = "",
-	MajorSpells = {},
 	AutoRecycle = true,
 	IgnoredButtons = "",
-	RaidBuffsWhite = {},
-	RaidDebuffsBlack = {},
 	NameplateWhite = {},
 	NameplateBlack = {},
 	IgnoreNotes = {},
@@ -688,9 +658,6 @@ G.TextureList = {
 }
 
 local ignoredTable = {
-	["AuraWatchList"] = true,
-	["AuraWatchMover"] = true,
-	["InternalCD"] = true,
 	["Mover"] = true,
 	["TempAnchor"] = true,
 }
@@ -739,12 +706,6 @@ loader:SetScript("OnEvent", function(self, _, addon)
 			for spellID, value in pairs(NDuiADB["NameplateFilter"][2]) do
 				NDuiADB["NameplateBlack"][spellID] = value
 			end
-		end
-	end
-	if NDuiADB["RaidAuraWatch"] then
-		if not NDuiADB["RaidBuffsWhite"] then NDuiADB["RaidBuffsWhite"] = {} end
-		for spellID in pairs(NDuiADB["RaidAuraWatch"]) do
-			NDuiADB["RaidBuffsWhite"][spellID] = true
 		end
 	end
 	-- Transfer old data END
@@ -908,20 +869,8 @@ local function setupPartyPetFrame()
 	G:SetupPartyPetFrame(guiPage[4])
 end
 
-local function setupRaidDebuffs()
-	G:SetupRaidDebuffs(guiPage[4])
-end
-
 local function setupClickCast()
 	G:SetupClickCast(guiPage[4])
-end
-
-local function setupDebuffsIndicator()
-	G:SetupDebuffsIndicator(guiPage[4])
-end
-
-local function setupBuffsIndicator()
-	G:SetupBuffsIndicator(guiPage[4])
 end
 
 local function setupSpellsIndicator()
@@ -946,10 +895,6 @@ end
 
 local function setupNameOnlySize()
 	G:SetupNameOnlySize(guiPage[5])
-end
-
-local function setupPlateCastbarGlow()
-	G:PlateCastbarGlow(guiPage[5])
 end
 
 local function setupNameplateMobColors()
@@ -978,11 +923,6 @@ end
 
 local function setupNameplateCC()
 	G:SetupNameplateCC(guiPage[5])
-end
-
-local function setupAuraWatch()
-	f:Hide()
-	SlashCmdList["NDUI_AWCONFIG"]()
 end
 
 local function updateBagSortOrder()
@@ -1406,22 +1346,10 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "UFs", "RaidBigDefensive", IsNew..HeaderTag..COMPACT_UNIT_FRAME_PROFILE_SHOW_BIG_DEFENSIVES, true, setupRaidBigDefensive, nil, OPTION_TOOLTIP_COMPACT_UNIT_FRAME_PROFILE_SHOW_BIG_DEFENSIVES},
 		{1, "UFs", "RaidClickSets", HeaderTag..L["Enable ClickSets"], nil, setupClickCast},
 		{1, "UFs", "AutoRes", HeaderTag..L["UFs AutoRes"], true},
-		--{1, "UFs", "ShowRaidDebuff", L["ShowRaidDebuff"].."*", nil, setupDebuffsIndicator, updateRaidAurasOptions, L["ShowRaidDebuffTip"]},
-		--{1, "UFs", "ShowRaidBuff", L["ShowRaidBuff"].."*", true, setupBuffsIndicator, updateRaidAurasOptions, L["ShowRaidBuffTip"]},
-		--{1, "UFs", "DebuffClickThru", L["DebuffClickThru"].."*", nil, nil, updateRaidAurasOptions, L["ClickThroughTip"]},
-		--{1, "UFs", "BuffClickThru", L["BuffClickThru"].."*", true, nil, updateRaidAurasOptions, L["ClickThroughTip"]},
-		--{3, "UFs", "RaidDebuffSize", L["RaidDebuffSize"].."*", nil, {5, 30, 1}, updateRaidAurasOptions},
-		--{3, "UFs", "RaidBuffSize", L["RaidBuffSize"].."*", true, {5, 30, 1}, updateRaidAurasOptions},
 		{},--blank
 		{1, "UFs", "RaidBuffIndicator", HeaderTag..L["RaidBuffIndicator"], nil, setupSpellsIndicator, nil, L["RaidBuffIndicatorTip"]},
 		{4, "UFs", "BuffIndicatorType", L["BuffIndicatorType"], nil, {L["BI_Blocks"], L["BI_Icons"], L["BI_Numbers"]}},
 		{3, "UFs", "BuffIndicatorScale", L["BuffIndicatorScale"], true, {.8, 2, .1}},
-		--{},--blank
-		--{1, "UFs", "InstanceAuras", HeaderTag..L["Instance Auras"].."*", nil, setupRaidDebuffs, updateRaidAurasOptions, L["InstanceAurasTip"]},
-		--{1, "UFs", "AuraClickThru", L["RaidAuras ClickThrough"].."*", true, nil, updateRaidAurasOptions, L["ClickThroughTip"]},
-		--{4, "UFs", "DispellType", L["Dispellable"].."*", nil, {L["Always"], L["Filter"], DISABLE}, updateRaidAurasOptions, L["DispellTypeTip"]},
-		--{3, "UFs", "RaidDebuffScale", L["RaidDebuffScale"].."*", true, {.8, 2, .1}, updateRaidAurasOptions},
-		--{},--blank
 		{},--blank
 		{4, "UFs", "RaidHealthColor", L["HealthColor"].."*", nil, {L["Default Dark"], L["ClassColorHP"], L["GradientHP"], L["ClearHealth"], L["ClearClass"]}, updateRaidTextScale},
 		{4, "UFs", "RaidHPMode", L["HealthValueType"].."*", true, {DISABLE, L["ShowHealthPercent"], L["ShowHealthCurrent"], L["ShowHealthLoss"], --[=[L["ShowHealthLossPercent"], L["ShowHealthAbsorb"]]=]}, updateRaidTextScale, L["100PercentTip"]},
@@ -1444,7 +1372,6 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Nameplate", "PlateAuras", IsNew..L["PlateAuras"], nil, setupNameplateAuras, refreshNameplates},
 		{1, "Nameplate", "PlateBuffs", IsNew..L["PlateBuffs"], true, setupNameplateBuffs, refreshNameplates},
 		{1, "Nameplate", "PlateCC", IsNew..L["PlateCC"], nil, setupNameplateCC, refreshNameplates},
-		{1, "Nameplate", "Desaturate", L["DesaturateIcon"].."*", true, nil, refreshNameplates, L["DesaturateIconTip"], true},
 		{},--blank
 		{4, "Nameplate", "TargetIndicator", L["TargetIndicator"].."*", nil, {DISABLE, L["TopArrow"], L["RightArrow"], L["TargetGlow"], L["TopNGlow"], L["RightNGlow"]}, refreshNameplates},
 		{3, "Nameplate", "ExecuteRatio", L["ExecuteRatio"].."*", true, {0, 90, 1}, refreseExecuteRatio, L["ExecuteRatioTip"]},
@@ -1461,7 +1388,6 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{5, "Nameplate", "TargetColor", L["TargetNP Color"].."*"},
 		{5, "Nameplate", "FocusColor", L["FocusNP Color"].."*", 2},
 		--{1, "Nameplate", "ColorByDot", HeaderTag..L["ColorByDot"].."*", nil, setupNameplateColorDots, nil, L["ColorByDotTip"]},
-		--{1, "Nameplate", "CastbarGlow", HeaderTag..L["PlateCastbarGlow"].."*", true, setupPlateCastbarGlow, nil, L["PlateCastbarGlowTip"]},
 		{1, "Nameplate", "CastbarGlow", HeaderTag..L["PlateCastbarGlow"].."*", nil, nil, nil, L["PlateCastbarGlowTip"]},
 		{1, "Nameplate", "ShowCustomUnits", HeaderTag..L["ShowCustomUnits"].."*", true, setupNameplateUnitFilter, updateCustomUnitList, L["CustomUnitsTip"]},
 		{1, "Nameplate", "MobTypeColoring", IsNew..HeaderTag..L["MobTypeColoring"].."*", nil, setupNameplateMobColors, nil, L["MobTypeColoringTip"]},
@@ -1501,12 +1427,6 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Auras", "HideBlizBuff", L["HideBlizUI"], nil, nil, nil, L["HideBlizBuffTip"]},
 		{1, "Auras", "CDAnimation", L["CDAnimation"], true},
 		{},--blank
-		--[[{1, "AuraWatch", "Enable", HeaderTag..L["Enable AuraWatch"], nil, setupAuraWatch},
-		{1, "AuraWatch", "DeprecatedAuras", L["DeprecatedAuras"], true},
-		{1, "AuraWatch", "ClickThrough", L["AuraWatch ClickThrough"], nil, nil, nil, L["ClickThroughTip"]},
-		{3, "AuraWatch", "IconScale", L["AuraWatch IconScale"], nil, {.8, 2, .1}},
-		{3, "AuraWatch", "MinCD", L["AuraWatch MinCD"].."*", true, {1, 60, 1}, nil, L["MinCDTip"]},
-		{},--blank]]
 		{1, "Auras", "Totems", HeaderTag..L["Enable Totembar"]},
 		{1, "Auras", "VerticalTotems", L["VerticalTotems"].."*", nil, nil, refreshTotemBar},
 		{3, "Auras", "TotemSize", L["TotemSize"].."*", true, {24, 60, 1}, refreshTotemBar},

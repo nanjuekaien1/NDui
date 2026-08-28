@@ -324,7 +324,6 @@ function UF:OnLogin()
 		UF:CreateUnitTable()
 		UF:QuestIconCheck()
 		UF:RefreshPlateByEvents()
-		UF:RefreshMajorSpells()
 		UF:RefreshNameplateFilters()
 		UF:UpdateExcutedCurve()
 	end
@@ -422,11 +421,8 @@ function UF:OnLogin()
 
 	if C.db["UFs"]["RaidFrame"] then
 		B:LockCVar("predictedHealth", "1")
-		--UF:UpdateRaidInfo() -- RaidAuras
 		UF:AddClickSetsListener()
 		UF:UpdateCornerSpells()
-		UF:UpdateRaidBuffsWhite()
-		UF:UpdateRaidDebuffsBlack()
 		UF.headers = {}
 
 		-- Hide Default RaidFrame
