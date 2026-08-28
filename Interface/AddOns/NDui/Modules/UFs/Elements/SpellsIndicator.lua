@@ -2,7 +2,7 @@ local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local UF = B:GetModule("UnitFrames")
 local Cooldown = B:GetModule("Cooldown")
--89、94改
+--89、94改
 local sort, tinsert = table.sort, table.insert
 
 local COUNT_FORMATTER = C_StringUtil.CreateNumericRuleFormatter()
