@@ -223,7 +223,6 @@ G.DefaultSettings = {
 		SortAscending = false,
 		PlayerAbsorb = false,
 		ShowRoleMode = 1,
-		CDFontSize = 12, -- Legacy source for the Reset6 per-frame aura font migration.
 
 		PlayerWidth = 245,
 		PlayerHeight = 24,
@@ -311,8 +310,6 @@ G.DefaultSettings = {
 		ArenaDebuffSize = 16,
 		ArenaCDSize = 12,
 		RaidAuras = true,
-		RaidCDText = false, -- Legacy source for the Reset6 per-container aura text migration.
-		RaidCDSize = 12, -- Legacy source for the Reset6 per-container aura font migration.
 		RaidBuffCDText = false,
 		RaidBuffCDSize = 12,
 		RaidDebuffCDText = false,
@@ -532,7 +529,6 @@ G.DefaultSettings = {
 		AzeriteArmor = true,
 		OnlyArmorIcons = false,
 		HideAllID = false,
-		DisableMapPOITooltipFix = false,
 		MythicScore = true,
 		FontSize = 12,
 	},
@@ -638,8 +634,6 @@ G.AccountSettings = {
 	CustomTex = "",
 	AutoRecycle = true,
 	IgnoredButtons = "",
-	NameplateWhite = {},
-	NameplateBlack = {},
 	IgnoreNotes = {},
 	GlowMode = 3,
 	IgnoredRares = "",
@@ -692,23 +686,6 @@ local loader = CreateFrame("Frame")
 loader:RegisterEvent("ADDON_LOADED")
 loader:SetScript("OnEvent", function(self, _, addon)
 	if addon ~= "NDui" then return end
-
-	-- Transfer old data START
-	if NDuiADB["NameplateFilter"] then
-		if NDuiADB["NameplateFilter"][1] then
-			if not NDuiADB["NameplateWhite"] then NDuiADB["NameplateWhite"] = {} end
-			for spellID, value in pairs(NDuiADB["NameplateFilter"][1]) do
-				NDuiADB["NameplateWhite"][spellID] = value
-			end
-		end
-		if NDuiADB["NameplateFilter"][2] then
-			if not NDuiADB["NameplateBlack"] then NDuiADB["NameplateBlack"] = {} end
-			for spellID, value in pairs(NDuiADB["NameplateFilter"][2]) do
-				NDuiADB["NameplateBlack"][spellID] = value
-			end
-		end
-	end
-	-- Transfer old data END
 
 	InitialSettings(G.AccountSettings, NDuiADB)
 	if not next(NDuiPDB) then
@@ -781,23 +758,6 @@ loader:SetScript("OnEvent", function(self, _, addon)
 		local raidBuffType = ufs["RaidBuffType"]
 		ufs["RaidBigDefensive"] = raidBuffType == 3 or raidBuffType == 4
 		ufs["RaidBuffType"] = (raidBuffType == 2 or raidBuffType == 4) and 2 or 1
-		local raidCDText = ufs["RaidCDText"]
-		local raidCDSize = ufs["RaidCDSize"]
-		local raidAuraCDSize = min(max(raidCDSize, 5), 16)
-		ufs["RaidBuffCDText"] = raidCDText
-		ufs["RaidBuffCDSize"] = raidAuraCDSize
-		ufs["RaidDebuffCDText"] = raidCDText
-		ufs["RaidDebuffCDSize"] = raidAuraCDSize
-		ufs["RaidBigDefensiveCDText"] = raidCDText
-		ufs["RaidBigDefensiveCDSize"] = raidAuraCDSize
-		local unitFrameCDSize = ufs["CDFontSize"]
-		ufs["PlayerCDSize"] = unitFrameCDSize
-		ufs["TargetCDSize"] = unitFrameCDSize
-		ufs["FocusCDSize"] = unitFrameCDSize
-		ufs["ToTCDSize"] = unitFrameCDSize
-		ufs["PetCDSize"] = unitFrameCDSize
-		ufs["BossCDSize"] = raidCDSize
-		ufs["ArenaCDSize"] = raidCDSize
 		local bossBuffType = ufs["BossBuffType"]
 		-- Boss and Arena previously shared the Boss aura settings.
 		ufs["ArenaNumBuff"] = ufs["BossNumBuff"]
@@ -875,10 +835,6 @@ end
 
 local function setupSpellsIndicator()
 	G:SetupSpellsIndicator(guiPage[4])
-end
-
-local function setupNameplateFilter()
-	G:SetupNameplateFilter(guiPage[5])
 end
 
 local function setupNameplateColorDots()
@@ -1104,6 +1060,10 @@ local function toggleAllAuras()
 	B:GetModule("UnitFrames"):ToggleAllAuras()
 end
 
+local function updateUFAuras()
+	B:GetModule("UnitFrames"):UpdateUFAuras()
+end
+
 local function updateRaidTextScale()
 	B:GetModule("UnitFrames"):UpdateRaidTextScale()
 end
@@ -1323,6 +1283,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 	},
 	[3] = {
 		{1, "UFs", "Enable", HeaderTag..L["Enable UFs"], nil, setupUnitFrame, nil, L["HideUFWarning"]},
+		{1, "UFs", "DebuffColor", L["DebuffColor"], nil, nil, updateUFAuras, L["DebuffColorTip"]},
 		{1, "UFs", "Arena", L["Arena Frame"], true},
 		{1, "UFs", "ShowAuras", L["ShowAuras"], nil, setupUFAuras, toggleAllAuras},
 		{1, "UFs", "ClassPower", L["UFs ClassPower"].."*", true, setupClassPower, toggleUFClassPower},
@@ -1552,7 +1513,6 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Tooltip", "MythicScore", L["MDScore"].."*", true, nil, nil, L["MDScoreTip"]},
 		{1, "Tooltip", "ItemQuality", L["ShowItemQuality"].."*"},
 		{1, "Tooltip", "HideAllID", "|cffff0000"..L["HideAllID"], true},
-		{1, "Tooltip", "DisableMapPOITooltipFix", "|cffff0000"..L["DisableMapPOITooltipFix"].."|r", nil, nil, nil, L["DisableMapPOITooltipFixTip"]},
 		{},--blank
 		{1, "Tooltip", "AzeriteArmor", HeaderTag..L["Show AzeriteArmor"]},
 		{1, "Tooltip", "OnlyArmorIcons", L["Armor icons only"].."*", true},
@@ -1992,6 +1952,12 @@ local function OpenGUI()
 			StaticPopup_Show("RELOAD_NDUI")
 			G.needUIReload = nil
 		end
+	end)
+
+	local previewBtn = B.CreateButton(f, 110, 20, L["FramePreview"])
+	previewBtn:SetPoint("RIGHT", ok, "LEFT", -5, 0)
+	previewBtn:SetScript("OnClick", function()
+		G:ToggleFramePreview()
 	end)
 
 	G:AddSponsor()

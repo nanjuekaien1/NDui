@@ -572,7 +572,6 @@ function TT:FixStoneSoupError()
 end
 
 function TT:OnLogin()
-	TT:SetupMapPOITooltip()
 	GameTooltipStatusBar:SetScript("OnValueChanged", nil)
 	GameTooltip:HookScript("OnTooltipCleared", TT.OnTooltipCleared)
 	TooltipDataProcessor.AddTooltipPostCall(Enum.TooltipDataType.Unit, TT.OnTooltipSetUnit)
@@ -740,6 +739,10 @@ TT:RegisterTooltips("NDui", function()
 		end
 		if AWQItemTooltip then
 			TT.ReskinTooltip(AWQItemTooltip)
+		end
+		-- MapTooltipTaintFix
+		if MapTooltipTaintFix_GameTooltip then
+			TT.ReskinTooltip(MapTooltipTaintFix_GameTooltip)
 		end
 	end)
 

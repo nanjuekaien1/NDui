@@ -45,17 +45,6 @@ function UF:UpdatePlateSize()
 	end
 end
 
-local function PurgeKey(t, k) -- code from platynator
-	t[k] = nil
-	local c = 42
-	repeat
-		if t[c] == nil then
-			t[c] = nil
-		end
-		c = c + 1
-	until issecurevariable(t, k)
-end
-
 function UF:SetupCVars()
 	UF:UpdatePlateCVars()
 	SetCVar("nameplateOverlapH", .8)
@@ -1193,31 +1182,4 @@ function UF:ToggleGCDTicker()
 	if not ticker then return end
 
 	ticker:SetShown(C.db["Nameplate"]["PPGCDTicker"])
-end
-
-UF.NameplateWhite = {}
-UF.NameplateBlack = {}
-
-local function RefreshNameplateFilter(list, key)
-	wipe(UF[key])
-
-	for spellID in pairs(list) do
-		local name = GetSpellName(spellID)
-		if name then
-			if NDuiADB[key][spellID] == nil then
-				UF[key][spellID] = true
-			end
-		end
-	end
-
-	for spellID, value in pairs(NDuiADB[key]) do
-		if value then
-			UF[key][spellID] = true
-		end
-	end
-end
-
-function UF:RefreshNameplateFilters()
-	RefreshNameplateFilter(C.WhiteList, "NameplateWhite")
-	RefreshNameplateFilter(C.BlackList, "NameplateBlack")
 end

@@ -4,7 +4,7 @@ local G = B:GetModule("GUI")
 
 local _G = _G
 local unpack, pairs, ipairs, tinsert = unpack, pairs, ipairs, tinsert
-local min, max, strmatch, strfind, tonumber = min, max, strmatch, strfind, tonumber
+local min, max, floor, strmatch, strfind, tonumber = min, max, math.floor, strmatch, strfind, tonumber
 local GetSpellName, GetSpellTexture = C_Spell.GetSpellName, C_Spell.GetSpellTexture
 local GetItemIcon = C_Item.GetItemIconByID
 local IsControlKeyDown = IsControlKeyDown
@@ -297,126 +297,6 @@ function G:SetupClickCast(parent)
 	end
 end
 
-local function refreshNameplateFilters()
-	B:GetModule("UnitFrames"):RefreshNameplateFilters()
-end
-
-function G:SetupNameplateFilter(parent)
-	local guiName = "NDuiGUI_NameplateFilter"
-	toggleExtraGUI(guiName)
-	if extraGUIs[guiName] then return end
-
-	local panel = createExtraGUI(parent, guiName)
-	panel:SetScript("OnHide", refreshNameplateFilters)
-
-	local frameData = {
-		[1] = {text = L["WhiteList"].."*", offset = -25, barList = {}},
-		[2] = {text = L["BlackList"].."*", offset = -315, barList = {}},
-	}
-
-	local function createBar(parent, index, spellID)
-		local name, texture = GetSpellName(spellID), GetSpellTexture(spellID)
-		local bar = CreateFrame("Frame", nil, parent, "BackdropTemplate")
-		bar:SetSize(220, 30)
-		B.CreateBD(bar, .25)
-		frameData[index].barList[spellID] = bar
-
-		local icon, close = G:CreateBarWidgets(bar, texture)
-		B.AddTooltip(icon, "ANCHOR_RIGHT", spellID)
-		close:SetScript("OnClick", function()
-			bar:Hide()
-			if index == 1 then
-				if C.WhiteList[spellID] then
-					NDuiADB["NameplateWhite"][spellID] = false
-				else
-					NDuiADB["NameplateWhite"][spellID] = nil
-				end
-			elseif index == 2 then
-				if C.BlackList[spellID] then
-					NDuiADB["NameplateBlack"][spellID] = false
-				else
-					NDuiADB["NameplateBlack"][spellID] = nil
-				end
-			end
-			frameData[index].barList[spellID] = nil
-			sortBars(frameData[index].barList)
-		end)
-
-		local spellName = B.CreateFS(bar, 14, name, false, "LEFT", 30, 0)
-		spellName:SetWidth(180)
-		spellName:SetJustifyH("LEFT")
-		if index == 2 then spellName:SetTextColor(1, 0, 0) end
-
-		sortBars(frameData[index].barList)
-	end
-
-	local function isAuraExisted(index, spellID)
-		local key = index == 1 and "NameplateWhite" or "NameplateBlack"
-		local modValue = NDuiADB[key][spellID]
-		local locValue = (index == 1 and C.WhiteList[spellID]) or (index == 2 and C.BlackList[spellID])
-		return modValue or (modValue == nil and locValue)
-	end
-
-	local function addClick(parent, index)
-		local spellID = tonumber(parent.box:GetText())
-		if not spellID or not GetSpellName(spellID) then UIErrorsFrame:AddMessage(DB.InfoColor..L["Incorrect SpellID"]) return end
-		if isAuraExisted(index, spellID) then UIErrorsFrame:AddMessage(DB.InfoColor..L["Existing ID"]) return end
-
-		local key = index == 1 and "NameplateWhite" or "NameplateBlack"
-		NDuiADB[key][spellID] = true
-		createBar(parent.child, index, spellID)
-		parent.box:SetText("")
-	end
-
-	local UF = B:GetModule("UnitFrames")
-
-	local filterIndex
-	StaticPopupDialogs["RESET_NDUI_NAMEPLATEFILTER"] = {
-		text = L["Reset to default list"],
-		button1 = YES,
-		button2 = NO,
-		OnAccept = function()
-			local key = filterIndex == 1 and "NameplateWhite" or "NameplateBlack"
-			wipe(NDuiADB[key])
-			ReloadUI()
-		end,
-		whileDead = 1,
-	}
-
-	for index, value in ipairs(frameData) do
-		B.CreateFS(panel, 14, value.text, "system", "TOPLEFT", 20, value.offset)
-		local frame = CreateFrame("Frame", nil, panel, "BackdropTemplate")
-		frame:SetSize(280, 250)
-		frame:SetPoint("TOPLEFT", 10, value.offset - 25)
-		B.CreateBD(frame, .25)
-
-		local scroll = G:CreateScroll(frame, 240, 200)
-		scroll.box = B.CreateEditBox(frame, 160, 25)
-		scroll.box:SetPoint("TOPLEFT", 10, -10)
-		B.AddTooltip(scroll.box, "ANCHOR_TOPRIGHT", L["ID Intro"], "info", true)
-
-		scroll.add = B.CreateButton(frame, 45, 25, ADD)
-		scroll.add:SetPoint("TOPRIGHT", -8, -10)
-		scroll.add:SetScript("OnClick", function()
-			addClick(scroll, index)
-		end)
-
-		scroll.reset = B.CreateButton(frame, 45, 25, RESET)
-		scroll.reset:SetPoint("RIGHT", scroll.add, "LEFT", -5, 0)
-		scroll.reset:SetScript("OnClick", function()
-			filterIndex = index
-			StaticPopup_Show("RESET_NDUI_NAMEPLATEFILTER")
-		end)
-
-		local key = index == 1 and "NameplateWhite" or "NameplateBlack"
-		for spellID, value in pairs(UF[key]) do
-			if value then
-				createBar(scroll.child, index, spellID)
-			end
-		end
-	end
-end
-
 function G:SetupSpellsIndicator(parent)
 	local guiName = "NDuiGUI_SpellsIndicator"
 	toggleExtraGUI(guiName)
@@ -560,43 +440,6 @@ function G:SetupSpellsIndicator(parent)
 		local r, g, b = unpack(value[2])
 		createBar(scroll.child, spellID, value[1], r, g, b, value[3])
 	end
-
-	-- Preset spells: none secret spells in midnight
-	local menuList = {}
-	local function AddSpellFromPreset(_, spellID)
-		scroll.box:SetText(spellID)
-		DropDownList1:Hide()
-	end
-	local index = 1
-	for class, value in pairs(UF.NonSecretSpells) do
-		local color = B.ClassColorString(class)
-		local localClassName = LOCALIZED_CLASS_NAMES_MALE[class] or OTHER
-		menuList[index] = {text = color..localClassName, notCheckable = true, hasArrow = true, menuList = {}}
-
-		for spellID in pairs(value) do
-			local spellName, texture = GetSpellName(spellID), GetSpellTexture(spellID)
-			if spellName then
-				tinsert(menuList[index].menuList, {
-					text = spellName..":"..spellID,
-					icon = texture,
-					tCoordLeft = .08,
-					tCoordRight = .92,
-					tCoordTop = .08,
-					tCoordBottom = .92,
-					arg1 = spellID,
-					func = AddSpellFromPreset,
-					notCheckable = true,
-				})
-			end
-		end
-		index = index + 1
-	end
-	local preset = B.CreateButton(panel, 100, 25, AVAILABLE)
-	preset:SetPoint("TOPRIGHT", -10, -20)
-	preset.text:SetTextColor(1, .8, 0)
-	preset:SetScript("OnClick", function(self)
-		EasyMenu(menuList, B.EasyMenu, self, -100, 150, "MENU", 1)
-	end)
 end
 
 local function createOptionTitle(parent, title, offset)
@@ -662,6 +505,7 @@ local function createOptionSlider(parent, title, minV, maxV, defaultV, yOffset, 
 	slider.__default = defaultV
 	slider:SetValueStep(step or 1)
 	slider:SetScript("OnValueChanged", sliderValueChanged)
+	return slider
 end
 
 local function updateDropdownHighlight(self)
@@ -1393,7 +1237,7 @@ function G:SetupUFAuras(parent)
 	local scroll = G:CreateScroll(panel, 260, 540)
 
 	local UF = B:GetModule("UnitFrames")
-	local parent, offset = scroll.child, -10
+	local parent = scroll.child
 
 	local defaultData = {
 		["Player"] = {1, 1, 22, 20, 20, 12},
@@ -1444,13 +1288,23 @@ function G:SetupUFAuras(parent)
 			createOptionSlider(parent, "Debuff "..L["Auras Size"], 5, 50, default[3], offset-510, value.."DebuffSize", queueAuraReload)
 			createOptionSlider(parent, L["CDFontSize"], 5, 30, default[6], offset-580, value.."CDSize", queueAuraReload)
 		else
-			createOptionSlider(parent, L["Auras Size"], 5, 50, default[3], offset-440, value.."AuraSize", queueAuraReload)
+			-- Aura size slider with a live "how many fit per row" hint. The 12.0 aura
+			-- container wraps at the frame's width (layoutLimit = frame:GetWidth() at
+			-- creation, spacing 3), so show the wrap count next to the slider instead of
+			-- making the user guess when a row will wrap while dragging the size.
+			local sizeSlider = createOptionSlider(parent, L["Auras Size"], 5, 50, default[3], offset-440, value.."AuraSize", queueAuraReload)
+			local widthKey = value == "Focus" and "FocusWidth" or ((value == "ToT" or value == "Pet") and "PetWidth" or "PlayerWidth")
+			local function refreshAuraPerRow()
+				local sizeV = C.db["UFs"][value.."AuraSize"]
+				local frameW = C.db["UFs"][widthKey] or 200
+				local perRow = max(1, floor((frameW + 3) / (sizeV + 3)))
+				sizeSlider.Text:SetText(format("%s (%s)", L["Auras Size"], format(L["AuraPerRow"], perRow)))
+			end
+			sizeSlider:HookScript("OnValueChanged", refreshAuraPerRow)
+			refreshAuraPerRow()
 			createOptionSlider(parent, L["CDFontSize"], 5, 30, default[6], offset-510, value.."CDSize", queueAuraReload)
 		end
 	end
-
-	createOptionTitle(parent, GENERAL, offset)
-	createOptionCheck(parent, offset-70, L["DebuffColor"], "UFs", "DebuffColor", queueAuraReload, L["DebuffColorTip"])
 
 	local options = {
 		[1] = L["PlayerUF"],
@@ -1471,7 +1325,7 @@ function G:SetupUFAuras(parent)
 		[7] = "Arena",
 	}
 
-	local dd = G:CreateDropdown(scroll.child, "", 40, -130, options, nil, 180, 28)
+	local dd = G:CreateDropdown(scroll.child, "", 40, -10, options, nil, 180, 28)
 	dd:SetFrameLevel(20)
 	dd.Text:SetText(options[1])
 	dd:SetBackdropBorderColor(1, .8, 0, .5)
@@ -1482,7 +1336,7 @@ function G:SetupUFAuras(parent)
 		panel:SetSize(260, 1)
 		panel:SetPoint("TOP", 0, -30)
 		panel:Hide()
-		createOptionGroup(panel, -125, data[i], updateUFAurasAndQueueReload)
+		createOptionGroup(panel, 0, data[i], updateUFAurasAndQueueReload)
 
 		dd.panels[i] = panel
 		dd.options[i]:HookScript("OnClick", toggleOptionsPanel)
