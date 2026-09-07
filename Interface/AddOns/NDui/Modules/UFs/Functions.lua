@@ -1169,7 +1169,9 @@ local ARENA_DEBUFF_GROUPS = {
 }
 
 local RAID_BUFF_GROUP = {
-	filter = "HELPFUL|RAID_IN_COMBAT|!BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE",
+	-- isFromPlayerOrPlayerPet candidate boolean matches auras cast by ANY player
+	-- PLAYER filter token instead
+	filter = "HELPFUL|PLAYER|RAID_IN_COMBAT|!BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE",
 	candidateFilters = {
 		isFromPlayerOrPlayerPet = true,
 	},
@@ -1185,9 +1187,12 @@ local RAID_BIG_DEFENSIVE_GROUPS = {
 
 local function PostCreateRaidBigDefensiveButton(element, button, options)
 	UF.PostCreateButton(element, button, options)
+	local xOffset = (options.slotIndex - 1.5) * (options.size + RAID_BIG_DEFENSIVE_SPACING)
 	button:ClearAllPoints()
-	local xOffset = -RAID_BIG_DEFENSIVE_RIGHT_INSET - (options.slotIndex - 1) * (options.size + RAID_BIG_DEFENSIVE_SPACING)
-	button:SetPoint("BOTTOMRIGHT", element.__owner.Health, "BOTTOMRIGHT", xOffset, C.db["UFs"]["RaidDebuffSize"] + 4)
+	button:SetPoint("CENTER", element.__owner.Health, xOffset, 0)
+	-- Now that it sits over the name, keep it above the name/HP text, which
+	-- lives on a sub-level of the frame while aura buttons default to a low one.
+	button:SetFrameLevel(element.__owner:GetFrameLevel() + 10)
 end
 
 local RAID_DEBUFF_GROUP_NAME = "RaidDebuffs"
@@ -1739,7 +1744,14 @@ function UF:CreateBuffs(self)
 			AddAuraGroup(bu, BOSS_BUFF_GROUP_NAME..index, group.filter, bu.num, index, group.candidateFilters)
 		end
 	else
-		local candidateFilters = mystyle == "raid" and RAID_BUFF_GROUP.candidateFilters or {}
+		-- Fresh table per frame: Blizzard converts the inbound options in place,
+		-- so the shared template must not be handed over for every raid frame.
+		local candidateFilters = {}
+		if mystyle == "raid" then
+			for key, value in next, RAID_BUFF_GROUP.candidateFilters do
+				candidateFilters[key] = value
+			end
+		end
 		AddAuraGroup(bu, "Buffs", bu.filter, bu.num, 1, candidateFilters)
 	end
 	UF:UpdateAuraContainer(self, bu)
