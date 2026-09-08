@@ -90,7 +90,7 @@ local function CreateToTStyle(self)
 	UF:CreateAuras(self)
 end
 
-local function CreateFocusTargetStyle(self)
+--[[local function CreateFocusTargetStyle(self)
 	self.mystyle = "focustarget"
 	SetUnitFrameSize(self, "Pet")
 
@@ -99,7 +99,7 @@ local function CreateFocusTargetStyle(self)
 	UF:CreateHealthText(self)
 	UF:CreatePowerBar(self)
 	UF:CreateRaidMark(self)
-end
+end]]
 
 local function CreatePetStyle(self)
 	self.mystyle = "pet"
@@ -353,7 +353,7 @@ function UF:OnLogin()
 		oUF:RegisterStyle("Target", CreateTargetStyle)
 		oUF:RegisterStyle("ToT", CreateToTStyle)
 		oUF:RegisterStyle("Focus", CreateFocusStyle)
-		oUF:RegisterStyle("FocusTarget", CreateFocusTargetStyle)
+		--oUF:RegisterStyle("FocusTarget", CreateFocusTargetStyle)
 		oUF:RegisterStyle("Pet", CreatePetStyle)
 
 		-- Loader
@@ -380,9 +380,9 @@ function UF:OnLogin()
 		B.Mover(focus, L["FocusUF"], "FocusUF", C.UFs.FocusPos)
 		UF.ToggleCastBar(focus, "Focus")
 
-		oUF:SetActiveStyle("FocusTarget")
+		--[[oUF:SetActiveStyle("FocusTarget")
 		local focustarget = oUF:Spawn("focustarget", "oUF_FocusTarget")
-		B.Mover(focustarget, L["FotUF"], "FotUF", {"TOPLEFT", oUF_Focus, "TOPRIGHT", 5, 0})
+		B.Mover(focustarget, L["FotUF"], "FotUF", {"TOPLEFT", oUF_Focus, "TOPRIGHT", 5, 0})]]
 
 		oUF:RegisterStyle("Boss", CreateBossStyle)
 		oUF:SetActiveStyle("Boss")
