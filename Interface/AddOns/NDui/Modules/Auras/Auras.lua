@@ -1,7 +1,7 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local A = B:RegisterModule("Auras")
-
+-- 148/151/154/224/229 修改
 local _G = getfenv(0)
 local floor, ipairs = math.floor, ipairs
 local CreateFrame = CreateFrame
@@ -22,10 +22,6 @@ local ITEM_ENCHANTMENT_SLOTS = {
 	INVSLOT_OFFHAND,
 	INVSLOT_RANGED,
 }
-
--- 字体路径配置
-local AURA_FONT_PATH = "Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF"
-local AURA_FONT_FLAGS = "OUTLINE"
 
 local COUNT_FORMATTER = C_StringUtil.CreateNumericRuleFormatter()
 COUNT_FORMATTER:SetBreakpoints({
@@ -144,29 +140,18 @@ local function GetAnchorOptions(cfg)
 	return "TOPRIGHT", -1
 end
 
--- 设置字体路径的辅助函数
-local function SetFontPath(fontString)
-	if fontString and AURA_FONT_PATH then
-		local _, currentHeight = fontString:GetFont()
-		fontString:SetFont(AURA_FONT_PATH, currentHeight or 12, AURA_FONT_FLAGS or "OUTLINE")
-	end
-end
-
 local function UpdateButtonAppearance(button, cfg)
 	button:SetSize(cfg.size, cfg.size)
 
 	local fontSize = floor(cfg.size / 30 * 14 + .5)
 	if button.Count then
-		B.SetFontSize(button.Count, fontSize)
-		SetFontPath(button.Count) -- 设置字体路径
+		button.Count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
 	end
 	if button.Time then
-		B.SetFontSize(button.Time, fontSize)
-		SetFontPath(button.Time) -- 设置字体路径
+		button.Time:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
 	end
 	if button.CooldownText then
-		B.SetFontSize(button.CooldownText, fontSize)
-		SetFontPath(button.CooldownText) -- 设置字体路径
+		button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
 	end
 	if button.Cooldown then
 		button.Cooldown:SetDrawSwipe(C.db["Auras"]["CDAnimation"])
@@ -232,19 +217,16 @@ local function StyleAuraButton(element, button, showDebuffTypeBorder)
 	if button.Count then
 		button.Count:ClearAllPoints()
 		button.Count:SetPoint("TOPRIGHT", button, -1, -3)
-		SetFontPath(button.Count) -- 设置字体路径
 	end
 
 	if button.Time then
 		button.Time:ClearAllPoints()
-		button.Time:SetPoint("TOP", button, "BOTTOM", 1, 5)
-		SetFontPath(button.Time)  -- 设置字体路径
+		button.Time:SetPoint("TOP", button, "BOTTOM", 1, 5)  --位置
 	end
 
 	if button.CooldownText then
 		button.CooldownText:ClearAllPoints()
-		button.CooldownText:SetPoint("TOP", button, "BOTTOM", 1, 5)
-		SetFontPath(button.CooldownText)  -- 设置字体路径
+		button.CooldownText:SetPoint("TOP", button, "BOTTOM", 1, 5)  --位置
 	end
 
 	local highlight = button:CreateTexture(nil, "HIGHLIGHT")
