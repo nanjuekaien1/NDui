@@ -40,7 +40,7 @@ local function ForceDefaultSettings()
 	if DB.isDeveloper then
 		SetCVar("ffxGlow", 0)
 		SetCVar("WorldTextScale", 1.2)
-		SetCVar("SpellQueueWindow", 160)
+		SetCVar("SpellQueueWindow", 100)
 		--SetCVar("AutoPushSpellToActionBar", 0)
 		--SetCVar("missingTransmogSourceInItemTooltips", 1)
 	end
