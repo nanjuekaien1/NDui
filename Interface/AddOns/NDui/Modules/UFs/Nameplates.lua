@@ -598,13 +598,6 @@ function UF:CreatePlates()
 	self.Health = health
 	self.Health.UpdateColor = UF.UpdateColor
 
-	local tarName = B.CreateFS(self, C.db["Nameplate"]["NameTextSize"]+4)
-	tarName:ClearAllPoints()
-	tarName:SetPoint("TOP", self, "BOTTOM", 0, -10)
-	tarName:Hide()
-	self:Tag(tarName, "[tarname]")
-	self.tarName = tarName
-
 	UF:CreateHealthText(self)
 	UF:CreateCastBar(self)
 	UF:CreateRaidMark(self)
@@ -707,7 +700,6 @@ function UF:UpdateNameplateSize()
 		self.__tagIndex = nameType
 
 		self:SetSize(plateWidth, plateHeight)
-		B.SetFontSize(self.tarName, nameTextSize+4)
 		self.Castbar.Icon:SetSize(iconSize, iconSize)
 		self.Castbar:SetHeight(plateCBHeight)
 		B.SetFontSize(self.Castbar.Time, CBTextSize)
@@ -852,8 +844,6 @@ local function onTargetChanged(self, event, unit)
 	UF.UpdateQuestUnit(self, event, unit)
 	UF.UpdateUnitClassify(self, unit)
 	UF:UpdateTargetClassPower()
-
-	self.tarName:SetShown(C.ShowTargetNPCs[self.npcID])
 end
 
 function UF:OnNameplateAdded(event, unit)

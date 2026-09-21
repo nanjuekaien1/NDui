@@ -252,15 +252,6 @@ oUF.Tags.Methods["npctitle"] = function(unit)
 end
 oUF.Tags.Events["npctitle"] = "UNIT_NAME_UPDATE"
 
-oUF.Tags.Methods["tarname"] = function(unit)
-	local tarUnit = unit.."target"
-	if UnitExists(tarUnit) then
-		local _, tarClass = UnitClass(tarUnit)
-		return B.ClassColorString(tarClass)..UnitName(tarUnit)
-	end
-end
-oUF.Tags.Events["tarname"] = "UNIT_NAME_UPDATE UNIT_THREAT_SITUATION_UPDATE UNIT_HEALTH"
-
 -- AltPower value tag
 oUF.Tags.Methods["altpower"] = function(unit)
 	return TruncateWhenZero(UnitPower(unit, ALTERNATE_POWER_INDEX))
