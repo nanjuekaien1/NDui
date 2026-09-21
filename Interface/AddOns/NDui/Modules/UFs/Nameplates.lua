@@ -578,6 +578,19 @@ function UF:MouseoverIndicator(self)
 	self.HighlightUpdater = updater
 end
 
+function UF:CreateStackingBounds(self)
+	local stackingBounds = CreateFrame("Frame", nil, self)
+	stackingBounds:SetAllPoints()
+	local stackingTexture = stackingBounds:CreateTexture(nil, "BACKGROUND")
+	stackingTexture:SetAllPoints()
+	stackingTexture:SetColorTexture(1, 1, 1, 0)
+
+	local plate = self:GetParent()
+	if plate and plate.SetStackingBoundsFrame then
+		plate:SetStackingBoundsFrame(stackingBounds)
+	end
+end
+
 -- Create Nameplates
 local platesList = {}
 UF.nameplateUnits = {}
@@ -606,6 +619,7 @@ function UF:CreatePlates()
 	UF:CreatePlateDebuffs(self)
 	UF:CreatePVPClassify(self)
 	UF:CreateThreatColor(self)
+	UF:CreateStackingBounds(self)
 
 	local title = B.CreateFS(self, C.db["Nameplate"]["NameOnlyTitleSize"])
 	title:ClearAllPoints()
