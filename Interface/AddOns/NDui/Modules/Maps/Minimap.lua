@@ -289,9 +289,13 @@ function module:RecycleBin()
 	end
 
 	local ignoredButtons = {
-		["GatherMatePin"] = true,
-		["HandyNotes.-Pin"] = true,
-		["TTMinimapButton"] = true,
+		["^GatherMate"] = true,
+		["^HandyNotes"] = true,
+		["^HereBeDragons"] = true,
+		["^Questie"] = true,
+		["^TomTom"] = true,
+		["^pin"] = true,
+		["^Pin"] = true,
 	}
 	B.SplitList(ignoredButtons, NDuiADB["IgnoredButtons"])
 
@@ -309,8 +313,8 @@ function module:RecycleBin()
 
 	local iconsPerRow = 10
 	local rowMult = iconsPerRow/2 - 1
-	local currentIndex, pendingTime, timeThreshold = 0, 5, 12
-	local buttons, numMinimapChildren = {}, 0
+	local currentIndex, pendingTime, timeThreshold = 0, 5, 6
+	local buttons = {}
 	local removedTextures = {
 		[136430] = true,
 		[136467] = true,
@@ -376,20 +380,15 @@ function module:RecycleBin()
 	end
 
 	local function CollectRubbish()
-		local numChildren = Minimap:GetNumChildren()
-		if numChildren ~= numMinimapChildren then
-			for i = 1, numChildren do
-				local child = select(i, Minimap:GetChildren())
-				local name = child and child.GetName and child:GetName()
-				if name and not child.isExamed and not blackList[name] then
-					if (child:IsObjectType("Button") or strmatch(strupper(name), "BUTTON")) and not isButtonIgnored(name) then
-						ReskinMinimapButton(child, name)
-					end
-					child.isExamed = true
+		local children = {Minimap:GetChildren()}
+		for _, child in pairs(children) do
+			local name = child and child.GetName and child:GetName()
+			if name and not child.isExamed and not blackList[name] then
+				if (child:IsObjectType("Button") or strmatch(strupper(name), "BUTTON") or strmatch(name, "^LibDBIcon10_")) and not isButtonIgnored(name) then
+					ReskinMinimapButton(child, name)
 				end
+				child.isExamed = true
 			end
-
-			numMinimapChildren = numChildren
 		end
 
 		KillMinimapButtons()
