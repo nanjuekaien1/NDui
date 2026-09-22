@@ -349,29 +349,28 @@ function M:Expbar()
 end
 M:RegisterMisc("ExpRep", M.Expbar)
 
--- Paragon reputation info
+-- Paragon reputation info on ReputationFrame
 function M:ParagonReputationSetup()
 	if not C.db["Misc"]["ParagonRep"] then return end
+	if not ReputationEntryMixin then return end
 
-	hooksecurefunc("ReputationFrame_InitReputationRow", function(factionRow, elementData)
-		local factionID = factionRow.factionID
-		local factionContainer = factionRow.Container
-		local factionBar = factionContainer.ReputationBar
-		local factionStanding = factionBar.FactionStanding
+	hooksecurefunc(ReputationEntryMixin, "Initialize", function(row)
+		if not row.factionID or not C_Reputation.IsFactionParagonForCurrentPlayer(row.factionID) then return end
 
-		if factionContainer.Paragon:IsShown() then
-			local currentValue, threshold = C_Reputation_GetFactionParagonInfo(factionID)
-			if currentValue then
-				local barValue = mod(currentValue, threshold)
-				local factionStandingtext = L["Paragon"]..floor(currentValue/threshold)
+		local currentValue, threshold, _, hasRewardPending = C_Reputation_GetFactionParagonInfo(row.factionID)
+		if not currentValue or not threshold or threshold == 0 then return end
 
-				factionBar:SetMinMaxValues(0, threshold)
-				factionBar:SetValue(barValue)
-				factionStanding:SetText(factionStandingtext)
-				factionRow.standingText = factionStandingtext
-				factionRow.rolloverText = format(REPUTATION_PROGRESS_FORMAT, BreakUpLargeNumbers(barValue), BreakUpLargeNumbers(threshold))
-			end
-		end
+		local value = currentValue % threshold
+		if hasRewardPending then value = value + threshold end
+
+		local paraText = L["Paragon"]..floor(currentValue / threshold)
+		local repBar = row.Content.ReputationBar
+		repBar:SetMinMaxValues(0, threshold)
+		repBar:SetValue(min(value, threshold))
+		repBar.BarText:SetText(paraText)
+		repBar:SetStatusBarColor(0, .6, 1)
+		repBar.reputationStandingText = paraText
+		repBar:UpdateBarProgressText(HIGHLIGHT_FONT_COLOR:WrapTextInColorCode(format(REPUTATION_PROGRESS_FORMAT, BreakUpLargeNumbers(value), BreakUpLargeNumbers(threshold))))
 	end)
 end
---M:RegisterMisc("ParagonRep", M.ParagonReputationSetup)
+M:RegisterMisc("ParagonRep", M.ParagonReputationSetup)
