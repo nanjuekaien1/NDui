@@ -578,6 +578,19 @@ function UF:MouseoverIndicator(self)
 	self.HighlightUpdater = updater
 end
 
+function UF:CreateStackingBounds(self)
+	local stackingBounds = CreateFrame("Frame", nil, self)
+	stackingBounds:SetAllPoints()
+	local stackingTexture = stackingBounds:CreateTexture(nil, "BACKGROUND")
+	stackingTexture:SetAllPoints()
+	stackingTexture:SetColorTexture(1, 1, 1, 0)
+
+	local plate = self:GetParent()
+	if plate and plate.SetStackingBoundsFrame then
+		plate:SetStackingBoundsFrame(stackingBounds)
+	end
+end
+
 -- Create Nameplates
 local platesList = {}
 UF.nameplateUnits = {}
@@ -598,13 +611,6 @@ function UF:CreatePlates()
 	self.Health = health
 	self.Health.UpdateColor = UF.UpdateColor
 
-	local tarName = B.CreateFS(self, C.db["Nameplate"]["NameTextSize"]+4)
-	tarName:ClearAllPoints()
-	tarName:SetPoint("TOP", self, "BOTTOM", 0, -10)
-	tarName:Hide()
-	self:Tag(tarName, "[tarname]")
-	self.tarName = tarName
-
 	UF:CreateHealthText(self)
 	UF:CreateCastBar(self)
 	UF:CreateRaidMark(self)
@@ -613,6 +619,7 @@ function UF:CreatePlates()
 	UF:CreatePlateDebuffs(self)
 	UF:CreatePVPClassify(self)
 	UF:CreateThreatColor(self)
+	UF:CreateStackingBounds(self)
 
 	local title = B.CreateFS(self, C.db["Nameplate"]["NameOnlyTitleSize"])
 	title:ClearAllPoints()
@@ -707,7 +714,6 @@ function UF:UpdateNameplateSize()
 		self.__tagIndex = nameType
 
 		self:SetSize(plateWidth, plateHeight)
-		B.SetFontSize(self.tarName, nameTextSize+4)
 		self.Castbar.Icon:SetSize(iconSize, iconSize)
 		self.Castbar:SetHeight(plateCBHeight)
 		B.SetFontSize(self.Castbar.Time, CBTextSize)
@@ -852,8 +858,6 @@ local function onTargetChanged(self, event, unit)
 	UF.UpdateQuestUnit(self, event, unit)
 	UF.UpdateUnitClassify(self, unit)
 	UF:UpdateTargetClassPower()
-
-	self.tarName:SetShown(C.ShowTargetNPCs[self.npcID])
 end
 
 function UF:OnNameplateAdded(event, unit)

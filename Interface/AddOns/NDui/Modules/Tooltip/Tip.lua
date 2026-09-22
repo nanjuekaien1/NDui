@@ -556,7 +556,11 @@ end
 
 function TT:ResetUnit(btn)
 	if GameTooltip:IsForbidden() then return end
-	if GameTooltip:IsShown() and btn == "LSHIFT" and TT:UnitExists("mouseover") then
+
+	local unit = GameTooltip:GetUnit() or "mouseover"
+	if B:IsSecretValue(unit) then return end
+
+	if GameTooltip:IsShown() and btn == "LSHIFT" and TT:UnitExists(unit) then
 		GameTooltip:RefreshData()
 	end
 end
