@@ -6,7 +6,6 @@ local _G = _G
 local select, pairs, unpack, next, tinsert = select, pairs, unpack, next, tinsert
 local strmatch, strfind, strupper = strmatch, strfind, strupper
 local UIFrameFadeOut, UIFrameFadeIn = UIFrameFadeOut, UIFrameFadeIn
-local C_Timer_After = C_Timer.After
 local cr, cg, cb = DB.r, DB.g, DB.b
 
 function module:CreatePulse()
@@ -284,7 +283,7 @@ function module:RecycleBin()
 	local function clickFunc(force)
 		if force == 1 or NDuiADB["AutoRecycle"] then
 			UIFrameFadeOut(bin, .5, 1, 0)
-			C_Timer_After(.5, hideBinButton)
+			C_Timer.After(.5, hideBinButton)
 		end
 	end
 
@@ -313,7 +312,6 @@ function module:RecycleBin()
 
 	local iconsPerRow = 10
 	local rowMult = iconsPerRow/2 - 1
-	local currentIndex, pendingTime, timeThreshold = 0, 5, 6
 	local buttons = {}
 	local removedTextures = {
 		[136430] = true,
@@ -392,11 +390,6 @@ function module:RecycleBin()
 		end
 
 		KillMinimapButtons()
-
-		currentIndex = currentIndex + 1
-		if currentIndex < timeThreshold then
-			C_Timer_After(pendingTime, CollectRubbish)
-		end
 	end
 
 	local shownButtons = {}
@@ -444,7 +437,22 @@ function module:RecycleBin()
 		end
 	end)
 
-	CollectRubbish()
+	local isCollecting = false
+
+	local function startCollect()
+		CollectRubbish()
+		isCollecting = false
+	end
+
+	local function delayCollect()
+		if isCollecting then return end
+		isCollecting = true
+		C_Timer.After(.1, startCollect)
+	end
+
+	delayCollect()
+	C_Timer.After(5, delayCollect) -- in case some buttons are loaded after PLAYER_ENTERING_WORLD
+	B:RegisterEvent("ADDON_LOADED", delayCollect)
 end
 
 function module:WhoPingsMyMap()
