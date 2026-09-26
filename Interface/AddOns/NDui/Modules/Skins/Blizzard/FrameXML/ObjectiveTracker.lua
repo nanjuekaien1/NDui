@@ -160,21 +160,6 @@ tinsert(C.defaultThemes, function()
 	if not C.db["Skins"]["QuestTracker"] then return end
 	if C_AddOns.IsAddOnLoaded("!KalielsTracker") then return end
 
-	-- 12.1: Blizzard's ShouldShowMawBuffs calls C_UnitAuras.GetAuraDataByIndex("player", 1, "MAW")
-	-- unguarded. Skinning the objective tracker taints its layout path, and under the secret-aura
-	-- rules that API throws instead of returning nil when execution is tainted, aborting LayoutContents.
-	-- Short-circuit to the non-aura branch (Jailer's Tower check) while auras are secret.
-	if ShouldShowMawBuffs and not ShouldShowMawBuffs.__nduiGuarded then
-		local origMawBuffs = ShouldShowMawBuffs
-		function ShouldShowMawBuffs()
-			if C_Secrets.ShouldAurasBeSecret() then
-				return IsInJailersTower() or false
-			end
-			return origMawBuffs()
-		end
-		ShouldShowMawBuffs.__nduiGuarded = true
-	end
-
 	-- Reskin Headers
 	local mainHeader = ObjectiveTrackerFrame.Header
 	B.StripTextures(mainHeader) -- main header looks simple this way
