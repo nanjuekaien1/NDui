@@ -325,6 +325,7 @@ function UF:OnLogin()
 		UF:QuestIconCheck()
 		UF:RefreshPlateByEvents()
 		UF:UpdateExcutedCurve()
+		UF.NameplateDriver:Prewarm(30, UF.CreatePlateFrames)
 	end
 
 	do -- a playerplate-like PlayerFrame
@@ -341,14 +342,6 @@ function UF:OnLogin()
 		oUF:SetActiveStyle("TargetPlate")
 		oUF:Spawn("player", "oUF_TargetPlate", true)
 		UF:ToggleTargetClassPower()
-	end
-
-	do	-- prebuild nameplate aura containers to avoid stutter on mass spawn
-		local holder = oUF:Spawn("player", "oUF_NPAuraHolder", true)
-		holder.mystyle = "nameplate"
-		holder:Hide()
-		holder:EnableMouse(false)
-		UF:PrebuildNameplateAuras(holder, 40)
 	end
 
 	-- Default Clicksets for RaidFrame
