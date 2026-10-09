@@ -26,9 +26,10 @@ local function ForceDefaultSettings()
 	SetCVar("TargetNearestUseNew", 1) -- #*tab最近的目标
 	--SetCVar("nameplateOccludedAlphaMult", 0.2) --障碍物后姓名板的透明度
 	SetCVar("floatingCombatTextFloatMode_v2", 1)
-	SetCVar("floatingCombatTextCombatDamage_v2", 0) --战斗浮动伤害
+	SetCVar("floatingCombatTextCombatDamage_v2", 1) --战斗浮动伤害
 	SetCVar("floatingCombatTextCombatHealing_v2", 0) --战斗浮动治疗
-	SetCVar("floatingCombatTextCombatDamageDirectionalScale_v2", 0)
+	SetCVar("floatingCombatTextCombatDamageAllAutos_v2", 1) --伤害显示（技能）
+	SetCVar("floatingCombatTextCombatDamageDirectionalScale_v2", 0) --0 是向上飞；1 是新式浮动；3 是45度角飞出；5 是向8个方向乱飞
 	SetCVar("floatingCombatTextCombatDamageDirectionalOffset_v2", 10)
 	--SetActionBarToggles(1, 1, 1, 1)
 	if not InCombatLockdown() then
