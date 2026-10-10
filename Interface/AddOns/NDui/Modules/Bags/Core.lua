@@ -44,7 +44,6 @@ end
 
 -- 分类滚动列表
 local categoryScroll = {}	-- [bagType] = { scroll, child }
-local categorySpacing = 4
 
 local function GetCategoryScroll(bagType)
 	return categoryScroll[bagType]
@@ -58,9 +57,9 @@ function module:CreateCategoryHeader(container, label)
 	return container.header
 end
 
--- 创建分类滚动容器外壳（现代滚动条参考 EllesmereUIBags：16px 隐形命中区 + 4px 窄滑块）
+-- 分类滚动容器：原生滚动条，16px 命中区 + 2px 细滑块
 function module:CreateCategoryScroll(parent, bagType)
-	local scroll = CreateFrame("ScrollFrame", nil, parent, "UIPanelScrollFrameTemplate")
+	local scroll = CreateFrame("ScrollFrame", nil, parent)
 	-- f.main 在底部，分类滚动列表排在 f.main 顶部上方
 	scroll:SetPoint("BOTTOMLEFT", parent, "TOPLEFT", 0, 4)
 	scroll:SetHeight(400)
@@ -72,142 +71,50 @@ function module:CreateCategoryScroll(parent, bagType)
 	scroll:SetScrollChild(child)
 	scroll:EnableMouseWheel(true)
 
-	-- 移除模板自带的旧式滚动条，改用自建滑块
-	if scroll.ScrollBar then
-		scroll.ScrollBar:Hide()
-	end
+	local scrollBar = CreateFrame("EventFrame", nil, scroll, "MinimalScrollBar")
+	scrollBar:SetWidth(16)
+	scrollBar:SetPoint("TOPRIGHT", scroll, "TOPRIGHT", -1, -2)
+	scrollBar:SetPoint("BOTTOMRIGHT", scroll, "BOTTOMRIGHT", -1, 2)
+	scrollBar:SetFrameLevel(scroll:GetFrameLevel() + 5)
+	scrollBar.minThumbExtent = 20
+	scrollBar.Back:Hide()
+	scrollBar.Forward:Hide()
+	scroll.ScrollBar = scrollBar
 
-	local SCROLLBAR_HIT_W = 16  -- 隐形命中区宽度
-	local SCROLLBAR_W = 2       -- 滑块视觉宽度
-	local SCROLL_STEP = 40      -- 每格滚轮像素
-	local THUMB_MIN_H = 20      -- 滑块最小高度
-
-	-- 轨道：16px 宽的隐形 Button，负责接收鼠标（拖动 + 点击跳转）
-	local track = CreateFrame("Button", nil, scroll)
-	track:SetWidth(SCROLLBAR_HIT_W)
-	track:SetPoint("TOPRIGHT", scroll, "TOPRIGHT", -2, -2)
-	track:SetPoint("BOTTOMRIGHT", scroll, "BOTTOMRIGHT", -2, 2)
-	track:SetFrameLevel(scroll:GetFrameLevel() + 5)
-
-	-- 轨道底：极淡竖条（提示滚动条位置），与滑块贴边对齐
+	local track = scrollBar.Track
+	track:ClearAllPoints()
+	track:SetAllPoints(scrollBar)
+	track:DisableDrawLayer("ARTWORK")
 	local trackBg = track:CreateTexture(nil, "BACKGROUND")
-	trackBg:SetWidth(SCROLLBAR_W)
-	trackBg:SetPoint("TOP", track, "TOP", 0, 0)
-	trackBg:SetPoint("BOTTOM", track, "BOTTOM", 0, 0)
-	trackBg:SetPoint("RIGHT", track, "RIGHT", 1, 0)
+	trackBg:SetWidth(2)
+	trackBg:SetPoint("TOPRIGHT")
+	trackBg:SetPoint("BOTTOMRIGHT")
 	trackBg:SetColorTexture(DB.r, DB.g, DB.b, .1)
 
-	-- 滑块：2px 纯色 Texture，锚在轨道上
-	local thumb = track:CreateTexture(nil, "ARTWORK")
-	thumb:SetWidth(SCROLLBAR_W)
-	thumb:SetColorTexture(DB.r, DB.g, DB.b, .4)
-	track.thumb = thumb
+	local thumb = scrollBar:GetThumb()
+	thumb:SetWidth(16)
+	thumb:SetHitRectInsets(0, 0, 0, 0)
+	thumb:DisableDrawLayer("ARTWORK")
+	local thumbTex = thumb:CreateTexture(nil, "OVERLAY")
+	thumbTex:SetWidth(2)
+	thumbTex:SetPoint("TOPRIGHT")
+	thumbTex:SetPoint("BOTTOMRIGHT")
+	thumbTex:SetColorTexture(DB.r, DB.g, DB.b, .4)
+	local highlight = thumb:CreateTexture(nil, "HIGHLIGHT")
+	highlight:SetAllPoints(thumbTex)
+	highlight:SetColorTexture(DB.r, DB.g, DB.b, .2)
 
-	local isDragging = false
-	local dragStartY = 0
-	local dragStartPct = 0
+	ScrollUtil.InitScrollFrameWithScrollBar(scroll, scrollBar)
+	scroll:SetPanExtent(40)
+	scrollBar:SetScript("OnMouseWheel", scroll:GetScript("OnMouseWheel"))
+	scrollBar:SetHideIfUnscrollable(true)
 
-	local function GetScrollMetrics()
-		local range = scroll:GetVerticalScrollRange()
-		if not range or range <= 0 then return nil end
-		local trackH = track:GetHeight()
-		local ext = scroll:GetHeight() / (scroll:GetHeight() + range)
-		local thumbH = math.max(THUMB_MIN_H, trackH * ext)
-		local maxTravel = trackH - thumbH
-		if maxTravel <= 0 then return nil end
-		local pct = scroll:GetVerticalScroll() / range
-		return pct, thumbH, maxTravel, range
+	-- 布局后立即刷新范围；尺寸变化但范围相同时也需更新滑块比例。
+	local onRangeChanged = scroll:GetScript("OnScrollRangeChanged")
+	scroll.UpdateScrollBar = function()
+		scroll:UpdateScrollChildRect()
+		onRangeChanged(scroll, 0, scroll:GetVerticalScrollRange())
 	end
-
-	local function updateScrollBar()
-		-- 内容可能缩了，把滚动拉回有效范围
-		local range = scroll:GetVerticalScrollRange() or 0
-		local cur = scroll:GetVerticalScroll()
-		if cur > range then scroll:SetVerticalScroll(range) end
-
-		local pct, thumbH, maxTravel = GetScrollMetrics()
-		if not pct then
-			thumb:Hide()
-			trackBg:Hide()
-			return
-		end
-		thumb:Show()
-		trackBg:Show()
-		thumb:SetHeight(thumbH)
-		thumb:ClearAllPoints()
-		thumb:SetPoint("TOPRIGHT", track, "TOPRIGHT", 1, -(pct * maxTravel))
-	end
-	scroll.UpdateScrollBar = updateScrollBar
-
-	local function OnWheel(_, delta)
-		local range = select(4, GetScrollMetrics())
-		if not range then return end
-		local cur = scroll:GetVerticalScroll()
-		local newVal = math.max(0, math.min(range, cur - delta * SCROLL_STEP))
-		scroll:SetVerticalScroll(newVal)
-		updateScrollBar()
-	end
-	scroll:SetScript("OnMouseWheel", OnWheel)
-	scroll:SetScript("OnScrollRangeChanged", updateScrollBar)
-	scroll:SetScript("OnVerticalScroll", updateScrollBar)
-
-	-- 拖动更新帧：独立于 track，光标移出也能正确收尾
-	local dragUpdate = CreateFrame("Frame")
-	dragUpdate:Hide()
-	dragUpdate:SetScript("OnUpdate", function(self)
-		if not isDragging then self:Hide(); return end
-		if not IsMouseButtonDown("LeftButton") then
-			isDragging = false
-			self:Hide()
-			thumb:SetColorTexture(DB.r, DB.g, DB.b, .4)
-			return
-		end
-		local pct, thumbH, maxTravel, range = GetScrollMetrics()
-		if not pct then isDragging = false; self:Hide(); return end
-		local _, cy = GetCursorPosition()
-		local deltaY = dragStartY - cy / track:GetEffectiveScale()
-		local newPct = math.max(0, math.min(1, dragStartPct + deltaY / maxTravel))
-		scroll:SetVerticalScroll(newPct * range)
-		updateScrollBar()
-	end)
-
-	track:RegisterForDrag("LeftButton")
-	track:SetScript("OnMouseDown", function(_, button)
-		if button ~= "LeftButton" then return end
-		local pct, thumbH, maxTravel, range = GetScrollMetrics()
-		if not pct then return end
-
-		local scale = track:GetEffectiveScale()
-		local _, cy = GetCursorPosition()
-		local cursorLocalY = (track:GetTop() * scale - cy) / scale
-
-		-- 判断光标是否落在滑块上
-		local thumbTop = pct * maxTravel
-		local thumbBot = thumbTop + thumbH
-		if cursorLocalY >= thumbTop and cursorLocalY <= thumbBot then
-			isDragging = true
-			dragStartY = cy / scale
-			dragStartPct = pct
-		else
-			-- 点击轨道空白：跳到该位置
-			local clickPct = math.max(0, math.min(1, (cursorLocalY - thumbH / 2) / maxTravel))
-			scroll:SetVerticalScroll(clickPct * range)
-			updateScrollBar()
-			isDragging = true
-			dragStartY = cy / scale
-			dragStartPct = clickPct
-		end
-		dragUpdate:Show()
-	end)
-	track:SetScript("OnMouseUp", function()
-		isDragging = false
-	end)
-	track:SetScript("OnEnter", function()
-		thumb:SetColorTexture(DB.r, DB.g, DB.b, .6)
-	end)
-	track:SetScript("OnLeave", function()
-		if not isDragging then thumb:SetColorTexture(DB.r, DB.g, DB.b, .4) end
-	end)
 
 	categoryScroll[bagType] = { scroll = scroll, child = child }
 	return scroll, child
@@ -235,22 +142,20 @@ local function UpdateCategoryLayout(parent, bags, bagType)
 		local hasItems = #container.buttons > 0 or (container.freeSlot and container.freeSlot:IsShown())
 		if hasItems and CheckForBagReagent(container.name) then
 			container:Show()
-
 			container:ClearAllPoints()
 			container:SetPoint("TOPLEFT", child, "TOPLEFT", 0, -yOffset)
 
-			yOffset = yOffset + container:GetHeight() + categorySpacing
+			yOffset = yOffset + container:GetHeight()
 		else
 			container:Hide()
 		end
 	end
 
-	-- 更新滚动子帧高度与滚动框高度（超过最大高度时滚动）
 	local maxHeight = C.db["Bags"]["BagsHeight"] or 400
-	child:SetHeight(math.max(1, yOffset))
-	scroll:SetHeight(math.min(maxHeight, math.max(1, yOffset)))
+	yOffset = math.max(1, yOffset)
+	child:SetHeight(yOffset)
+	scroll:SetHeight(math.min(maxHeight, yOffset))
 
-	-- 内容超长时滚动，滑块显隐按 range 决定
 	scroll.UpdateScrollBar()
 end
 
@@ -373,7 +278,7 @@ function module:CreateBagBar(settings, columns)
 end
 
 function module:CreateBagTab(settings, columns, account)
-	local bagTab = self:SpawnPlugin("BagTab", settings.Bags, account)
+	local bagTab = self:SpawnPlugin("BagTab", settings.Bags)
 	bagTab:SetPoint("TOPRIGHT", self, "BOTTOMRIGHT", 0, -5)
 	B.SetBD(bagTab)
 	bagTab.highlightFunction = highlightFunction
@@ -610,6 +515,8 @@ function module:GetContainerEmptySlot(bagID)
 end
 
 function module:GetEmptySlot(name)
+	name = strmatch(name, "^(.-)Other$") or name
+
 	if name == "Bag" then
 		for bagID = 0, 4 do
 			local slotID = module:GetContainerEmptySlot(bagID)
@@ -647,10 +554,10 @@ function module:FreeSlotOnDrop()
 end
 
 local freeSlotContainer = {
-	["Bag"] = true,
-	["Bank"] = true,
+	["BagOther"] = true,
+	["BankOther"] = true,
 	["BagReagent"] = true,
-	["Account"] = true,
+	["AccountOther"] = true,
 }
 
 function module:CreateFreeSlots()
@@ -772,9 +679,11 @@ StaticPopupDialogs["NDUI_RENAMECUSTOMGROUP"] = {
 		local text = self.EditBox:GetText()
 		C.db["Bags"]["CustomNames"][index] = text ~= "" and text or nil
 
-		module.CustomMenu[index+2].text = GetCustomGroupTitle(index)
-		module.ContainerGroups["Bag"][index].label:SetText(GetCustomGroupTitle(index))
-		module.ContainerGroups["Bank"][index].label:SetText(GetCustomGroupTitle(index))
+		local title = GetCustomGroupTitle(index)
+		module.CustomMenu[index+2].text = title
+		for _, bagType in ipairs({"Bag", "Bank", "Account"}) do
+			module.Bags:GetContainer(bagType.."Custom"..index).header.title:SetText(title)
+		end
 	end,
 	EditBoxOnEscapePressed = function(self)
 		self:GetParent():Hide()
@@ -1041,63 +950,66 @@ function module:OnLogin()
 
 	function Backpack:OnInit()
 		for i = 1, 5 do
-			AddNewContainer("Bag", i, "BagCustom"..i, filters["bagCustom"..i])
+			AddNewContainer("Bag", i+1, "BagCustom"..i, filters["bagCustom"..i])
 		end
-		AddNewContainer("Bag", 6, "BagReagent", filters.onlyBagReagent)
-		AddNewContainer("Bag", 20, "Junk", filters.bagsJunk)
-		AddNewContainer("Bag", 9, "EquipSet", filters.bagEquipSet)
-		AddNewContainer("Bag", 10, "BagAOE", filters.bagAOE)
-		AddNewContainer("Bag", 7, "AzeriteItem", filters.bagAzeriteItem)
-		AddNewContainer("Bag", 18, "BagLegacy", filters.bagLegacy)
-		AddNewContainer("Bag", 19, "BagLower", filters.bagLower)
-		AddNewContainer("Bag", 8, "Equipment", filters.bagEquipment)
-		AddNewContainer("Bag", 11, "BagCollection", filters.bagCollection)
-		AddNewContainer("Bag", 15, "BagStone", filters.bagStone)
-		AddNewContainer("Bag", 16, "Consumable", filters.bagConsumable)
-		AddNewContainer("Bag", 13, "BagGoods", filters.bagGoods)
-		AddNewContainer("Bag", 17, "BagQuest", filters.bagQuest)
-		AddNewContainer("Bag", 14, "BagAnima", filters.bagAnima)
-		AddNewContainer("Bag", 12, "BagDecor", filters.bagDecor)
+		AddNewContainer("Bag", 7, "BagReagent", filters.onlyBagReagent)
+		AddNewContainer("Bag", 21, "Junk", filters.bagsJunk)
+		AddNewContainer("Bag", 10, "EquipSet", filters.bagEquipSet)
+		AddNewContainer("Bag", 11, "BagAOE", filters.bagAOE)
+		AddNewContainer("Bag", 8, "AzeriteItem", filters.bagAzeriteItem)
+		AddNewContainer("Bag", 19, "BagLegacy", filters.bagLegacy)
+		AddNewContainer("Bag", 20, "BagLower", filters.bagLower)
+		AddNewContainer("Bag", 9, "Equipment", filters.bagEquipment)
+		AddNewContainer("Bag", 12, "BagCollection", filters.bagCollection)
+		AddNewContainer("Bag", 16, "BagStone", filters.bagStone)
+		AddNewContainer("Bag", 17, "Consumable", filters.bagConsumable)
+		AddNewContainer("Bag", 14, "BagGoods", filters.bagGoods)
+		AddNewContainer("Bag", 18, "BagQuest", filters.bagQuest)
+		AddNewContainer("Bag", 15, "BagAnima", filters.bagAnima)
+		AddNewContainer("Bag", 13, "BagDecor", filters.bagDecor)
+		AddNewContainer("Bag", 1, "BagOther", filters.onlyBags)
 
 		f.main = MyContainer:New("Bag", {Bags = "bags", BagType = "Bag"})
 		f.main.__anchor = {"BOTTOMRIGHT", -50, 100}
 		f.main:SetPoint(unpack(f.main.__anchor))
-		f.main:SetFilter(filters.onlyBags, true)
+		f.main:SetFilter(function() end, true)
 
 		for i = 1, 5 do
-			AddNewContainer("Bank", i, "BankCustom"..i, filters["bankCustom"..i])
+			AddNewContainer("Bank", i+1, "BankCustom"..i, filters["bankCustom"..i])
 		end
-		AddNewContainer("Bank", 8, "BankEquipSet", filters.bankEquipSet)
-		AddNewContainer("Bank", 9, "BankAOE", filters.bankAOE)
-		AddNewContainer("Bank", 6, "BankAzeriteItem", filters.bankAzeriteItem)
-		AddNewContainer("Bank", 10, "BankLegendary", filters.bankLegendary)
-		AddNewContainer("Bank", 17, "BankLegacy", filters.bankLegacy)
-		AddNewContainer("Bank", 18, "BankLower", filters.bankLower)
-		AddNewContainer("Bank", 7, "BankEquipment", filters.bankEquipment)
-		AddNewContainer("Bank", 11, "BankCollection", filters.bankCollection)
-		AddNewContainer("Bank", 15, "BankConsumable", filters.bankConsumable)
-		AddNewContainer("Bank", 13, "BankGoods", filters.bankGoods)
-		AddNewContainer("Bank", 16, "BankQuest", filters.bankQuest)
-		AddNewContainer("Bank", 14, "BankAnima", filters.bankAnima)
-		AddNewContainer("Bank", 12, "BankDecor", filters.bankDecor)
+		AddNewContainer("Bank", 9, "BankEquipSet", filters.bankEquipSet)
+		AddNewContainer("Bank", 10, "BankAOE", filters.bankAOE)
+		AddNewContainer("Bank", 7, "BankAzeriteItem", filters.bankAzeriteItem)
+		AddNewContainer("Bank", 11, "BankLegendary", filters.bankLegendary)
+		AddNewContainer("Bank", 18, "BankLegacy", filters.bankLegacy)
+		AddNewContainer("Bank", 19, "BankLower", filters.bankLower)
+		AddNewContainer("Bank", 8, "BankEquipment", filters.bankEquipment)
+		AddNewContainer("Bank", 12, "BankCollection", filters.bankCollection)
+		AddNewContainer("Bank", 16, "BankConsumable", filters.bankConsumable)
+		AddNewContainer("Bank", 14, "BankGoods", filters.bankGoods)
+		AddNewContainer("Bank", 17, "BankQuest", filters.bankQuest)
+		AddNewContainer("Bank", 15, "BankAnima", filters.bankAnima)
+		AddNewContainer("Bank", 13, "BankDecor", filters.bankDecor)
+		AddNewContainer("Bank", 1, "BankOther", filters.onlyBank)
 
 		f.bank = MyContainer:New("Bank", {Bags = "bank", BagType = "Bank"})
 		f.bank.__anchor = {"BOTTOMLEFT", 25, 50}
 		f.bank:SetPoint(unpack(f.bank.__anchor))
-		f.bank:SetFilter(filters.onlyBank, true)
+		f.bank:SetFilter(function() end, true)
 		f.bank:Hide()
 
 		for i = 1, 5 do
-			AddNewContainer("Account", i, "AccountCustom"..i, filters["accountCustom"..i])
+			AddNewContainer("Account", i+1, "AccountCustom"..i, filters["accountCustom"..i])
 		end
-		AddNewContainer("Account", 8, "AccountAOE", filters.accountAOE)
-		AddNewContainer("Account", 7, "AccountLegacy", filters.accountLegacy)
-		AddNewContainer("Account", 6, "AccountEquipment", filters.accountEquipment)
-		AddNewContainer("Account", 10, "AccountConsumable", filters.accountConsumable)
-		AddNewContainer("Account", 9, "AccountGoods", filters.accountGoods)
+		AddNewContainer("Account", 9, "AccountAOE", filters.accountAOE)
+		AddNewContainer("Account", 8, "AccountLegacy", filters.accountLegacy)
+		AddNewContainer("Account", 7, "AccountEquipment", filters.accountEquipment)
+		AddNewContainer("Account", 11, "AccountConsumable", filters.accountConsumable)
+		AddNewContainer("Account", 10, "AccountGoods", filters.accountGoods)
+		AddNewContainer("Account", 1, "AccountOther", filters.accountbank)
 
 		f.accountbank = MyContainer:New("Account", {Bags = "accountbank", BagType = "Account"})
-		f.accountbank:SetFilter(filters.accountbank, true)
+		f.accountbank:SetFilter(function() end, true)
 		f.accountbank:SetPoint(unpack(f.bank.__anchor))
 		f.accountbank:Hide()
 
@@ -1434,9 +1346,11 @@ function module:OnLogin()
 		elseif strmatch(name, "Anima") then
 			label = POWER_TYPE_ANIMA
 		elseif strmatch(name, "Custom%d") then
-			label = GetCustomGroupTitle(settings.Index)
+			label = GetCustomGroupTitle(tonumber(strmatch(name, "Custom(%d+)$")))
 		elseif name == "BagReagent" then
 			label = L["ReagentBag"]
+		elseif strmatch(name, "Other$") then
+			label = OTHER
 		elseif name == "BagStone" then
 			label = C_Spell.GetSpellName(404861)
 		elseif strmatch(name, "AOE") then

@@ -94,6 +94,8 @@ end
 
 -- Tags
 local function GetNumFreeSlots(name)
+	name = strmatch(name, "^(.-)Other$") or name
+
 	if name == "Bag" then
 		local totalFree, freeSlots, bagFamily = 0
 		for i = 0, 4 do -- reagent bank excluded
