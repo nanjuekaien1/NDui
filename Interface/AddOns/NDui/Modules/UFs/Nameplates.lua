@@ -271,27 +271,25 @@ function UF:UpdateFocusColor()
 end
 
 -- Target indicator
-function UF:UpdateTargetChange()
+function UF:UpdateTargetChange(event)
 	local element = self.TargetIndicator
-	if not element then return end
+	if not element or not self.__unit then return end
 
 	local unit = self.__unit
-	if C.db["Nameplate"]["TargetIndicator"] ~= 1 then
-		if UnitIsUnit(unit, "target") and not UnitIsUnit(unit, "player") then
-			element:Show()
-			if element.Arrow:IsShown() and not element.ArrowAnimGroup:IsPlaying() then
-				element.ArrowAnimGroup:Play()
-			end
-		else
-			element:Hide()
-			if element.ArrowAnimGroup:IsPlaying() then
-				element.ArrowAnimGroup:Stop()
-			end
+	local isTargeted = UnitIsUnit(unit, "target")
+	if C.db["Nameplate"]["TargetIndicator"] ~= 1 and isTargeted and not UnitIsUnit(unit, "player") then
+		element:Show()
+		if element.Arrow:IsShown() and not element.ArrowAnimGroup:IsPlaying() then
+			element.ArrowAnimGroup:Play()
 		end
+	else
+		element:Hide()
 	end
-	if C.db["Nameplate"]["ColoredTarget"] then
+	-- Full-frame updates already refresh health colors; ForceUpdate applies settings.
+	if event == "ForceUpdate" or (event == "PLAYER_TARGET_CHANGED" and C.db["Nameplate"]["ColoredTarget"] and isTargeted ~= element.isTargeted) then
 		UF.UpdateThreatColor(self, _, unit)
 	end
+	element.isTargeted = isTargeted
 end
 
 local points = {-15, -5, 0, 5, 0}
@@ -327,6 +325,7 @@ function UF:UpdateTargetIndicator()
 			element.nameGlow:Hide()
 		elseif style == 4 then
 			element.Arrow:Hide()
+			element.ArrowAnimGroup:Stop()
 			if isNameOnly then
 				element.Glow:Hide()
 				element.nameGlow:Show()
@@ -365,8 +364,14 @@ function UF:UpdateTargetIndicator()
 				element.nameGlow:Hide()
 			end
 		end
-		element:Show()
 	end
+	if self:IsElementEnabled("TargetIndicator") and not self:IsElementPaused("TargetIndicator") then
+		element:ForceUpdate()
+	end
+end
+
+local function hideAnim(self)
+	self.ArrowAnimGroup:Stop()
 end
 
 function UF:AddTargetIndicator(self)
@@ -390,6 +395,7 @@ function UF:AddTargetIndicator(self)
 	end
 	frame.ArrowAnim = anim
 	frame.ArrowAnimGroup = animGroup
+	frame:SetScript("OnHide", hideAnim)
 
 	frame.Glow = B.CreateSD(frame, 8, true)
 	frame.Glow:SetOutside(self.backdrop, 8, 8)
@@ -403,6 +409,7 @@ function UF:AddTargetIndicator(self)
 	frame.nameGlow:SetBlendMode("ADD")
 	frame.nameGlow:SetPoint("CENTER", self, "BOTTOM")
 
+	frame.Override = UF.UpdateTargetChange
 	self.TargetIndicator = frame
 	UF.UpdateTargetIndicator(self)
 end
@@ -572,6 +579,7 @@ function UF:MouseoverIndicator(self)
 
 	self.HighlightIndicator = highlight
 	self.HighlightUpdater = updater
+	updater:Hide()
 end
 
 function UF:CreateStackingBounds(self)
@@ -651,7 +659,6 @@ function UF:CreatePlates()
 	self:Tag(self.nameText, "[nplevel][name]")
 	self:Tag(self.healthValue, "[VariousHP(currentpercent)]")
 	self:RegisterEvent("UPDATE_MOUSEOVER_UNIT", UF.UpdateMouseoverShown, true)
-	self:RegisterEvent("PLAYER_TARGET_CHANGED", UF.UpdateTargetChange, true)
 	self:RegisterEvent("QUEST_LOG_UPDATE", UF.UpdateQuestUnit, true)
 	self:RegisterEvent("PLAYER_FOCUS_CHANGED", UF.UpdateFocusColor, true)
 
@@ -760,7 +767,6 @@ function UF:RefreshNameplats()
 		UF.UpdateNameplateAuras(nameplate)
 		UF.UpdateNameplateDebuffs(nameplate)
 		UF.UpdateTargetIndicator(nameplate)
-		UF.UpdateTargetChange(nameplate)
 	end
 	UF:UpdatePlateSize()
 end
@@ -876,7 +882,6 @@ end
 local function onTargetChanged(self, event, unit)
 	if not self then return end
 
-	UF.UpdateTargetChange(self)
 	UF.UpdateQuestUnit(self, event, unit)
 	UF.UpdateUnitClassify(self, unit)
 	UF:UpdateTargetClassPower()
