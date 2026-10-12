@@ -1,7 +1,7 @@
 local _, ns = ...
 local B, C, L, DB = unpack(ns)
 local A = B:RegisterModule("Auras")
--- 148/151/154/224/229 修改
+
 local _G = getfenv(0)
 local floor, ipairs = math.floor, ipairs
 local CreateFrame = CreateFrame
@@ -78,6 +78,11 @@ AURA_DURATION_FORMATTER:SetBreakpoints({
 	},
 })
 
+local AURA_DURATION_BINDING = C_DurationUtil.CreateDurationTextBinding()
+AURA_DURATION_BINDING:SetFormatter(AURA_DURATION_FORMATTER)
+AURA_DURATION_BINDING:SetExpiredText("")
+AURA_DURATION_BINDING:SetZeroDurationText("")
+
 local ITEM_DURATION_BINDING = C_DurationUtil.CreateDurationTextBinding()
 ITEM_DURATION_BINDING:SetFormatter(AURA_DURATION_FORMATTER)
 ITEM_DURATION_BINDING:SetExpiredText("")
@@ -145,13 +150,12 @@ local function UpdateButtonAppearance(button, cfg)
 
 	local fontSize = floor(cfg.size / 30 * 14 + .5)
 	if button.Count then
+		--B.SetFontSize(button.Count, fontSize)
 		button.Count:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
 	end
 	if button.Time then
+		--B.SetFontSize(button.Time, fontSize)
 		button.Time:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
-	end
-	if button.CooldownText then
-		button.CooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
 	end
 	if button.Cooldown then
 		button.Cooldown:SetDrawSwipe(C.db["Auras"]["CDAnimation"])
@@ -221,12 +225,7 @@ local function StyleAuraButton(element, button, showDebuffTypeBorder)
 
 	if button.Time then
 		button.Time:ClearAllPoints()
-		button.Time:SetPoint("TOP", button, "BOTTOM", 1, 5)  --位置
-	end
-
-	if button.CooldownText then
-		button.CooldownText:ClearAllPoints()
-		button.CooldownText:SetPoint("TOP", button, "BOTTOM", 1, 5)  --位置
+		button.Time:SetPoint("TOP", button, "BOTTOM", 1, 5)  --计时位置
 	end
 
 	local highlight = button:CreateTexture(nil, "HIGHLIGHT")
@@ -257,9 +256,8 @@ local function CreateAuraButtonInitializer(container, cancelButton, showDebuffTy
 		cooldown:SetEdgeTexture(DB.bgTex)
 		cooldown:SetDrawBling(false)
 		Cooldown:IgnoreCooldown(cooldown)
-		cooldown:SetCountdownFormatter(AURA_DURATION_FORMATTER)
+		cooldown:SetHideCountdownNumbers(true)
 		button.Cooldown = cooldown
-		button.CooldownText = cooldown:GetCountdownFontString()
 
 		local textFrame = CreateFrame("Frame", nil, button)
 		textFrame:SetAllPoints()
@@ -268,13 +266,20 @@ local function CreateAuraButtonInitializer(container, cancelButton, showDebuffTy
 		local count = textFrame:CreateFontString(nil, "OVERLAY", "NumberFontNormal")
 		button.Count = count
 
+		local time = textFrame:CreateFontString(nil, "OVERLAY", "NumberFontNormal")
+		button.Time = time
+
 		StyleAuraButton(container, button, showDebuffTypeBorder)
 		button:SetIcon(icon)
 		button:SetDurationCooldown(cooldown)
+		button:SetDurationText(time, {binding = AURA_DURATION_BINDING})
 		button:SetApplicationCount(count, {formatter = COUNT_FORMATTER})
 		if cancelButton then
 			button:SetCancelAuraButtons(cancelButton)
 		end
+
+		A._auraButtons = A._auraButtons or setmetatable({}, {__mode = "k"})
+		A._auraButtons[button] = true
 	end
 end
 
@@ -436,12 +441,23 @@ local function UpdateAuraUnits()
 	A.DebuffContainer:SetUnit(unit)
 end
 
+function A:ReapplyDurationText()
+	local buttons = A._auraButtons
+	if not buttons then return end
+	for button in pairs(buttons) do
+		if button.Time then
+			button:SetDurationText(button.Time, {binding = AURA_DURATION_BINDING})
+		end
+	end
+end
+
 local function OnAuraEvent(_, event, unit)
 	if event == "PLAYER_ENTERING_WORLD" or unit == "player" then
 		UpdateAuraUnits()
 	end
 
 	A:UpdateBuffAuraLimit()
+	A:ReapplyDurationText()
 
 	if itemBorderUpdatePending or event == "PLAYER_ENTERING_WORLD" or event == "WEAPON_ENCHANT_CHANGED" or event == "WEAPON_SLOT_CHANGED" then
 		UpdateItemEnchantmentBorders()
@@ -500,4 +516,8 @@ function A:OnLogin()
 	A:BuildBuffFrame()
 	A:Totems()
 	A:InitReminder()
+
+	C_Timer.After(2, function()
+		if A.ReapplyDurationText then A:ReapplyDurationText() end
+	end)
 end
