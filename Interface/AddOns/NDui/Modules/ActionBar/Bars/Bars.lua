@@ -399,7 +399,7 @@ function Bar:UpdateCooldownText(name)
 			button.cooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3]) -- 修改指定字体路径
 		end
 		if button.chargeCooldownText then
-			button.chargeCooldownText:SetFont(DB.Font[1], fontSize, DB.Font[3])
+			button.chargeCooldownText:SetFont("Interface\\AddOns\\NDui\\Media\\ROADWAY.TTF", fontSize, DB.Font[3])
 		end
 	end
 
