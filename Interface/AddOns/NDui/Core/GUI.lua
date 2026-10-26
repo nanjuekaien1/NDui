@@ -24,6 +24,8 @@ G.DefaultSettings = {
 		Classcolor = false,
 		BindType = 1,
 		MicroMenu = true,
+		MicroMenuCustomColor = false,
+		MicroMenuColor = {r=1, g=1, b=1},
 		ShowStance = true,
 		EquipColor = false,
 		ShowGlow = true,
@@ -381,7 +383,6 @@ G.DefaultSettings = {
 		MinimapScale = 1.2,
 		MinimapSize = 160,
 		ShowRecycleBin = true,
-		WhoPings = true,
 		MapReveal = true,
 		MapRevealGlow = true,
 		Calendar = false,
@@ -526,6 +527,7 @@ G.DefaultSettings = {
 		DamageMeter = true,
 	},
 	Tooltip = {
+		Enable = true,
 		HideInCombat = 1,
 		CursorMode = 1,
 		ItemQuality = false,
@@ -570,7 +572,6 @@ G.DefaultSettings = {
 		IgnoreQuestNPC = {},
 		HideTalking = true,
 		HideBossBanner = false,
-		HideBossEmote = false,
 		PetFilter = true,
 		QuestNotification = false,
 		QuestProgress = false,
@@ -589,7 +590,6 @@ G.DefaultSettings = {
 		MDGuildBest = true,
 		FasterSkip = false,
 		EnhanceDressup = true,
-		QuestTool = true,
 		InfoStrLeft = "[guild][friend][ping][fps][zone]",
 		InfoStrRight = "[spec][dura][gold][time]",
 		InfoSize = 13,
@@ -1102,10 +1102,6 @@ local function toggleBossBanner()
 	B:GetModule("Misc"):ToggleBossBanner()
 end
 
-local function toggleBossEmote()
-	B:GetModule("Misc"):ToggleBossEmote()
-end
-
 local function updateMarkerGrid()
 	B:GetModule("Misc"):RaidTool_UpdateGrid()
 end
@@ -1150,7 +1146,7 @@ end
 
 local function updateTooltipFont()
 	local TT = B:GetModule("Tooltip")
-	if TT then
+	if TT and C.db["Tooltip"]["Enable"] then
 		TT:SetupTooltipFonts()
 	end
 end
@@ -1217,7 +1213,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 	[1] = {
 		{1, "Actionbar", "Enable", HeaderTag..L["Enable Actionbar"], nil, setupActionBar},
 		{},--blank
-		{1, "Actionbar", "MicroMenu", L["Micromenu"], nil, setupMicroMenu, nil, L["MicroMenuTip"]},
+		{1, "Actionbar", "MicroMenu", IsNew..L["Micromenu"], nil, setupMicroMenu, nil, L["MicroMenuTip"]},
 		{1, "Actionbar", "ShowStance", L["ShowStanceBar"], true, setupStanceBar},
 		{},--blank
 		{4, "Actionbar", "CDFormat", L["Show Cooldown"].."*", nil, {L["ColorTenth"], L["ColorText"], L["WhiteTenth"], L["WhiteText"], DISABLE}, updateCooldown},
@@ -1434,11 +1430,10 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Map", "Calendar", L["MinimapCalendar"].."*", nil, nil, showCalendar, L["MinimapCalendarTip"]},
 		{1, "Map", "Clock", L["Minimap Clock"].."*", true, nil, showMinimapClock},
 		{1, "Map", "CombatPulse", L["Minimap Pulse"]},
-		{1, "Map", "WhoPings", L["Show WhoPings"], true},
-		{1, "Map", "EasyVolume", L["EasyVolume"], nil, nil, nil, L["EasyVolumeTip"]},
 		{1, "Misc", "ExpRep", L["Show Expbar"], true},
+		{1, "Map", "EasyVolume", L["EasyVolume"], nil, nil, nil, L["EasyVolumeTip"]},
 		{1, "Map", "ShowRecycleBin", L["Show RecycleBin"]},
-		{2, "ACCOUNT", "IgnoredButtons", L["IgnoredButtons"], nil, nil, nil, L["IgnoredButtonsTip"]},
+		{2, "ACCOUNT", "IgnoredButtons", L["IgnoredButtons"], true, nil, nil, L["IgnoredButtonsTip"]},
 	},
 	[11] = {
 		{1, "Skins", "BlizzardSkins", HeaderTag..L["BlizzardSkins"], nil, nil, nil, L["BlizzardSkinsTips"]},
@@ -1473,6 +1468,8 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Skins", "Rematch", L["Rematch Skin"], true},
 	},
 	[12] = {
+		{1, "Tooltip", "Enable", HeaderTag..L["Enable Tooltip"], nil, nil, nil, L["Enable Tooltip Tip"]},
+		{},--blank
 		{3, "Tooltip", "FontSize", L["Tooltip FontSize"].."*", nil, {8, 42, 1}, updateTooltipFont},
 		{4, "Tooltip", "TipAnchor", L["TipAnchor"].."*", true, {L["TOPLEFT"], L["TOPRIGHT"], L["BOTTOMLEFT"], L["BOTTOMRIGHT"]}, nil, L["TipAnchorTip"]},
 		{4, "Tooltip", "HideInCombat", L["HideInCombat"].."*", nil, {DISABLE, "ALT", "SHIFT", "CTRL", ALWAYS}, nil, L["HideInCombatTip"]},
@@ -1499,8 +1496,7 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{},--blank
 		{1, "Misc", "HideTalking", L["No Talking"]},
 		{1, "Misc", "InstantDelete", L["InstantDelete"].."*", true},
-		{1, "Misc", "HideBossEmote", L["HideBossEmote"].."*", nil, nil, toggleBossEmote},
-		{1, "Misc", "HideBossBanner", L["Hide Bossbanner"].."*", true, nil, toggleBossBanner},
+		{1, "Misc", "HideBossBanner", L["Hide Bossbanner"].."*", nil, nil, toggleBossBanner},
 		{1, "Misc", "CombatAnimation", L["CombatAnimation"], nil, nil, toggleBossBanner},
 		{1, "Misc", "FasterLoot", L["Faster Loot"].."*", true, nil, updateFasterLoot},
 		{1, "Misc", "BlockInvite", "|cffff0000"..L["BlockInvite"].."*", nil, nil, nil, L["BlockInviteTip"]},
@@ -1515,10 +1511,9 @@ G.OptionList = { -- type, key, value, name, horizon, doubleline
 		{1, "Misc", "MDGuildBest", L["MDGuildBest"], true, nil, nil, L["MDGuildBestTip"]},
 		{1, "Misc", "MenuButton", L["MenuButton"], nil, nil, nil, L["MenuButtonTip"]},
 		{1, "Misc", "EnhanceDressup", L["EnhanceDressup"], true, nil, nil, L["EnhanceDressupTip"]},
-		{1, "Misc", "QuestTool", L["QuestTool"], nil, nil, nil, L["QuestToolTip"]},
 		{1, "Misc", "QuickJoin", HeaderTag..L["EnhancedPremade"], nil, nil, nil, L["EnhancedPremadeTip"]},
-		{3, "Misc", "MaxZoom", L["MaxZoom"].."*", true, {1, 2.6, .1}, updateMaxZoomLevel},
 		{1, "Misc", "SingingSocket", L["SingingSocket"], nil, nil, nil, L["SingingSocketTip"]},
+		{3, "Misc", "MaxZoom", L["MaxZoom"].."*", true, {1, 2.6, .1}, updateMaxZoomLevel},
 	},
 	[14] = {
 		{1, "ACCOUNT", "VersionCheck", L["Version Check"]},
