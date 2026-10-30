@@ -322,7 +322,7 @@ function UF:OnLogin()
 		UF:QuestIconCheck()
 		UF:RefreshPlateByEvents()
 		UF:UpdateExcutedCurve()
-		UF.NameplateDriver:Prewarm(20, UF.CreatePlateFrames)
+		UF:PrewarmNameplateAuras(40)
 	end
 
 	do -- a playerplate-like PlayerFrame
@@ -399,8 +399,6 @@ function UF:OnLogin()
 		end
 
 		if C.db["UFs"]["Arena"] then
-			-- UnitFrameUtil's arena spec bar colors follow this CVar.
-			SetCVar("pvpFramesDisplayClassColor", 1)
 			oUF:RegisterStyle("Arena", CreateArenaStyle)
 			oUF:SetActiveStyle("Arena")
 			local arena = {}

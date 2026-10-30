@@ -639,21 +639,7 @@ function UF:CreatePlateFrames()
 end
 
 function UF:CreatePlates()
-	if self.Health then
-		-- Prebuilt frames must anchor to their new native parent and use current settings.
-		local db = C.db["Nameplate"]
-		self:SetSize(db["PlateWidth"], db["PlateHeight"])
-		self:ClearAllPoints()
-		self:SetPoint("CENTER")
-		B.SetFontSize(self.Castbar.isYou, db["NameTextSize"]+3)
-		local yOffset = db["TargetPower"] and 10 + db["PPBarHeight"] or 5
-		self.Auras:SetPoint("BOTTOMLEFT", self.nameText, "TOPLEFT", 0, yOffset)
-		self.Buffs:SetPoint("BOTTOMRIGHT", self.nameText, "TOPRIGHT", 0, yOffset)
-		UF:UpdateAuraContainer(self, self.Auras)
-		UF.UpdateNameplateDebuffs(self, false) -- Initial aura refresh belongs to oUF's unit update.
-	else
-		UF.CreatePlateFrames(self)
-	end
+	UF.CreatePlateFrames(self)
 
 	UF:CreateStackingBounds(self)
 	self:Tag(self.nameText, "[nplevel][name]")
@@ -667,12 +653,12 @@ end
 
 function UF:ToggleNameplateAuras(shouldEnable)
 	if (C.db["Nameplate"]["PlateAuras"] or C.db["Nameplate"]["PlateBuffs"] or C.db["Nameplate"]["PlateCC"]) and shouldEnable then
-		if not self:IsElementEnabled("Auras") then
-			self:EnableElement("Auras")
+		if not self:IsElementEnabled("PrewarmAuras") then
+			self:EnableElement("PrewarmAuras")
 		end
 	else
-		if self:IsElementEnabled("Auras") then
-			self:DisableElement("Auras")
+		if self:IsElementEnabled("PrewarmAuras") then
+			self:DisableElement("PrewarmAuras")
 		end
 	end
 end
