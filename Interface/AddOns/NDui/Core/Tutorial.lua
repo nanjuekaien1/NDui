@@ -23,6 +23,8 @@ local function ForceDefaultSettings()
 	SetCVar("overrideArchive", 0)
 	SetCVar("cameraIndirectVisibility", 0) --减少镜头碰撞
 	SetCVar("cameraIndirectOffset", 10) -- 镜头最远
+	SetCVar("CameraReduceUnexpectedMovement", 1) -- 防止视角抖动
+	SetCVar("ResampleAlwaysSharpen", 1) -- 游戏画面更加锐利
 	SetCVar("TargetNearestUseNew", 1) -- #*tab最近的目标
 	--SetCVar("nameplateOccludedAlphaMult", 0.2) --障碍物后姓名板的透明度
 	SetCVar("floatingCombatTextFloatMode_v2", 1)
